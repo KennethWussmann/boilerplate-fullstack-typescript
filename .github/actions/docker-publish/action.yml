@@ -10,6 +10,14 @@ inputs:
   build-args:
     description: "Build args"
     required: false
+  context:
+    description: "Build context path"
+    required: false
+    default: "."
+  dockerfile:
+    description: "Path to Dockerfile"
+    required: false
+    default: "./Dockerfile"
 runs:
   using: "composite"
   steps:
@@ -25,3 +33,5 @@ runs:
         push: true
         tags: ${{ inputs.tags }}
         build-args: ${{ inputs.build-args }}
+        context: ${{ inputs.context }}
+        file: ${{ inputs.dockerfile }}

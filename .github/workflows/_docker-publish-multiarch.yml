@@ -1,0 +1,113 @@
+name: _docker-publish-multiarch
+
+# Reusable workflow for building and publishing multi-architecture Docker images
+# Handles both arm64 and amd64 builds, then creates and pushes a manifest
+
+on:
+  workflow_call:
+    inputs:
+      app_name:
+        description: 'Name of the app to build (e.g., server, web)'
+        required: true
+        type: string
+      image_suffix:
+        description: 'Suffix for the image name (e.g., -server, -web, or empty for root)'
+        required: false
+        type: string
+        default: ''
+      context:
+        description: 'Build context path'
+        required: false
+        type: string
+        default: '.'
+      dockerfile:
+        description: 'Path to Dockerfile'
+        required: false
+        type: string
+        default: './Dockerfile'
+      version_tag:
+        description: 'Version tag (e.g., develop, v1.0.0, commit SHA)'
+        required: true
+        type: string
+      additional_tags:
+        description: 'Additional tags to create manifests for (JSON array, e.g., ["latest"])'
+        required: false
+        type: string
+        default: '[]'
+      build_args:
+        description: 'Additional build arguments'
+        required: false
+        type: string
+        default: ''
+
+env:
+  FORCE_COLOR: 1
+
+jobs:
+  build:
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - runner: [self-hosted, arm64, cb]
+            arch: arm64
+          - runner: ubuntu-latest
+            arch: amd64
+    permissions:
+      packages: write
+      contents: read
+    outputs:
+      repository: ${{ steps.repository-lowercase.outputs.repository }}
+      version_tag: ${{ inputs.version_tag }}
+      additional_tags: ${{ inputs.additional_tags }}
+      image_suffix: ${{ inputs.image_suffix }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lowercase repository name
+        id: repository-lowercase
+        run: echo "repository=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
+      - uses: ./.github/actions/docker-publish
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          tags: ghcr.io/${{ steps.repository-lowercase.outputs.repository }}${{ inputs.image_suffix }}:${{ matrix.arch }}-${{ inputs.version_tag }}
+          build-args: |
+            VERSION=${{ inputs.version_tag }}
+            APP_NAME=${{ inputs.app_name }}
+            ${{ inputs.build_args }}
+          context: ${{ inputs.context }}
+          dockerfile: ${{ inputs.dockerfile }}
+
+  create-and-push-manifest:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Login to GitHub Packages Docker Registry
+        uses: docker/login-action@v3.4.0
+        with:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+
+      - name: Create and push version manifest
+        run: |
+          docker manifest create ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:${{ needs.build.outputs.version_tag }} \
+            --amend ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:amd64-${{ needs.build.outputs.version_tag }} \
+            --amend ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:arm64-${{ needs.build.outputs.version_tag }}
+          docker manifest push ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:${{ needs.build.outputs.version_tag }}
+
+      - name: Create and push additional manifests
+        if: needs.build.outputs.additional_tags != '[]'
+        run: |
+          TAGS='${{ needs.build.outputs.additional_tags }}'
+          echo "$TAGS" | jq -r '.[]' | while read tag; do
+            echo "Creating manifest for tag: $tag"
+            docker manifest create ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:$tag \
+              --amend ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:amd64-${{ needs.build.outputs.version_tag }} \
+              --amend ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:arm64-${{ needs.build.outputs.version_tag }}
+            docker manifest push ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:$tag
+          done
