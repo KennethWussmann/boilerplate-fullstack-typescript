@@ -17,6 +17,7 @@
 !biome.json
 !scripts/
 !.npmrc
+!patches/
 
 # Exclude node_modules and dist directories
 **/node_modules
