@@ -9,6 +9,7 @@ concurrency: release-docker-latest
 
 env:
   FORCE_COLOR: 1
+  DO_NOT_TRACK: 1
 
 jobs:
   # Extract version tag once and reuse across all apps
