@@ -33,7 +33,7 @@ jobs:
       - uses: ./.github/actions/docker-publish
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.split('/')[1] }}:${{ matrix.arch }}-${{ steps.vars.outputs.tag }}
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ matrix.arch }}-${{ steps.vars.outputs.tag }}
           build-args: VERSION=${{ steps.vars.outputs.tag }}
 
   create-and-push-manifest:
@@ -51,11 +51,11 @@ jobs:
           registry: ghcr.io
       - name: Create and push Docker manifest
         run: |
-          docker manifest create ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.split('/')[1] }}:${{ needs.build.outputs.tag }} \
-            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.split('/')[1] }}:amd64-${{ needs.build.outputs.tag }} \
-            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.split('/')[1] }}:arm64-${{ needs.build.outputs.tag }}
-          docker manifest push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.split('/')[1] }}:${{ needs.build.outputs.tag }}
-          docker manifest create ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.split('/')[1] }}:latest \
-            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.split('/')[1] }}:amd64-${{ needs.build.outputs.tag }} \
-            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.split('/')[1] }}:arm64-${{ needs.build.outputs.tag }}
-          docker manifest push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.split('/')[1] }}:latest
+          docker manifest create ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ needs.build.outputs.tag }} \
+            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:amd64-${{ needs.build.outputs.tag }} \
+            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:arm64-${{ needs.build.outputs.tag }}
+          docker manifest push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ needs.build.outputs.tag }}
+          docker manifest create ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest \
+            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:amd64-${{ needs.build.outputs.tag }} \
+            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:arm64-${{ needs.build.outputs.tag }}
+          docker manifest push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
