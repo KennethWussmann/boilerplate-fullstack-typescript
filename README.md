@@ -10,7 +10,7 @@ An opinionated, production-ready boilerplate for building fullstack TypeScript a
 - Clear separation: `apps/` for applications, `libs/` for shared code
 - Support for multiple apps in the same repository
 
-### Backend (Express + TypeScript)
+### Backend (Express + TypeScript + GraphQL)
 - Express.js with TypeScript and ESM modules
 - Dependency injection pattern with `ApplicationContext`
 - Multi-source configuration system (YAML files + environment variables)
@@ -18,8 +18,12 @@ An opinionated, production-ready boilerplate for building fullstack TypeScript a
 - Winston logger with JSON/text formats and rotating file support
 - Graceful shutdown handling
 - File system abstraction for testability
+- GraphQL API with GraphQL Yoga
+- WebSocket support for GraphQL subscriptions
+- Type-safe resolvers via GraphQL Code Generator
+- Modular GraphQL architecture with `graphql-modules`
 
-### Frontend (React + Vite)
+### Frontend (React + Vite + GraphQL)
 - React 19 with React Router v7
 - Vite for lightning-fast builds and HMR
 - Tailwind CSS v4 (via @tailwindcss/vite plugin)
@@ -28,6 +32,9 @@ An opinionated, production-ready boilerplate for building fullstack TypeScript a
 - Dark mode support via next-themes
 - Sonner for toast notifications
 - TanStack Form for type-safe forms
+- Apollo Client for GraphQL queries, mutations, and subscriptions
+- gql.tada for compile-time type-safe GraphQL operations
+- Full TypeScript integration with generated schema types
 
 ### Docker Support
 - Multi-stage Dockerfile for optimized images
@@ -166,10 +173,20 @@ pnpm build:watch
 # Run the backend server (in apps/server/)
 cd apps/server
 pnpm dev  # Runs on http://localhost:8080 by default
+# GraphQL endpoint: http://localhost:8080/graphql
+# GraphQL subscriptions: ws://localhost:8080/graphql
 
 # Run the frontend (in apps/web/)
 cd apps/web
 pnpm dev  # Runs on http://localhost:5173 by default
+
+# Generate GraphQL types (backend)
+cd apps/server
+pnpm codegen  # Generates TypeScript types from .graphql files
+
+# Generate GraphQL types (frontend)
+cd apps/web
+pnpm codegen  # Generates gql.tada types from server schema
 
 # Run linting and formatting
 pnpm check
@@ -260,6 +277,10 @@ docker run -p 80:80 your-web:latest
 ### Backend
 - [Express.js](https://expressjs.com/) - Web framework
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [GraphQL Yoga](https://the-guild.dev/graphql/yoga-server) - GraphQL server
+- [graphql-modules](https://the-guild.dev/graphql/modules) - Modular GraphQL architecture
+- [GraphQL Code Generator](https://the-guild.dev/graphql/codegen) - Type generation
+- [graphql-ws](https://github.com/enisdenjo/graphql-ws) - GraphQL subscriptions over WebSocket
 - [Zod](https://zod.dev/) - Schema validation
 - [Winston](https://github.com/winstonjs/winston) - Logging
 - [date-fns](https://date-fns.org/) - Date manipulation
@@ -268,6 +289,8 @@ docker run -p 80:80 your-web:latest
 - [React 19](https://react.dev/) - UI framework
 - [React Router v7](https://reactrouter.com/) - Client-side routing
 - [Vite](https://vitejs.dev/) - Build tool
+- [Apollo Client](https://www.apollographql.com/docs/react/) - GraphQL client
+- [gql.tada](https://gql-tada.0no.co/) - Type-safe GraphQL operations
 - [Tailwind CSS v4](https://tailwindcss.com/) - Utility-first CSS
 - [shadcn/ui](https://ui.shadcn.com/) - Component library
 - [TanStack Form](https://tanstack.com/form) - Form management
@@ -310,6 +333,154 @@ The web app includes PWA support. To enable PWA features in development:
 ```bash
 PWA_DEV=true pnpm dev
 ```
+
+## GraphQL Development
+
+### Backend GraphQL Setup
+
+The backend uses a modular GraphQL architecture:
+
+**File Structure:**
+```
+apps/server/src/http/routers/
+├── graphql/
+│   ├── graphQLRouter.ts       # GraphQL server setup
+│   ├── graphQLContext.ts      # Context and PubSub types
+│   ├── scalars.ts             # Custom scalar definitions
+│   ├── common.graphql         # Common scalars
+│   └── generated/             # Auto-generated types
+└── [feature]/
+    ├── graphql/
+    │   ├── [feature].graphql  # Schema definition
+    │   ├── [feature].query.ts # Query resolvers
+    │   ├── [feature].mutation.ts  # Mutation resolvers (optional)
+    │   └── [feature].subscription.ts  # Subscription resolvers (optional)
+    └── [feature]Module.ts     # Module registration
+```
+
+**Adding a New GraphQL Feature:**
+
+1. Create feature directory with schema:
+```bash
+cd apps/server/src/http/routers
+mkdir -p myfeature/graphql
+```
+
+2. Define schema in `myfeature/graphql/myfeature.graphql`:
+```graphql
+type Query {
+  myData: MyData!
+}
+
+type MyData {
+  id: ID!
+  name: String!
+}
+```
+
+3. Create resolvers in `myfeature/graphql/myfeature.query.ts`:
+```typescript
+import type { ResolversGQL } from '../../graphql/index.js';
+
+export const myFeatureQuery: Partial<ResolversGQL> = {
+  Query: {
+    myData: () => ({
+      id: '1',
+      name: 'Example',
+    }),
+  },
+};
+```
+
+4. Create module in `myfeature/myFeatureModule.ts`:
+```typescript
+import { loadFiles } from '@graphql-tools/load-files';
+import { createModule } from 'graphql-modules';
+import { scalars } from '../graphql/index.js';
+import { myFeatureQuery } from './graphql/myfeature.query.js';
+
+export const MyFeatureModule = async () => {
+  return createModule({
+    id: 'myfeature',
+    dirname: import.meta.dirname,
+    typeDefs: await loadFiles('**/*.graphql', {
+      globOptions: { cwd: import.meta.dirname },
+    }),
+    resolvers: [scalars, myFeatureQuery],
+  });
+};
+```
+
+5. Register in `HTTPServer.setupRouters()` (apps/server/src/http/httpServer.ts):
+```typescript
+new GraphQLRouter(
+  /* ... */,
+  [HealthModule, MyFeatureModule]  // Add your module
+)
+```
+
+6. Generate types:
+```bash
+cd apps/server
+pnpm codegen
+```
+
+### Frontend GraphQL Setup
+
+The frontend uses Apollo Client with gql.tada for type safety:
+
+**Usage Example:**
+```typescript
+import { useQuery, useSubscription } from '@apollo/client/react';
+import { graphql } from '@/lib/graphql';
+
+// Define query with gql.tada
+const MyQuery = graphql(`
+  query MyData {
+    myData {
+      id
+      name
+    }
+  }
+`);
+
+// Use in component
+function MyComponent() {
+  const { data } = useQuery(MyQuery);
+  return <div>{data?.myData.name}</div>;
+}
+```
+
+**Subscriptions Example:**
+```typescript
+const MySubscription = graphql(`
+  subscription OnDataChange {
+    dataChanged {
+      id
+      name
+    }
+  }
+`);
+
+function MyComponent() {
+  useSubscription(MySubscription, {
+    onData: ({ data }) => {
+      console.log('Data updated:', data);
+    },
+  });
+}
+```
+
+### GraphQL Configuration
+
+**Environment Variables:**
+- `VITE_API_URL` - GraphQL HTTP endpoint (default: `http://localhost:8080/graphql`)
+- `VITE_WS_URL` - GraphQL WebSocket endpoint (default: `ws://localhost:8080/graphql`)
+
+**TypeScript Integration:**
+- Backend types generated to `apps/server/src/http/routers/graphql/generated/`
+- Frontend types generated to `apps/web/src/lib/graphql/graphql-env.d.ts`
+- Schema exported to `apps/server/schema.graphql` for client consumption
 
 ## Adding Shared Libraries
 

@@ -14,6 +14,9 @@ This is a fullstack TypeScript monorepo boilerplate designed for building modern
 ### Backend
 - **Runtime**: Node.js
 - **Framework**: Express 5
+- **GraphQL**: GraphQL Yoga with WebSocket support
+- **GraphQL Modules**: graphql-modules for modular architecture
+- **Code Generation**: GraphQL Code Generator for type-safe resolvers
 - **Validation**: Zod schemas
 - **Logging**: Winston with daily rotate
 - **Configuration**: YAML/JSON with environment variable overrides
@@ -22,6 +25,8 @@ This is a fullstack TypeScript monorepo boilerplate designed for building modern
 - **Framework**: React 19
 - **Build Tool**: Vite 7
 - **Routing**: React Router 7
+- **GraphQL Client**: Apollo Client with HTTP and WebSocket links
+- **Type-Safe GraphQL**: gql.tada for compile-time type checking
 - **Styling**: TailwindCSS 4
 - **UI Components**: shadcn/ui (Radix UI based)
 - **Forms**: TanStack React Form
@@ -39,11 +44,27 @@ This is a fullstack TypeScript monorepo boilerplate designed for building modern
 │   │   │   ├── applicationContext.ts  # Dependency injection container
 │   │   │   ├── config/     # Configuration loading and validation
 │   │   │   ├── http/       # Express server and routers
+│   │   │   │   ├── routers/
+│   │   │   │   │   ├── graphql/  # GraphQL server setup
+│   │   │   │   │   │   ├── graphQLRouter.ts
+│   │   │   │   │   │   ├── graphQLContext.ts
+│   │   │   │   │   │   ├── scalars.ts
+│   │   │   │   │   │   ├── common.graphql
+│   │   │   │   │   │   └── generated/  # Auto-generated types
+│   │   │   │   │   └── [feature]/  # Feature modules
+│   │   │   │   │       ├── graphql/
+│   │   │   │   │       │   ├── *.graphql  # Schema files
+│   │   │   │   │       │   ├── *.query.ts
+│   │   │   │   │       │   ├── *.mutation.ts
+│   │   │   │   │       │   └── *.subscription.ts
+│   │   │   │   │       └── [feature]Module.ts
 │   │   │   ├── error/      # Error handling
 │   │   │   ├── file-system/  # File system abstraction
 │   │   │   └── utils/      # Shared utilities
 │   │   ├── package.json
 │   │   ├── tsconfig.json
+│   │   ├── codegen.ts      # GraphQL Code Generator config
+│   │   ├── schema.graphql  # Generated schema for client
 │   │   └── config.yaml     # Application configuration
 │   │
 │   └── web/                # Frontend React application
@@ -56,6 +77,10 @@ This is a fullstack TypeScript monorepo boilerplate designed for building modern
 │       │   │   ├── common/ # Application-specific components
 │       │   │   └── ui/     # shadcn/ui components
 │       │   └── lib/
+│       │       ├── graphql/  # GraphQL setup
+│       │       │   ├── apollo-client.ts
+│       │       │   ├── gql-tada.ts
+│       │       │   └── graphql-env.d.ts  # Generated types
 │       │       └── utils/  # Utility functions
 │       ├── public/         # Static assets
 │       ├── package.json

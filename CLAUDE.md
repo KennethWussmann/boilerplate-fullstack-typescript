@@ -89,6 +89,16 @@ The server uses a dependency injection pattern with the `ApplicationContext` cla
 - Configurable base path and port
 - Can be disabled via `api.enabled` config
 
+**GraphQL API:**
+- GraphQL Yoga server with WebSocket support for subscriptions
+- Modular architecture using `graphql-modules` for code organization
+- Code-first approach with schema generation from `.graphql` files
+- Type-safe resolvers generated via GraphQL Code Generator
+- PubSub system for real-time subscriptions (e.g., health monitoring)
+- Custom scalars: `DateTime` and `Void`
+- GraphQL endpoint: `/graphql` (HTTP queries/mutations + WebSocket subscriptions)
+- Schema exported to `apps/server/schema.graphql` for client consumption
+
 **Logger:**
 - Winston-based with support for JSON or text format
 - Rotating file transport when `log.destination` is configured
@@ -113,6 +123,14 @@ The server uses a dependency injection pattern with the `ApplicationContext` cla
 - PWA dev mode enabled when `PWA_DEV=true` environment variable is set
 - Sonner for toast notifications
 - Dark mode support via next-themes
+
+**GraphQL Client:**
+- Dual setup: Apollo Client for runtime operations + gql.tada for type safety
+- Apollo Client configured with HTTP and WebSocket links for queries/mutations and subscriptions
+- gql.tada provides compile-time type checking using the server's generated schema
+- TypeScript plugin integration for IntelliSense and validation in IDE
+- Schema introspection from `apps/server/schema.graphql`
+- Type definitions auto-generated to `src/lib/graphql/graphql-env.d.ts`
 
 **Component Structure:**
 - UI components in `src/components/ui/` (shadcn components)
@@ -173,6 +191,26 @@ The Dockerfile sets these defaults:
 1. Create router class in `apps/server/src/http/routers/`
 2. Extend base router pattern
 3. Register in `HTTPServer.setupRouters()`
+
+**Adding a New GraphQL Module:**
+1. Create a directory in `apps/server/src/http/routers/` for your feature
+2. Add `graphql/` subdirectory with `.graphql` schema files
+3. Create resolver files (e.g., `*.query.ts`, `*.mutation.ts`, `*.subscription.ts`)
+4. Create module file that uses `createModule()` from `graphql-modules`
+5. Register module in `GraphQLRouter` initialization (in `HTTPServer.setupRouters()`)
+6. Run `pnpm codegen` in `apps/server/` to generate TypeScript types
+7. Generated types will be in `apps/server/src/http/routers/graphql/generated/`
+8. Run `pnpm codegen` in `apps/web/` to update client types from `schema.graphql`
+
+**GraphQL Code Generation:**
+- Backend uses `@graphql-codegen/cli` with `graphql-modules` preset
+- Configuration in `apps/server/codegen.ts`
+- Generates resolvers with `GQL` suffix (e.g., `QueryGQL`, `ServerHealthGQL`)
+- Custom scalars: `Void` → `String`, `DateTime` → `String`
+- Context type: `GraphQLContext` from `graphQLContext.ts`
+- Frontend uses `gql.tada` for compile-time type safety
+- Types generated from `apps/server/schema.graphql`
+- Run codegen before build/dev to ensure types are up-to-date
 
 **Adding Shared Code:**
 - Create packages in `libs/` directory
