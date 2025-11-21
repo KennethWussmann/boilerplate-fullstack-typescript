@@ -76,7 +76,20 @@ gh repo create my-app --template KennethWussmann/boilerplate-fullstack-typescrip
 cd my-app
 ```
 
-### 2. Customize for Your Project
+### 2a. Customize for Your Project using Claude Code (automated)
+
+This repository has a Claude Code compatible custom command `/bootstrap`.
+
+It will guide you through the entire customization of your new project.
+
+1. Open Claude Code in your new repository
+2. Run `/bootstrap`
+3. Reply to Claude's questions
+4. Wait... Done!
+
+You are now ready. Skip the next 2b. section.
+
+### 2b. Customize for Your Project (manual)
 
 After creating your repository, update the following files:
 
