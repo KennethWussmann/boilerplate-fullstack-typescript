@@ -37,21 +37,20 @@ export class GraphQLRouter {
       {
         execute: (args: any) => args.rootValue.execute(args),
         subscribe: (args: any) => args.rootValue.subscribe(args),
-        onSubscribe: async (ctx: any, msg: any) => {
+        onSubscribe: async (ctx: any, _id: string, params: any) => {
           const { schema, execute, subscribe, contextFactory, parse, validate } = yoga.getEnveloped(
             {
               ...ctx,
               req: ctx.extra.request,
               socket: ctx.extra.socket,
-              params: msg.payload,
+              params,
             }
           );
-
           const args = {
             schema,
-            operationName: msg.payload.operationName,
-            document: parse(msg.payload.query),
-            variableValues: msg.payload.variables,
+            operationName: params.operationName,
+            document: parse(params.query),
+            variableValues: params.variables,
             contextValue: await contextFactory(),
             rootValue: {
               execute,

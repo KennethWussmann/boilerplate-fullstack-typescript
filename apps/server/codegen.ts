@@ -26,6 +26,12 @@ const config: CodegenConfig = {
         "typescript-resolvers",
       ],
     },
+    "./schema.graphql": {
+      plugins: ["schema-ast"],
+      config: {
+        includeDirectives: true,
+      },
+    },
   },
 };
 export default config;

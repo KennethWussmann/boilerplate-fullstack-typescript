@@ -33,7 +33,13 @@
     }
   },
   "files": {
-    "includes": ["{apps,libs}/**/src/**/*.{ts,tsx}", "!**/generated/**/*", "*.ts", "*.js"],
+    "includes": [
+      "{apps,libs}/**/src/**/*.{ts,tsx}",
+      "!**/generated/**/*",
+      "!**/graphql-env.d.ts",
+      "*.ts",
+      "*.js"
+    ],
     "ignoreUnknown": true
   }
 }
