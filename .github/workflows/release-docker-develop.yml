@@ -33,7 +33,7 @@ jobs:
       - uses: ./.github/actions/docker-publish
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ matrix.arch }}-${{ steps.git-commit.outputs.SHORT_SHA }}
+          tags: ghcr.io/${{ toLower(github.repository) }}:${{ matrix.arch }}-${{ steps.git-commit.outputs.SHORT_SHA }}
           build-args: VERSION=${{ steps.git-commit.outputs.SHORT_SHA }}
 
   create-and-push-manifest:
@@ -51,7 +51,7 @@ jobs:
           registry: ghcr.io
       - name: Create and push Docker manifest
         run: |
-          docker manifest create ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:develop \
-            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:amd64-${{ needs.build.outputs.SHORT_SHA }} \
-            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:arm64-${{ needs.build.outputs.SHORT_SHA }}
-          docker manifest push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:develop
+          docker manifest create ghcr.io/${{ toLower(github.repository) }}:develop \
+            --amend ghcr.io/${{ toLower(github.repository) }}:amd64-${{ needs.build.outputs.SHORT_SHA }} \
+            --amend ghcr.io/${{ toLower(github.repository) }}:arm64-${{ needs.build.outputs.SHORT_SHA }}
+          docker manifest push ghcr.io/${{ toLower(github.repository) }}:develop
