@@ -24,6 +24,9 @@ jobs:
   # Build server app
   build-server:
     needs: prepare
+    permissions:
+      packages: write
+      contents: read
     uses: ./.github/workflows/_docker-publish-multiarch.yml
     with:
       app_name: server
@@ -35,6 +38,9 @@ jobs:
   # Add more apps here as needed, for example:
   # build-web:
   #   needs: prepare
+  #   permissions:
+  #     packages: write
+  #     contents: read
   #   uses: ./.github/workflows/_docker-publish-multiarch.yml
   #   with:
   #     app_name: web
