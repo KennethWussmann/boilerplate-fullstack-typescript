@@ -1,10 +1,15 @@
 # Exclude everything
 *
 
-# Include package files and source code
-!packages/*/src
-!packages/*/package.json
-!packages/*/tsconfig.json
+# Include package files and source code from apps and libs
+!apps/*/src
+!apps/*/package.json
+!apps/*/tsconfig.json
+!apps/*/*.yaml
+!apps/*/*.yml
+!libs/*/src
+!libs/*/package.json
+!libs/*/tsconfig.json
 !package.json
 !pnpm-lock.yaml
 !pnpm-workspace.yaml
