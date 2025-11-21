@@ -1,0 +1,37 @@
+# Exclude everything
+*
+
+# Include package files and source code
+!packages/*/src
+!packages/*/package.json
+!packages/*/tsconfig.json
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!turbo.json
+!biome.json
+!scripts/
+!.npmrc
+
+# Exclude node_modules and dist directories
+**/node_modules
+**/dist
+
+# Exclude test files
+**/*.test.ts
+**/*.spec.ts
+**/tests
+
+# Exclude git and environment files
+.git
+.github
+.env*
+!.env.example
+.env
+Dockerfile
+.dockerignore
+npm-debug.log
+README.md
+.git
+docs
+build

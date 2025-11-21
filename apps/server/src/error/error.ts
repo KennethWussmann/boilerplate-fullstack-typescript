@@ -1,0 +1,7 @@
+export class ApplicationError extends Error {
+  constructor(public override readonly message: string) {
+    super(message);
+  }
+}
+
+export class ApplicationUninitializedError extends ApplicationError {}

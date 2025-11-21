@@ -2,8 +2,11 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
   "scripts": {
+    "dev": "tsx watch src/run.ts",
     "build": "tsc",
     "build:watch": "tsc --watch"
   },

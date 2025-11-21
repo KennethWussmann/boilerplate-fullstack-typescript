@@ -1,0 +1,21 @@
+import type { Router as ExpressRouter, Request, Response } from 'express';
+import { Router } from 'express';
+
+export class HealthRouter {
+  public readonly router: ExpressRouter = Router();
+
+  constructor() {
+    this.setupRoutes();
+  }
+
+  private setupRoutes(): void {
+    this.router.get('/health', this.getHealth.bind(this));
+  }
+
+  private async getHealth(_req: Request, res: Response): Promise<void> {
+    res.json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+    });
+  }
+}
