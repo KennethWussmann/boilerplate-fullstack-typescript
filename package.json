@@ -5,6 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "turbo run dev",
     "build": "turbo run build",
     "build:watch": "turbo run build:watch",
     "test": "turbo run test",
