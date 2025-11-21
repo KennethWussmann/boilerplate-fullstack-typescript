@@ -5,8 +5,7 @@
 !apps/*/src
 !apps/*/package.json
 !apps/*/tsconfig.json
-!apps/*/*.yaml
-!apps/*/*.yml
+!apps/*/codegen.ts
 !libs/*/src
 !libs/*/package.json
 !libs/*/tsconfig.json
