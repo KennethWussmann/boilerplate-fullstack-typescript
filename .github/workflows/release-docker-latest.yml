@@ -55,11 +55,11 @@ jobs:
           registry: ghcr.io
       - name: Create and push Docker manifest
         run: |
-          docker manifest create ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:${{ needs.build.outputs.tag }} \
-            --amend ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:amd64-${{ needs.build.outputs.tag }} \
-            --amend ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:arm64-${{ needs.build.outputs.tag }}
-          docker manifest push ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:${{ needs.build.outputs.tag }}
-          docker manifest create ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:latest \
-            --amend ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:amd64-${{ needs.build.outputs.tag }} \
-            --amend ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:arm64-${{ needs.build.outputs.tag }}
-          docker manifest push ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:latest
+          docker manifest create ghcr.io/${{ needs.build.outputs.repository }}:${{ needs.build.outputs.tag }} \
+            --amend ghcr.io/${{ needs.build.outputs.repository }}:amd64-${{ needs.build.outputs.tag }} \
+            --amend ghcr.io/${{ needs.build.outputs.repository }}:arm64-${{ needs.build.outputs.tag }}
+          docker manifest push ghcr.io/${{ needs.build.outputs.repository }}:${{ needs.build.outputs.tag }}
+          docker manifest create ghcr.io/${{ needs.build.outputs.repository }}:latest \
+            --amend ghcr.io/${{ needs.build.outputs.repository }}:amd64-${{ needs.build.outputs.tag }} \
+            --amend ghcr.io/${{ needs.build.outputs.repository }}:arm64-${{ needs.build.outputs.tag }}
+          docker manifest push ghcr.io/${{ needs.build.outputs.repository }}:latest

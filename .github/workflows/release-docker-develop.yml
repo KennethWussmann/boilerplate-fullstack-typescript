@@ -55,7 +55,7 @@ jobs:
           registry: ghcr.io
       - name: Create and push Docker manifest
         run: |
-          docker manifest create ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:develop \
-            --amend ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:amd64-${{ needs.build.outputs.SHORT_SHA }} \
-            --amend ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:arm64-${{ needs.build.outputs.SHORT_SHA }}
-          docker manifest push ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:develop
+          docker manifest create ghcr.io/${{ needs.build.outputs.repository }}:develop \
+            --amend ghcr.io/${{ needs.build.outputs.repository }}:amd64-${{ needs.build.outputs.SHORT_SHA }} \
+            --amend ghcr.io/${{ needs.build.outputs.repository }}:arm64-${{ needs.build.outputs.SHORT_SHA }}
+          docker manifest push ghcr.io/${{ needs.build.outputs.repository }}:develop
