@@ -25,15 +25,19 @@ jobs:
       contents: read
     outputs:
       SHORT_SHA: ${{ steps.git-commit.outputs.SHORT_SHA }}
+      repository: ${{ steps.repository-lowercase.outputs.repository }}
     steps:
       - uses: actions/checkout@v4
       - name: Get git commit
         id: git-commit
         run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> "$GITHUB_OUTPUT"
+      - name: Lowercase repository name
+        id: repository-lowercase
+        run: echo "REPOSITORY_LC=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
       - uses: ./.github/actions/docker-publish
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          tags: ghcr.io/${{ toLower(github.repository) }}:${{ matrix.arch }}-${{ steps.git-commit.outputs.SHORT_SHA }}
+          tags: ghcr.io/${{ steps.repository-lowercase.outputs.repository }}:${{ matrix.arch }}-${{ steps.git-commit.outputs.SHORT_SHA }}
           build-args: VERSION=${{ steps.git-commit.outputs.SHORT_SHA }}
 
   create-and-push-manifest:
@@ -51,7 +55,7 @@ jobs:
           registry: ghcr.io
       - name: Create and push Docker manifest
         run: |
-          docker manifest create ghcr.io/${{ toLower(github.repository) }}:develop \
-            --amend ghcr.io/${{ toLower(github.repository) }}:amd64-${{ needs.build.outputs.SHORT_SHA }} \
-            --amend ghcr.io/${{ toLower(github.repository) }}:arm64-${{ needs.build.outputs.SHORT_SHA }}
-          docker manifest push ghcr.io/${{ toLower(github.repository) }}:develop
+          docker manifest create ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:develop \
+            --amend ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:amd64-${{ needs.build.outputs.SHORT_SHA }} \
+            --amend ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:arm64-${{ needs.build.outputs.SHORT_SHA }}
+          docker manifest push ghcr.io/${{ needs.build.outputs.REPOSITORY_LC }}:develop
