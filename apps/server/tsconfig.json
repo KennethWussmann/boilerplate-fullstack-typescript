@@ -16,7 +16,10 @@
     "outDir": "dist",
     "sourceMap": true,
     "lib": ["es2022"],
-    "baseUrl": "./src",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
   },
   "include": ["./src/**.ts"]
 }

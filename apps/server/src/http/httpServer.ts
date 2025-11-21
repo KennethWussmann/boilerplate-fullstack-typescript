@@ -1,9 +1,11 @@
 import type { Server } from 'node:http';
 import cors from 'cors';
 import express, { type Application } from 'express';
+import { createPubSub } from 'graphql-yoga';
 import type { Logger } from 'winston';
+import type { ApplicationContext } from '@/applicationContext.js';
 import type { Configuration } from '../config/index.js';
-import { HealthRouter } from './routers/index.js';
+import { GraphQLRouter, HealthRouter } from './routers/index.js';
 
 export class HTTPServer {
   private app: Application;
@@ -11,11 +13,11 @@ export class HTTPServer {
 
   constructor(
     private readonly config: Configuration,
-    private readonly logger: Logger
+    private readonly logger: Logger,
+    private readonly applicationContext: ApplicationContext
   ) {
     this.app = express();
     this.setupMiddleware();
-    this.setupRouters();
   }
 
   private setupMiddleware(): void {
@@ -27,9 +29,16 @@ export class HTTPServer {
     this.app.use(express.urlencoded({ extended: true }));
   }
 
-  private setupRouters(): void {
+  private setupRouters(server: Server): void {
     const basePath = this.config.api.base_path || '/';
-    [new HealthRouter()].forEach((router) => {
+    [
+      new HealthRouter(),
+      new GraphQLRouter(this.logger.child({ name: 'graphql' }), server, {
+        applicationContext: this.applicationContext,
+        logger: this.logger.child({ name: 'graphql-resolver' }),
+        pubSub: createPubSub(),
+      }),
+    ].forEach((router) => {
       this.app.use(basePath, router.router);
     });
   }
@@ -54,6 +63,8 @@ export class HTTPServer {
         this.logger.info(`HTTP server started on port ${port} with base path ${basePath}`);
         resolve();
       });
+
+      this.setupRouters(this.server);
 
       this.server.on('error', (error) => {
         this.logger.error('Failed to start HTTP server:', error);

@@ -16,7 +16,11 @@ export class ApplicationContext {
   async initialize(): Promise<void> {
     this.logger.debug('Initializing application context');
 
-    this.httpServer = new HTTPServer(this.configuration, this.logger.child({ name: 'httpServer' }));
+    this.httpServer = new HTTPServer(
+      this.configuration,
+      this.logger.child({ name: 'httpServer' }),
+      this
+    );
 
     await this.httpServer.initialize();
 

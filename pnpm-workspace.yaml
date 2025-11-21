@@ -1,3 +1,6 @@
 packages:
   - apps/*
   - libs/*
+
+patchedDependencies:
+  graphql-modules: patches/graphql-modules.patch

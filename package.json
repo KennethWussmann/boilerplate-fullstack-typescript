@@ -9,6 +9,7 @@
     "build:watch": "turbo run build:watch",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",
+    "codegen": "turbo run codegen",
     "clean": "rm -rf ./apps/*/dist && rm -rf ./libs/*/dist",
     "check": "biome check .",
     "check:fix": "biome check . --write --unsafe",

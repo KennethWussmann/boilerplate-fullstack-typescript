@@ -2,8 +2,12 @@
 	"$schema": "https://turborepo.com/schema.json",
 	"tasks": {
 		"build": {
-			"dependsOn": ["^build"],
-			"outputs": ["./dist"]
+			"dependsOn": [
+				"^build"
+			],
+			"outputs": [
+				"./dist"
+			]
 		},
 		"dev": {
 			"persistent": true,
@@ -19,6 +23,9 @@
 		},
 		"test": {
 			"persistent": true,
+			"cache": false
+		},
+		"codegen": {
 			"cache": false
 		}
 	}

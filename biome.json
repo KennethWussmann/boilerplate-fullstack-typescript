@@ -33,7 +33,12 @@
     }
   },
   "files": {
-    "includes": ["{apps,libs}/**/src/**/*.{ts,tsx}", "*.ts", "*.js"],
+    "includes": [
+      "{apps,libs}/**/src/**/*.{ts,tsx}",
+      "!**/generated/**/*",
+      "*.ts",
+      "*.js"
+    ],
     "ignoreUnknown": true
   }
 }
