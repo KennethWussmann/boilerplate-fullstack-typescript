@@ -1,5 +1,5 @@
 # Build stage
-FROM node:22-alpine AS builder
+FROM node:24-alpine AS builder
 
 RUN corepack enable
 
@@ -14,7 +14,7 @@ RUN pnpm install --frozen-lockfile
 RUN pnpm build
 
 # Production stage
-FROM node:22-alpine AS runner
+FROM node:24-alpine AS runner
 ARG VERSION
 
 
