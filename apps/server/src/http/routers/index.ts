@@ -1,2 +1,2 @@
 export * from './graphql/index.js';
-export * from './healthRouter.js';
+export * from './health/index.js';

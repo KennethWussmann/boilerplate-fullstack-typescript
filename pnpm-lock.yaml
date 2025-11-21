@@ -55,9 +55,6 @@ importers:
       graphql:
         specifier: ^16.12.0
         version: 16.12.0
-      graphql-import-node:
-        specifier: ^0.0.5
-        version: 0.0.5(graphql@16.12.0)
       graphql-modules:
         specifier: ^3.0.0
         version: 3.0.0(patch_hash=bf0dc5dc5ecf92262c62c0881d513b85ce7fca48b711722f203616cbd6464c64)(graphql@16.12.0)
@@ -2856,11 +2853,6 @@ packages:
     peerDependenciesMeta:
       cosmiconfig-toml-loader:
         optional: true
-
-  graphql-import-node@0.0.5:
-    resolution: {integrity: sha512-OXbou9fqh9/Lm7vwXT0XoRN9J5+WCYKnbiTalgFDvkQERITRmcfncZs6aVABedd5B85yQU5EULS4a5pnbpuI0Q==}
-    peerDependencies:
-      graphql: '*'
 
   graphql-modules@3.0.0:
     resolution: {integrity: sha512-ADQRySHp7SMqLHsv/NMkEBqOcyAC5bT6bTYuQemjmvSsF+gj1iQbzNF1pjy1lsE6UWxvRRzZN+sovp85Z6c3Vw==}
@@ -7852,10 +7844,6 @@ snapshots:
       - typescript
       - uWebSockets.js
       - utf-8-validate
-
-  graphql-import-node@0.0.5(graphql@16.12.0):
-    dependencies:
-      graphql: 16.12.0
 
   graphql-modules@3.0.0(patch_hash=bf0dc5dc5ecf92262c62c0881d513b85ce7fca48b711722f203616cbd6464c64)(graphql@16.12.0):
     dependencies:

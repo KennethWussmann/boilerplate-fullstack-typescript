@@ -1,7 +1,7 @@
 import type { Server } from 'node:http';
 import { useGraphQLModules } from '@envelop/graphql-modules';
 import { type Router as ExpressRouter, Router } from 'express';
-import { createApplication } from 'graphql-modules';
+import { createApplication, type Module } from 'graphql-modules';
 import { useServer } from 'graphql-ws/use/ws';
 import { createYoga } from 'graphql-yoga';
 import type { Logger } from 'winston';
@@ -13,14 +13,19 @@ export class GraphQLRouter {
   constructor(
     private readonly logger: Logger,
     private readonly server: Server,
-    graphqlContext: GraphQLContext
-  ) {
+    private readonly graphqlContext: GraphQLContext,
+    private readonly modules: (() => Promise<Module>)[]
+  ) {}
+
+  async initialize() {
+    this.logger.debug(`Starting GraphQL server`);
+
     const application = createApplication({
-      modules: [],
+      modules: await Promise.all(this.modules.map((builder) => builder())),
     });
     const yoga = createYoga({
       plugins: [useGraphQLModules(application)],
-      context: graphqlContext,
+      context: this.graphqlContext,
     });
     this.router.use(yoga.graphqlEndpoint, yoga);
     const wsServer = new WebSocketServer({
@@ -61,10 +66,7 @@ export class GraphQLRouter {
       },
       wsServer
     );
-  }
 
-  async initialize() {
-    this.logger.debug(`Starting GraphQL server`);
     this.logger.info(`GraphQL server started`);
   }
 

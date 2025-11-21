@@ -1,11 +1,12 @@
 import type { PubSub } from 'graphql-yoga';
 import type { Logger } from 'winston';
 import type { ApplicationContext } from '../../../applicationContext.js';
+import type { ServerHealthGQL } from './generated/base.js';
 
-export type ExampleEvent = [id: string];
+export type HealthUpdatedEvent = [health: ServerHealthGQL];
 
 type Topics = {
-  'example:updated': ExampleEvent;
+  'health:updated': HealthUpdatedEvent;
 };
 
 export type GraphQLPubSub = PubSub<Topics>;

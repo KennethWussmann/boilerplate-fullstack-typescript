@@ -1,9 +1,11 @@
+import { createPubSub } from 'graphql-yoga';
 import type { Logger } from 'winston';
 import type { Configuration } from './config/index.js';
-import { HTTPServer } from './http/index.js';
+import { type GraphQLPubSub, HTTPServer } from './http/index.js';
 export class ApplicationContext {
   public readonly configuration: Configuration;
 
+  public readonly pubSub: GraphQLPubSub;
   public httpServer: HTTPServer | null = null;
 
   constructor(
@@ -11,6 +13,7 @@ export class ApplicationContext {
     private readonly logger: Logger
   ) {
     this.configuration = configuration;
+    this.pubSub = createPubSub();
   }
 
   async initialize(): Promise<void> {

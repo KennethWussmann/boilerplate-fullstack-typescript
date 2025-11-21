@@ -1,12 +1,15 @@
 import type { Router as ExpressRouter, Request, Response } from 'express';
 import { Router } from 'express';
+import type { HealthBroadcastService } from './healthBroadcastService.js';
 
 export class HealthRouter {
   public readonly router: ExpressRouter = Router();
 
-  constructor() {
+  constructor(private readonly healthBroadcastService: HealthBroadcastService) {
     this.setupRoutes();
   }
+
+  public initialize = async () => {};
 
   private setupRoutes(): void {
     this.router.get('/health', this.getHealth.bind(this));
@@ -14,7 +17,7 @@ export class HealthRouter {
 
   private async getHealth(_req: Request, res: Response): Promise<void> {
     res.json({
-      status: 'ok',
+      status: this.healthBroadcastService.status,
       timestamp: new Date().toISOString(),
     });
   }

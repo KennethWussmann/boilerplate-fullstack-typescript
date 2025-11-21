@@ -18,6 +18,27 @@ export type Scalars = {
   Void: { input: String; output: String; }
 };
 
+export type QueryGQL = {
+  __typename?: 'Query';
+  health: ServerHealthGQL;
+};
+
+export type ServerHealthGQL = {
+  __typename?: 'ServerHealth';
+  status: ServerStatusGQL;
+  timestamp?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type ServerStatusGQL =
+  | 'ONLINE'
+  | 'STARTING'
+  | 'STOPPING';
+
+export type SubscriptionGQL = {
+  __typename?: 'Subscription';
+  health: ServerHealthGQL;
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -93,7 +114,11 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 export type ResolversTypesGQL = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
+  Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
+  ServerHealth: ResolverTypeWrapper<ServerHealthGQL>;
+  ServerStatus: ServerStatusGQL;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  Subscription: ResolverTypeWrapper<Record<PropertyKey, never>>;
   Void: ResolverTypeWrapper<Scalars['Void']['output']>;
 };
 
@@ -101,7 +126,10 @@ export type ResolversTypesGQL = {
 export type ResolversParentTypesGQL = {
   Boolean: Scalars['Boolean']['output'];
   DateTime: Scalars['DateTime']['output'];
+  Query: Record<PropertyKey, never>;
+  ServerHealth: ServerHealthGQL;
   String: Scalars['String']['output'];
+  Subscription: Record<PropertyKey, never>;
   Void: Scalars['Void']['output'];
 };
 
@@ -109,12 +137,28 @@ export interface DateTimeScalarConfigGQL extends GraphQLScalarTypeConfig<Resolve
   name: 'DateTime';
 }
 
+export type QueryResolversGQL<ContextType = GraphQLContext, ParentType extends ResolversParentTypesGQL['Query'] = ResolversParentTypesGQL['Query']> = {
+  health?: Resolver<ResolversTypesGQL['ServerHealth'], ParentType, ContextType>;
+};
+
+export type ServerHealthResolversGQL<ContextType = GraphQLContext, ParentType extends ResolversParentTypesGQL['ServerHealth'] = ResolversParentTypesGQL['ServerHealth']> = {
+  status?: Resolver<ResolversTypesGQL['ServerStatus'], ParentType, ContextType>;
+  timestamp?: Resolver<Maybe<ResolversTypesGQL['DateTime']>, ParentType, ContextType>;
+};
+
+export type SubscriptionResolversGQL<ContextType = GraphQLContext, ParentType extends ResolversParentTypesGQL['Subscription'] = ResolversParentTypesGQL['Subscription']> = {
+  health?: SubscriptionResolver<ResolversTypesGQL['ServerHealth'], "health", ParentType, ContextType>;
+};
+
 export interface VoidScalarConfigGQL extends GraphQLScalarTypeConfig<ResolversTypesGQL['Void'], any> {
   name: 'Void';
 }
 
 export type ResolversGQL<ContextType = GraphQLContext> = {
   DateTime?: GraphQLScalarType;
+  Query?: QueryResolversGQL<ContextType>;
+  ServerHealth?: ServerHealthResolversGQL<ContextType>;
+  Subscription?: SubscriptionResolversGQL<ContextType>;
   Void?: GraphQLScalarType;
 };
 

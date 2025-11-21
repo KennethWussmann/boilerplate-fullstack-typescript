@@ -1,0 +1,21 @@
+scalar Void
+scalar DateTime
+
+type Query {
+  health: ServerHealth!
+}
+
+type Subscription {
+  health: ServerHealth!
+}
+
+enum ServerStatus {
+  STARTING
+  ONLINE
+  STOPPING
+}
+
+type ServerHealth {
+  status: ServerStatus!
+  timestamp: DateTime
+}

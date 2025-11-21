@@ -40,7 +40,6 @@
     "express": "^5.1.0",
     "glob": "^11.1.0",
     "graphql": "^16.12.0",
-    "graphql-import-node": "^0.0.5",
     "graphql-modules": "^3.0.0",
     "graphql-scalars": "^1.25.0",
     "graphql-ws": "^6.0.6",

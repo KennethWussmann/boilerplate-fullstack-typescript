@@ -1,7 +1,7 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: "./src/**/graphql/*.graphql",
+  schema: "./src/**/*.graphql",
   generates: {
     "./src/http/routers/graphql/generated/": {
       preset: "graphql-modules",
