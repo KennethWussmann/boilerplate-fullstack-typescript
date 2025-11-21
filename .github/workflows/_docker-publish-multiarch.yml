@@ -39,6 +39,13 @@ on:
         required: false
         type: string
         default: ''
+    secrets:
+      DOCKER_USER:
+        description: 'Docker Hub username (optional, for avoiding rate limits)'
+        required: false
+      DOCKER_PAT:
+        description: 'Docker Hub personal access token (optional, for avoiding rate limits)'
+        required: false
 
 env:
   FORCE_COLOR: 1
@@ -78,6 +85,8 @@ jobs:
             ${{ inputs.build_args }}
           context: ${{ inputs.context }}
           dockerfile: ${{ inputs.dockerfile }}
+          dockerUser: ${{ secrets.DOCKER_USER }}
+          dockerPassword: ${{ secrets.DOCKER_PAT }}
 
   create-and-push-manifest:
     needs: build
@@ -86,6 +95,13 @@ jobs:
       packages: write
       contents: read
     steps:
+      - name: Login to Docker Hub (optional, for pulling public images)
+        if: ${{ secrets.DOCKER_USER != '' && secrets.DOCKER_PAT != '' }}
+        uses: docker/login-action@v3.4.0
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PAT }}
+
       - name: Login to GitHub Packages Docker Registry
         uses: docker/login-action@v3.4.0
         with:
