@@ -92,6 +92,7 @@ export const defaultConfigOptions: ConfigurationCompositionOptions<typeof config
       port: env('API_PORT'),
       base_path: env('API_BASE_PATH'),
       cors_enabled: env('API_CORS_ENABLED'),
+      public_base_url: env('PUBLIC_BASE_URL'),
     },
     database: {
       enabled: env('DATABASE_ENABLED'),

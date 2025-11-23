@@ -10,7 +10,7 @@
     "dev": "pnpm codegen && tsx watch src/run.ts",
     "build": "pnpm codegen && tsc",
     "build:watch": "pnpm codegen && tsc --watch",
-    "codegen": "graphql-codegen",
+    "codegen": "graphql-codegen && tsx scripts/update-config-options-doc.ts",
     "drizzle-kit": "CONFIG_JSON=$(tsx --no-warnings './scripts/print-config.ts') drizzle-kit",
     "db:migrate": "pnpm drizzle-kit migrate --config=drizzle.config.ts",
     "db:push": "pnpm drizzle-kit push --config=drizzle.config.ts",

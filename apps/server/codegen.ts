@@ -1,33 +1,30 @@
-import type { CodegenConfig } from "@graphql-codegen/cli";
+import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-  schema: "./src/**/*.graphql",
+  schema: './src/**/*.graphql',
   generates: {
-    "./src/http/routers/graphql/generated/": {
-      preset: "graphql-modules",
+    './src/http/routers/graphql/generated/': {
+      preset: 'graphql-modules',
       presetConfig: {
-        baseTypesPath: "base.ts",
-        filename: "module.ts",
+        baseTypesPath: 'base.ts',
+        filename: 'module.ts',
       },
       config: {
-        typesSuffix: "GQL",
-        contextType: "../graphQLContext.js#GraphQLContext",
-        mapperTypeSuffix: "Domain",
+        typesSuffix: 'GQL',
+        contextType: '../graphQLContext.js#GraphQLContext',
+        mapperTypeSuffix: 'Domain',
         mappers: {
           // Example: "@/example#Example",
         },
         scalars: {
-          Void: "String",
-          DateTime: "String",
+          Void: 'String',
+          DateTime: 'String',
         },
       },
-      plugins: [
-        "typescript",
-        "typescript-resolvers",
-      ],
+      plugins: ['typescript', 'typescript-resolvers'],
     },
-    "./schema.graphql": {
-      plugins: ["schema-ast"],
+    './schema.graphql': {
+      plugins: ['schema-ast'],
       config: {
         includeDirectives: true,
       },
