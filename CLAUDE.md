@@ -9,7 +9,7 @@ This is a fullstack TypeScript monorepo boilerplate with clear separation betwee
 ## Monorepo Structure
 
 The project uses pnpm workspaces with the following structure:
-- `apps/server/` - Express-based backend API server
+- `apps/server/` - Express-based backend API server with GraphQL and database support
 - `apps/web/` - Vite + React frontend application (with PWA support)
 - `libs/` - Shared libraries (currently empty, but available for shared code)
 
@@ -47,6 +47,12 @@ pnpm clean
 # Server (uses tsx in watch mode)
 cd apps/server
 pnpm dev
+
+# Database operations
+cd apps/server
+pnpm db:generate  # Generate migration from schema changes
+pnpm db:migrate   # Apply migrations to database
+pnpm db:studio    # Open Drizzle Studio GUI
 
 # Web (uses Vite dev server)
 cd apps/web
@@ -107,6 +113,15 @@ The server uses a dependency injection pattern with the `ApplicationContext` cla
 **File System Abstraction:**
 - `AbstractFileSystem` interface with `LocalFileSystem` implementation
 - Used by configuration loader to enable testing and alternative implementations
+
+**Database:**
+- Drizzle ORM with libsql driver for SQLite compatibility
+- Database service managed by ApplicationContext
+- Schema definitions in `src/database/schema.ts`
+- Migrations stored in `drizzle/` directory
+- Can be disabled via `database.enabled` config
+- Access via `applicationContext.getDatabase().getDatabase()`
+- Drizzle Kit for schema management and migrations
 
 ### Frontend (apps/web)
 
@@ -171,6 +186,8 @@ Configuration is loaded via `ConfigurationLoader` which merges:
 - `LOG_LEVEL` - debug, info, warn, error, fatal, notice
 - `LOG_FORMAT` - json or text
 - `LOG_DESTINATION` - File path for log output
+- `DATABASE_ENABLED` - Enable/disable database (default: true)
+- `DATABASE_CONNECTION_URL` - Database connection string (default: file:local.db)
 - `API_ENABLED` - Enable/disable HTTP API
 - `API_BIND_ADDRESS` - Bind address (default: 0.0.0.0)
 - `API_PORT` - Port number (default: 8080)
@@ -221,6 +238,15 @@ The Dockerfile sets these defaults:
 - Update Zod schema in `apps/server/src/config/configuration.ts`
 - Add environment variable mapping in `defaultConfigOptions.mapper`
 - Update this documentation with new variables
+
+**Working with Database:**
+- Define schema in `apps/server/src/database/schema.ts` using Drizzle ORM syntax
+- Run `pnpm db:generate` to create migrations from schema changes
+- Run `pnpm db:migrate` to apply migrations to database
+- Use `pnpm db:studio` to open Drizzle Studio for visual database management
+- Access database in resolvers via `applicationContext.getDatabase().getDatabase()`
+- Drizzle Kit uses `CONFIG_JSON` env var (injected via `print-config.ts` script)
+- Database can be disabled by setting `database.enabled: false` in config
 
 ## Important Notes
 

@@ -22,6 +22,9 @@ An opinionated, production-ready boilerplate for building fullstack TypeScript a
 - WebSocket support for GraphQL subscriptions
 - Type-safe resolvers via GraphQL Code Generator
 - Modular GraphQL architecture with `graphql-modules`
+- Drizzle ORM for type-safe database operations
+- SQLite database with libsql driver (file-based or in-memory)
+- Database migrations via Drizzle Kit
 
 ### Frontend (React + Vite + GraphQL)
 - React 19 with React Router v7
@@ -189,6 +192,11 @@ pnpm dev  # Runs on http://localhost:8080 by default
 # GraphQL endpoint: http://localhost:8080/graphql
 # GraphQL subscriptions: ws://localhost:8080/graphql
 
+# Database operations (in apps/server/)
+pnpm db:generate  # Generate migration from schema changes
+pnpm db:migrate   # Apply migrations to database
+pnpm db:studio    # Open Drizzle Studio GUI
+
 # Run the frontend (in apps/web/)
 cd apps/web
 pnpm dev  # Runs on http://localhost:5173 by default
@@ -235,11 +243,14 @@ docker run -p 80:80 your-web:latest
 │   ├── server/              # Backend Express application
 │   │   ├── src/
 │   │   │   ├── config/      # Configuration management
+│   │   │   ├── database/    # Database service and schema
 │   │   │   ├── http/        # HTTP server and routers
 │   │   │   ├── logger/      # Winston logger setup
 │   │   │   ├── utils/       # Utility functions
 │   │   │   ├── application-context.ts  # DI container
 │   │   │   └── run.ts       # Application entry point
+│   │   ├── drizzle/         # Database migrations
+│   │   ├── drizzle.config.ts  # Drizzle Kit configuration
 │   │   └── config.yaml      # Server configuration
 │   │
 │   └── web/                 # Frontend React application
@@ -278,6 +289,9 @@ docker run -p 80:80 your-web:latest
 - `pnpm dev` - Run server in development mode with hot reload
 - `pnpm build` - Compile TypeScript to JavaScript
 - `pnpm build:watch` - Compile in watch mode
+- `pnpm db:generate` - Generate database migration from schema changes
+- `pnpm db:migrate` - Apply pending migrations to database
+- `pnpm db:studio` - Open Drizzle Studio to browse and edit data
 
 ### Frontend (apps/web)
 - `pnpm dev` - Run Vite dev server with HMR
@@ -294,6 +308,9 @@ docker run -p 80:80 your-web:latest
 - [graphql-modules](https://the-guild.dev/graphql/modules) - Modular GraphQL architecture
 - [GraphQL Code Generator](https://the-guild.dev/graphql/codegen) - Type generation
 - [graphql-ws](https://github.com/enisdenjo/graphql-ws) - GraphQL subscriptions over WebSocket
+- [Drizzle ORM](https://orm.drizzle.team/) - Type-safe ORM
+- [Drizzle Kit](https://orm.drizzle.team/kit-docs/overview) - Database migrations
+- [libsql](https://github.com/tursodatabase/libsql) - SQLite-compatible database
 - [Zod](https://zod.dev/) - Schema validation
 - [Winston](https://github.com/winstonjs/winston) - Logging
 - [date-fns](https://date-fns.org/) - Date manipulation
@@ -334,6 +351,8 @@ The server supports configuration through YAML files and environment variables. 
 - `LOG_LEVEL` - Logging level (debug, info, warn, error)
 - `LOG_FORMAT` - Log format (json or text)
 - `LOG_DESTINATION` - Log file path
+- `DATABASE_ENABLED` - Enable/disable database (default: true)
+- `DATABASE_CONNECTION_URL` - Database connection string (default: file:local.db)
 - `API_ENABLED` - Enable/disable API server
 - `API_PORT` - Server port (default: 8080)
 - `API_BIND_ADDRESS` - Bind address (default: 0.0.0.0)

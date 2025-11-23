@@ -17,6 +17,7 @@ This is a fullstack TypeScript monorepo boilerplate designed for building modern
 - **GraphQL**: GraphQL Yoga with WebSocket support
 - **GraphQL Modules**: graphql-modules for modular architecture
 - **Code Generation**: GraphQL Code Generator for type-safe resolvers
+- **Database**: Drizzle ORM with SQLite (libsql)
 - **Validation**: Zod schemas
 - **Logging**: Winston with daily rotate
 - **Configuration**: YAML/JSON with environment variable overrides
@@ -43,6 +44,9 @@ This is a fullstack TypeScript monorepo boilerplate designed for building modern
 │   │   │   ├── index.ts    # Public exports
 │   │   │   ├── applicationContext.ts  # Dependency injection container
 │   │   │   ├── config/     # Configuration loading and validation
+│   │   │   ├── database/   # Database service and schema
+│   │   │   │   ├── databaseService.ts  # Database connection management
+│   │   │   │   └── schema.ts           # Drizzle ORM schema definitions
 │   │   │   ├── http/       # Express server and routers
 │   │   │   │   ├── routers/
 │   │   │   │   │   ├── graphql/  # GraphQL server setup
@@ -61,9 +65,11 @@ This is a fullstack TypeScript monorepo boilerplate designed for building modern
 │   │   │   ├── error/      # Error handling
 │   │   │   ├── file-system/  # File system abstraction
 │   │   │   └── utils/      # Shared utilities
+│   │   ├── drizzle/        # Database migrations
 │   │   ├── package.json
 │   │   ├── tsconfig.json
 │   │   ├── codegen.ts      # GraphQL Code Generator config
+│   │   ├── drizzle.config.ts  # Drizzle Kit configuration
 │   │   ├── schema.graphql  # Generated schema for client
 │   │   └── config.yaml     # Application configuration
 │   │
@@ -135,6 +141,13 @@ The backend supports hierarchical configuration loading:
 3. Default values (lowest priority)
 
 All configuration is validated at startup using Zod schemas.
+
+### Database Integration
+The backend includes Drizzle ORM for type-safe database operations:
+- SQLite database with libsql driver (default: `file:local.db`)
+- Schema definitions in `src/database/schema.ts`
+- Database migrations managed via Drizzle Kit
+- Can be disabled via configuration if not needed
 
 ### PWA Support
 The frontend is configured as a Progressive Web App with:

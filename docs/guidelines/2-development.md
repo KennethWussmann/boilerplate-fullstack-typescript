@@ -302,6 +302,57 @@ export const scalars: Partial<ResolversGQL> = {
 };
 ```
 
+### Database with Drizzle ORM
+
+**Schema Definition**
+Define your database schema in `src/database/schema.ts`:
+```typescript
+import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+
+export const usersTable = sqliteTable('users', {
+  id: int().primaryKey({ autoIncrement: true }),
+  username: text().notNull(),
+  email: text().notNull().unique(),
+});
+```
+
+**Accessing the Database**
+Access the database through the `DatabaseService`:
+```typescript
+export const userQuery: Partial<ResolversGQL> = {
+  Query: {
+    users: async (_, __, { applicationContext }) => {
+      const db = await applicationContext.getDatabase().getDatabase();
+      return await db.select().from(usersTable);
+    },
+  },
+};
+```
+
+**Migrations**
+Use Drizzle Kit to manage schema changes:
+```bash
+# Generate a migration from schema changes
+pnpm db:generate
+
+# Apply migrations to the database
+pnpm db:migrate
+
+# Open Drizzle Studio to browse data
+pnpm db:studio
+```
+
+**Configuration**
+The database can be configured via environment variables:
+- `DATABASE_ENABLED` - Enable/disable database (default: true)
+- `DATABASE_CONNECTION_URL` - Connection string (default: `file:local.db`)
+
+**Important Notes**
+- Drizzle Kit requires configuration to be loaded via `CONFIG_JSON` environment variable
+- Use the `print-config.ts` script to inject configuration when running Drizzle commands
+- The database service initializes during `ApplicationContext.initialize()`
+- Access database through `applicationContext.getDatabase().getDatabase()`
+
 ### Error Handling
 
 - Use custom error classes that extend the base `Error` class
@@ -658,6 +709,9 @@ pnpm dev          # Start dev server with watch mode (runs codegen first)
 pnpm build        # Build for production (runs codegen first)
 pnpm build:watch  # Build in watch mode (runs codegen first)
 pnpm codegen      # Generate GraphQL types from schemas
+pnpm db:generate  # Generate database migration from schema changes
+pnpm db:migrate   # Apply pending migrations to database
+pnpm db:studio    # Open Drizzle Studio to browse database
 ```
 
 **Frontend**
