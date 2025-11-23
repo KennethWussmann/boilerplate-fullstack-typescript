@@ -1,5 +1,5 @@
 import { defineConfig } from 'drizzle-kit';
-import type { Configuration } from '@/index.js';
+import type { Configuration } from './src/index.js';
 
 const configJson = process.env.CONFIG_JSON;
 if (!configJson) {

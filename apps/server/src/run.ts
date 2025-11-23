@@ -1,9 +1,12 @@
 import type { Logger } from 'winston';
-import { ApplicationContext } from '@/applicationContext.js';
-import { ConfigurationLoader } from '@/config/configurationLoader.js';
-import { type Configuration, defaultConfigOptions } from '@/config/index.js';
-import { maskCredentials } from '@/config/utils.js';
-import { createLogger } from '@/utils/logger.js';
+import { ApplicationContext } from './applicationContext.js';
+import {
+  type Configuration,
+  ConfigurationLoader,
+  createLogger,
+  defaultConfigOptions,
+  maskCredentials,
+} from './index.js';
 
 export type RunOptions = {
   config?: Configuration;

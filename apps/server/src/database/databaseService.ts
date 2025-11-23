@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/libsql';
 import type { Logger } from 'winston';
-import { DatabaseUninitializedError } from '@/error/error.js';
 import type { Configuration } from '../config/index.js';
+import { DatabaseUninitializedError } from '../error/error.js';
 
 export class DatabaseService {
   private database: ReturnType<typeof drizzle> | null = null;

@@ -2,9 +2,9 @@ import type { Server } from 'node:http';
 import cors from 'cors';
 import express, { type Application } from 'express';
 import type { Logger } from 'winston';
-import type { ApplicationContext } from '@/applicationContext.js';
-import { toError } from '@/utils/error.js';
+import type { ApplicationContext } from '../applicationContext.js';
 import type { Configuration } from '../config/index.js';
+import { toError } from '../utils/error.js';
 import { HealthModule } from './routers/health/healthModule.js';
 import { GraphQLRouter, HealthBroadcastService, HealthRouter } from './routers/index.js';
 
