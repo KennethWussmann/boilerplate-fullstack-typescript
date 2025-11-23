@@ -8,7 +8,7 @@ const numberFromString = z
   .union([z.number(), z.string()])
   .transform((val) => (typeof val === 'number' ? val : Number(val)));
 
-const schema = z.object({
+export const configurationSchema = z.object({
   version: z.string().default('develop'),
   serverName: z
     .string()
@@ -30,6 +30,18 @@ const schema = z.object({
       .optional()
       .describe(
         'Optional log file destination. If not specified, logs to console. Example: "./logs/app.log". Default: console output'
+      ),
+  }),
+  database: z.object({
+    enabled: stringBoolSchema
+      .optional()
+      .default(true)
+      .describe('Enable the HTTP API. Example: "yes" or "no". Default: "yes"'),
+    connection_url: z
+      .string()
+      .default('file:local.db')
+      .describe(
+        'Required if database is enabled. Connection URL to database. Default: "file:local.db"'
       ),
   }),
   api: z.object({
@@ -57,13 +69,13 @@ const schema = z.object({
   }),
 });
 
-export type Configuration = z.infer<typeof schema>;
+export type Configuration = z.infer<typeof configurationSchema>;
 export type LogConfiguration = Configuration['log'];
 export type LogFormat = LogConfiguration['format'];
 export type LogLevel = LogConfiguration['level'];
 
-export const defaultConfigOptions: ConfigurationCompositionOptions<typeof schema> = {
-  schema,
+export const defaultConfigOptions: ConfigurationCompositionOptions<typeof configurationSchema> = {
+  schema: configurationSchema,
   cwd: process.env.CONFIG_PATH ?? process.cwd(),
   mapper: (env) => ({
     serverName: env('SERVER_NAME'),
@@ -80,6 +92,10 @@ export const defaultConfigOptions: ConfigurationCompositionOptions<typeof schema
       port: env('API_PORT'),
       base_path: env('API_BASE_PATH'),
       cors_enabled: env('API_CORS_ENABLED'),
+    },
+    database: {
+      enabled: env('DATABASE_ENABLED'),
+      connection_url: env('DATABASE_CONNECTION_URL'),
     },
   }),
   fileSystem: new LocalFileSystem(),

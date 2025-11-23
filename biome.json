@@ -35,6 +35,8 @@
   "files": {
     "includes": [
       "{apps,libs}/**/src/**/*.{ts,tsx}",
+      "{apps,libs}/**/scripts/**/*.{ts,tsx}",
+      "{apps,libs}/*/*.ts",
       "!**/generated/**/*",
       "!**/graphql-env.d.ts",
       "*.ts",

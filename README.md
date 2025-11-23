@@ -72,7 +72,7 @@ On GitHub:
 
 Or via GitHub CLI:
 ```bash
-gh repo create my-app --template KennethWussmann/boilerplate-fullstack-typescript
+gh repo create my-app --private --clone --template KennethWussmann/boilerplate-fullstack-typescript
 cd my-app
 ```
 
