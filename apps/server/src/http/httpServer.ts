@@ -13,8 +13,8 @@ export class HTTPServer {
   private server: Server | null = null;
   private healthBroadcastService: HealthBroadcastService;
   constructor(
-    private readonly config: Configuration,
     private readonly logger: Logger,
+    private readonly config: Configuration,
     private readonly applicationContext: ApplicationContext
   ) {
     this.app = express();

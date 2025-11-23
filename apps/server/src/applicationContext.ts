@@ -1,12 +1,14 @@
 import { createPubSub } from 'graphql-yoga';
 import type { Logger } from 'winston';
 import type { Configuration } from './config/index.js';
+import { DatabaseService } from './database/index.js';
 import { type GraphQLPubSub, HTTPServer } from './http/index.js';
 export class ApplicationContext {
   public readonly configuration: Configuration;
 
   public readonly pubSub: GraphQLPubSub;
   public httpServer: HTTPServer | null = null;
+  public databaseService: DatabaseService | null = null;
 
   constructor(
     configuration: Configuration,
@@ -20,12 +22,17 @@ export class ApplicationContext {
     this.logger.debug('Initializing application context');
 
     this.httpServer = new HTTPServer(
-      this.configuration,
       this.logger.child({ name: 'httpServer' }),
+      this.configuration,
       this
+    );
+    this.databaseService = new DatabaseService(
+      this.logger.child({ name: 'databaseService' }),
+      this.configuration.database
     );
 
     await this.httpServer.initialize();
+    await this.databaseService.initialize();
 
     this.logger.info('Application context initialized successfully');
   }
@@ -34,6 +41,7 @@ export class ApplicationContext {
     this.logger.debug('Shutting down application context');
 
     void this.httpServer?.shutdown();
+    void this.databaseService?.shutdown();
 
     this.logger.info('Application context shutdown complete');
   }
