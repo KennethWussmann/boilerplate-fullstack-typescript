@@ -6,6 +6,7 @@
 !apps/*/package.json
 !apps/*/tsconfig.json
 !apps/*/codegen.ts
+!apps/*/scripts
 !libs/*/src
 !libs/*/package.json
 !libs/*/tsconfig.json
