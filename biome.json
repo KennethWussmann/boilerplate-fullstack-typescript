@@ -37,6 +37,7 @@
       "{apps,libs}/**/src/**/*.{ts,tsx}",
       "{apps,libs}/**/scripts/**/*.{ts,tsx}",
       "{apps,libs}/*/*.ts",
+      "!apps/web/src/components/ui/*.tsx",
       "!**/generated/**/*",
       "!**/graphql-env.d.ts",
       "*.ts",
