@@ -2,5 +2,12 @@ packages:
   - apps/*
   - libs/*
 
+ignoredBuiltDependencies:
+  - esbuild
+  - msw
+
+onlyBuiltDependencies:
+  - lefthook
+
 patchedDependencies:
   graphql-modules: patches/graphql-modules.patch
