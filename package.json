@@ -15,7 +15,7 @@
     "check": "biome check .",
     "check:fix": "biome check . --write --unsafe",
     "update-dependencies": "pnpm up -r",
-    "prepare": "husky"
+    "prepare": "lefthook install"
   },
   "keywords": [],
   "author": "",
@@ -24,15 +24,10 @@
   "devDependencies": {
     "@biomejs/biome": "^2.3.10",
     "glob": "^11.1.0",
-    "husky": "^9.1.7",
+    "lefthook": "^2.0.13",
     "lint-staged": "^16.2.7",
     "tsx": "^4.21.0",
     "turbo": "^2.7.2",
     "typescript": "^5.9.3"
-  },
-  "lint-staged": {
-    "*": [
-      "biome check --no-errors-on-unmatched --files-ignore-unknown=true"
-    ]
   }
 }
