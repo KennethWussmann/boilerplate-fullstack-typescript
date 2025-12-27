@@ -50,7 +50,7 @@ Ask the user about:
 Before implementing, create a brief implementation plan based on the guidelines in `/docs/guidelines/`:
 
 **Backend Plan (if applicable):**
-- Feature module location: `apps/server/src/http/routers/{feature-name}/`
+- Feature module location: `apps/server/src/{feature-name or domain}/`
 - GraphQL schema files needed
 - Resolver types (queries/mutations/subscriptions)
 - Services needed (business logic)
@@ -120,12 +120,12 @@ Follow the guidelines from `/docs/guidelines/2-development.md`:
 
 If business logic or data access is needed:
 
-1. **Create service** in `apps/server/src/http/routers/{feature-name}/service/{feature-name}Service.ts`:
+1. **Create service** in `apps/server/src/{feature-name or domain}/{feature-name}Service.ts`:
    - Implement business logic
    - Orchestrate repository calls
    - Handle business validations
 
-2. **Create repository** in `apps/server/src/http/routers/{feature-name}/repository/{feature-name}Repository.ts`:
+2. **Create repository** in `aapps/server/src/{feature-name or domain}/{feature-name}Repository.ts`:
    - Implement data access
    - Abstract data source operations
    - Return domain objects
