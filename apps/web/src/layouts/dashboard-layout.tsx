@@ -1,7 +1,8 @@
 import { Activity, Home, Settings } from 'lucide-react';
 import { Link, Outlet, useLocation } from 'react-router';
 import { Button } from '@/components/ui';
-import { productName } from '@/lib/constants';
+import { track } from '@/lib';
+import { legalUrl, privacyPolicyUrl, productName } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
 const navigation = [
@@ -33,7 +34,12 @@ export const DashboardLayout = () => {
                   className={cn('w-full justify-start', isActive && 'bg-secondary')}
                   asChild
                 >
-                  <Link to={item.href}>
+                  <Link
+                    to={item.href}
+                    onClick={() => {
+                      track('dashboard_layout_nav_click', { props: { item: item.name } });
+                    }}
+                  >
                     <Icon className="mr-2 h-4 w-4" />
                     {item.name}
                   </Link>
@@ -41,7 +47,29 @@ export const DashboardLayout = () => {
               );
             })}
           </nav>
-          <div className="border-t p-4">
+          <div className="border-t p-4 space-y-4">
+            <div className="flex flex-row justify-center gap-2 text-xs text-muted-foreground">
+              <Link
+                to={legalUrl}
+                target="_blank"
+                className="hover:underline"
+                onClick={() => {
+                  track('dashboard_layout_legal_click');
+                }}
+              >
+                Legal
+              </Link>
+              <Link
+                to={privacyPolicyUrl}
+                target="_blank"
+                className="hover:underline"
+                onClick={() => {
+                  track('dashboard_layout_privacy_click');
+                }}
+              >
+                Privacy Policy
+              </Link>
+            </div>
             <Button variant="outline" className="w-full" asChild>
               <Link to="/">Back to Home</Link>
             </Button>

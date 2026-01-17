@@ -1,4 +1,6 @@
-import { Card } from '@/components/ui';
+import { Card, Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui';
+import { ThemeSelector } from '@/lib';
+import { productName } from '@/lib/constants';
 import { SettingsForm } from './settings-form';
 
 export const SettingsView = () => {
@@ -15,23 +17,25 @@ export const SettingsView = () => {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <div className="md:col-span-2">
-          <Card className="p-6">
-            <h3 className="mb-4 text-lg font-semibold">General Settings</h3>
-            <SettingsForm onSave={handleSave} />
-          </Card>
-        </div>
+      <div className="md:col-span-2">
+        <Card className="p-6">
+          <h3 className="mb-4 text-lg font-semibold">General Settings</h3>
 
-        <div className="space-y-6">
-          <Card className="p-6">
-            <h3 className="mb-2 text-sm font-semibold">GraphQL Integration</h3>
-            <p className="text-sm text-muted-foreground">
-              In a real application, the form submission would trigger a GraphQL mutation using
-              Apollo Client's useMutation hook.
-            </p>
-          </Card>
-        </div>
+          <Field>
+            <FieldLabel>Theme</FieldLabel>
+            <FieldContent>
+              <ThemeSelector />
+            </FieldContent>
+            <FieldDescription>Change the appearance of {productName}</FieldDescription>
+          </Field>
+        </Card>
+      </div>
+
+      <div className="md:col-span-2">
+        <Card className="p-6">
+          <h3 className="mb-4 text-lg font-semibold">Profile Settings</h3>
+          <SettingsForm onSave={handleSave} />
+        </Card>
       </div>
     </div>
   );

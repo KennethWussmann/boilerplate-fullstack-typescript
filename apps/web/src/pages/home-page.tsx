@@ -1,6 +1,7 @@
 import { ArrowRight, Code2, Database, Zap } from 'lucide-react';
 import { Link } from 'react-router';
 import { Button, Card } from '@/components/ui';
+import { track } from '@/lib';
 import { githubUrl, productName } from '@/lib/constants';
 
 export const HomePage = () => {
@@ -13,11 +14,16 @@ export const HomePage = () => {
         </p>
         <div className="flex justify-center gap-4">
           <Button size="lg" asChild>
-            <Link to="/dashboard">
+            <Link to="/dashboard" onClick={() => track('home_hero_cta_click')}>
               View Dashboard <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
-          <Button size="lg" variant="outline" asChild>
+          <Button
+            size="lg"
+            variant="outline"
+            asChild
+            onClick={() => track('home_hero_github_click')}
+          >
             <a href={githubUrl} target="_blank" rel="noopener noreferrer">
               View on GitHub
             </a>

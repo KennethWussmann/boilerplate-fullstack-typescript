@@ -1,7 +1,7 @@
 import { Link, Outlet } from 'react-router';
 import { Button } from '@/components/ui';
-import { ThemeDropdownMenu } from '@/lib';
-import { productName } from '@/lib/constants';
+import { ThemeDropdownMenu, track } from '@/lib';
+import { legalUrl, privacyPolicyUrl, productName } from '@/lib/constants';
 
 export const PublicLayout = () => {
   return (
@@ -13,7 +13,14 @@ export const PublicLayout = () => {
           </Link>
           <nav className="flex items-center gap-4">
             <Button variant="ghost" asChild>
-              <Link to="/dashboard">Dashboard</Link>
+              <Link
+                to="/dashboard"
+                onClick={() => {
+                  track('public_layout_cta_click');
+                }}
+              >
+                Dashboard
+              </Link>
             </Button>
             <ThemeDropdownMenu />
           </nav>
@@ -24,7 +31,32 @@ export const PublicLayout = () => {
       </main>
       <footer className="border-t py-6">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          {productName} - A modern starter template
+          <div>
+            {productName} {new Date().getFullYear()}
+          </div>
+          <div className="mt-2 flex items-center justify-center gap-4">
+            <Link
+              to={legalUrl}
+              target="_blank"
+              className="hover:underline"
+              onClick={() => {
+                track('public_layout_legal_click');
+              }}
+            >
+              Legal
+            </Link>
+            <span>•</span>
+            <Link
+              to={privacyPolicyUrl}
+              target="_blank"
+              className="hover:underline"
+              onClick={() => {
+                track('public_layout_privacy_click');
+              }}
+            >
+              Privacy Policy
+            </Link>
+          </div>
         </div>
       </footer>
     </div>

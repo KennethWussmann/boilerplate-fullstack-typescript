@@ -1,10 +1,12 @@
 import { ApolloProvider } from '@apollo/client/react';
 import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router';
 import { DashboardLayout, PublicLayout } from '@/layouts';
-import { apolloClient, ThemeProvider } from '@/lib/';
+import { AnalyticsProvider, apolloClient, ThemeProvider } from '@/lib/';
 import { DashboardPage } from '@/pages/dashboard-page';
 import { HomePage } from '@/pages/home-page';
 import { SettingsPage } from '@/pages/settings-page';
+import { PWAPrompt } from './components';
+import { CookieBanner } from './components/common/cookie-banner';
 import { Toaster } from './components/ui/sonner';
 import { isHashBasedRouting } from './lib/constants';
 
@@ -38,7 +40,10 @@ function App() {
   return (
     <ThemeProvider>
       <ApolloProvider client={apolloClient}>
+        <AnalyticsProvider />
+        <PWAPrompt />
         <Toaster />
+        <CookieBanner />
         <RouterProvider router={router} />
       </ApolloProvider>
     </ThemeProvider>
