@@ -41,5 +41,3 @@ export const config = {
   wsApiUrl,
   isApiEnabled,
 };
-
-console.log('Config', { config });

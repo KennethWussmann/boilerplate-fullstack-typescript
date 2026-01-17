@@ -6,6 +6,7 @@ import { AnalyticsProvider, apolloClient, ThemeProvider } from '@/lib/';
 import { DashboardPage } from '@/pages/dashboard-page';
 import { DevToolsPage } from '@/pages/dev-tools-page';
 import { HomePage } from '@/pages/home-page';
+import { NotFoundPage } from '@/pages/not-found-page';
 import { SettingsPage } from '@/pages/settings-page';
 import { PWAPrompt } from './components';
 import { CookieBanner } from './components/common/cookie-banner';
@@ -19,6 +20,10 @@ const routes = [
       {
         path: '/',
         element: <HomePage />,
+      },
+      {
+        path: '*',
+        element: <NotFoundPage />,
       },
     ],
   },

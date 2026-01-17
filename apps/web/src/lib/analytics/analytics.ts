@@ -4,6 +4,7 @@ import {
   track as plausibleTrack,
 } from '@plausible-analytics/tracker';
 import {
+  debug,
   isDev,
   isHashBasedRouting,
   plausibleDomain,
@@ -46,12 +47,9 @@ export const initializeAnalytics = () => {
 };
 
 export const track = (eventName: string, options?: PlausibleEventOptions) => {
-  if (!initialized || !isAnalyticsEnabled()) {
-    return;
-  }
+  debug('Track event', { eventName, options });
 
-  if (isDev) {
-    console.log('Would track event', eventName, options);
+  if (!initialized || !isAnalyticsEnabled()) {
     return;
   }
 
