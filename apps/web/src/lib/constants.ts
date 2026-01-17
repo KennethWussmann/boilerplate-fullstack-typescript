@@ -10,7 +10,7 @@ const getWebSocketUrl = (apiUrl: string): string => {
 };
 
 export const productName = 'Boilerplate';
-export const productNameSlug = 'boilerplate-typescript-fullstack';
+export const productNameSlug = 'boilerplate-fullstack-typescript';
 export const productVersion = import.meta.env.VITE_VERSION;
 export const isDev = import.meta.env.DEV === true || productVersion === 'develop';
 export const basePath = import.meta.env.BASE_URL ?? '/';
@@ -19,7 +19,7 @@ export const isHashBasedRouting =
 export const settingsLocalStorageBaseKey = `${productNameSlug}.settings`;
 export const settingsMetaLocalStorageBaseKey = `${productNameSlug}._meta`;
 
-export const githubUrl = `https://github.com/KennethWussmann/${productName}`;
+export const githubUrl = `https://github.com/KennethWussmann/${productNameSlug}`;
 export const legalUrl = 'https://kenneth.wussmann.net/imprint/';
 export const privacyPolicyUrl = 'https://kenneth.wussmann.net/privacy/';
 
