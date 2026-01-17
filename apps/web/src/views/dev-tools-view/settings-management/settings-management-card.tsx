@@ -6,6 +6,7 @@ import {
   productName,
   resetLocalStorage,
 } from '@/lib';
+import { SettingsTable } from './settings-table';
 
 export const SettingsManagementCard = () => {
   const selectFile = () => {
@@ -46,7 +47,7 @@ export const SettingsManagementCard = () => {
         <CardDescription>Manage the settings of the client</CardDescription>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="space-y-6">
         <div className="flex justify-between">
           <div className="flex gap-2">
             <DoubleConfirmationDialog message="All your current settings will be overwritten and the page will reload after import.">
@@ -71,6 +72,7 @@ export const SettingsManagementCard = () => {
             </DoubleConfirmationDialog>
           </div>
         </div>
+        <SettingsTable />
       </CardContent>
     </Card>
   );

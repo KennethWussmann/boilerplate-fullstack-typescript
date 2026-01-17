@@ -1,22 +1,8 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldLabel,
-} from '@/components/ui';
-import { ThemeSelector } from '@/lib';
-import { productName } from '@/lib/constants';
-import { SettingsForm } from './settings-form';
+import { GeneralSettingsCard } from './general-settings';
+import { ProfileSettingsCard } from './profile-settings';
+import { ShortcutsCard } from './shortcuts';
 
 export const SettingsView = () => {
-  const handleSave = (data: { serverName: string; enableNotifications: boolean }) => {
-    console.log('Settings saved:', data);
-  };
-
   return (
     <div className="space-y-6">
       <div>
@@ -27,31 +13,15 @@ export const SettingsView = () => {
       </div>
 
       <div className="md:col-span-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>General Settings</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Field>
-              <FieldLabel>Theme</FieldLabel>
-              <FieldContent>
-                <ThemeSelector />
-              </FieldContent>
-              <FieldDescription>Change the appearance of {productName}</FieldDescription>
-            </Field>
-          </CardContent>
-        </Card>
+        <GeneralSettingsCard />
       </div>
 
       <div className="md:col-span-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Profile Settings</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <SettingsForm onSave={handleSave} />
-          </CardContent>
-        </Card>
+        <ProfileSettingsCard />
+      </div>
+
+      <div className="md:col-span-2">
+        <ShortcutsCard />
       </div>
     </div>
   );

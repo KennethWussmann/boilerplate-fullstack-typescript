@@ -21,11 +21,11 @@ const formSchema = z.object({
   enableNotifications: z.boolean(),
 });
 
-interface SettingsFormProps {
+interface ProfileSettingsFormProps {
   onSave: (data: { serverName: string; enableNotifications: boolean }) => void;
 }
 
-export const SettingsForm = ({ onSave }: SettingsFormProps) => {
+export const ProfileSettingsForm = ({ onSave }: ProfileSettingsFormProps) => {
   const form = useForm({
     defaultValues: {
       serverName: productName,
