@@ -6,6 +6,10 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: process.env.VITE_BASE_PATH ? `/${process.env.VITE_BASE_PATH}/` : '/',
+  build: {
+    target: 'esnext',
+  },
   plugins: [
     react(),
     tailwindcss(),
@@ -46,7 +50,9 @@ export default defineConfig({
         name: 'Application',
         short_name: 'App',
         description: 'Example application',
-        start_url: '/',
+        start_url: process.env.VITE_BASE_PATH
+          ? `/${process.env.VITE_BASE_PATH}/#/dashboard`
+          : '/dashboard',
         display: 'standalone',
         background_color: '#ffffff',
         theme_color: '#000000',
@@ -123,7 +129,7 @@ export default defineConfig({
           },
         ],
         orientation: 'portrait',
-        scope: '/',
+        scope: process.env.VITE_BASE_PATH ? `/${process.env.VITE_BASE_PATH}/` : '/',
         lang: 'en',
       },
     }),
