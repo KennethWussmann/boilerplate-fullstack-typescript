@@ -1,68 +1,59 @@
-import { Activity, Code, Home, type LucideIcon, Menu, Settings } from 'lucide-react';
+import { Activity, Menu } from 'lucide-react';
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
-import { ErrorBoundary } from '@/components';
-import { useDevMode } from '@/components/common/dev-tools';
-import { ShortcutKeys } from '@/components/common/shortcuts/shortcut-keys';
+import { ErrorBoundary, ShortcutKeys } from '@/components';
+import { useNavigation } from '@/components/common/navigation';
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui';
-import { type Shortcut, ThemeDropdownMenu, track } from '@/lib';
+import { ThemeDropdownMenu, track } from '@/lib';
 import { legalUrl, privacyPolicyUrl, productName } from '@/lib/constants';
 import { useGlobalShortcuts } from '@/lib/shortcuts';
 import { cn } from '@/lib/utils';
-
-type NavItem = {
-  name: string;
-  href: string;
-  icon: LucideIcon;
-  shortcut?: Shortcut;
-};
-
-const baseNavigation: NavItem[] = [
-  { name: 'Dashboard', href: '/dashboard', icon: Home },
-  { name: 'Settings', href: '/settings', icon: Settings, shortcut: 'openSettings' },
-];
-
-const devNavigation: NavItem[] = [
-  { name: 'Developer Tools', href: '/dev-tools', icon: Code, shortcut: 'openDevTools' },
-];
 
 export const DashboardLayout = () => {
   useGlobalShortcuts();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isDevMode = useDevMode();
-
-  const navigation: NavItem[] = isDevMode ? [...baseNavigation, ...devNavigation] : baseNavigation;
+  const { groups, active } = useNavigation('dashboard');
 
   const NavigationLinks = ({ onNavigate }: { onNavigate?: () => void }) => (
     <>
-      {navigation.map((item) => {
-        const isActive = location.pathname === item.href;
-        const Icon = item.icon;
-        return (
-          <Button
-            key={item.href}
-            variant={isActive ? 'secondary' : 'ghost'}
-            className={cn('w-full justify-start', isActive && 'bg-secondary')}
-            asChild
-          >
-            <Link
-              to={item.href}
-              onClick={() => {
-                track('dashboard_layout_nav_click', { props: { item: item.name } });
-                onNavigate?.();
-              }}
-              className="flex flex-row justify-between w-full"
-            >
-              <div className="flex flex-row gap-4 items-center">
-                <Icon className="size-6" />
-                {item.name}
-              </div>
-              {item.shortcut && <ShortcutKeys shortcut={item.shortcut} className="ml-auto" />}
-            </Link>
-          </Button>
-        );
-      })}
+      {groups.map((group) => (
+        <div key={group.id} className="space-y-1">
+          {group.label && (
+            <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              {group.label}
+            </div>
+          )}
+          {group.items.map((item) => {
+            const isActive = location.pathname === item.href;
+            const Icon = item.icon;
+            return (
+              <Button
+                key={item.id}
+                variant={isActive ? 'secondary' : 'ghost'}
+                className={cn('w-full justify-start', isActive && 'bg-secondary')}
+                asChild
+              >
+                <Link
+                  to={item.href}
+                  target={item.external ? '_blank' : undefined}
+                  onClick={() => {
+                    track('dashboard_layout_nav_click', { props: { item: item.name } });
+                    onNavigate?.();
+                  }}
+                  className="flex flex-row justify-between w-full"
+                >
+                  <div className="flex flex-row gap-4 items-center">
+                    {Icon && <Icon className="size-6" />}
+                    {item.name}
+                  </div>
+                  {item.shortcut && <ShortcutKeys shortcut={item.shortcut} className="ml-auto" />}
+                </Link>
+              </Button>
+            );
+          })}
+        </div>
+      ))}
     </>
   );
 
@@ -113,7 +104,7 @@ export const DashboardLayout = () => {
             <div className="flex h-16 items-center border-b px-6">
               <NavBarHeader />
             </div>
-            <nav className="flex-1 space-y-1 p-4">
+            <nav className="flex-1 space-y-4 p-4">
               <NavigationLinks />
             </nav>
             <div className="border-t p-4 space-y-4">
@@ -133,9 +124,7 @@ export const DashboardLayout = () => {
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Open menu</span>
               </Button>
-              <h1 className="text-lg font-semibold">
-                {navigation.find((item) => item.href === location.pathname)?.name || 'Dashboard'}
-              </h1>
+              <h1 className="text-lg font-semibold">{active?.name || 'Dashboard'}</h1>
             </div>
             <ThemeDropdownMenu />
           </header>
@@ -152,7 +141,7 @@ export const DashboardLayout = () => {
                 <NavBarHeader />
               </SheetTitle>
             </SheetHeader>
-            <nav className="flex-1 space-y-1 p-4">
+            <nav className="flex-1 space-y-4 p-4">
               <NavigationLinks onNavigate={() => setMobileMenuOpen(false)} />
             </nav>
             <div className="border-t p-4 space-y-4">

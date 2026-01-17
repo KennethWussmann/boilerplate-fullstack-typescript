@@ -16,8 +16,9 @@ The server can be configured with JSON, YAML or Environment Variables.
 | `api.public_base_url` | `PUBLIC_BASE_URL` | string | - | No | - |
 | `database.connection_url` | `DATABASE_CONNECTION_URL` | string | "file:local.db" | Yes | Required if database is enabled. Connection URL to database. Default: "file:local.db" |
 | `database.enabled` | `DATABASE_ENABLED` | boolean \| string | true | No | Enable the HTTP API. Example: "yes" or "no". Default: "yes" |
+| `frontend.base_path` | `FRONTEND_BASE_PATH` | string | "/" | Yes | Serve the frontend on a different base path. Example: "/app". Default: "/" |
 | `frontend.enabled` | `FRONTEND_ENABLED` | boolean \| string | false | Yes | Enable serving frontend static files. Example: "yes" or "no". Default: "no" |
-| `frontend.path` | `FRONTEND_PATH` | string | "/app/apps/web/dist" | Yes | Path to the frontend build directory. Example: "/app/apps/web/dist". Default: "/app/apps/web/dist" |
+| `frontend.local_path` | `FRONTEND_LOCAL_PATH` | string | "./www" | Yes | Path to the frontend build directory. Example: "/app/apps/web/dist". Default: "./www" |
 | `log.destination` | `LOG_DESTINATION` | string | - | No | Optional log file destination. If not specified, logs to console. Example: "./logs/app.log". Default: console output |
 | `log.format` | `LOG_FORMAT` | "json" \| "text" | "json" | Yes | Output format for log messages. Default: "json" |
 | `log.level` | `LOG_LEVEL` | "debug" \| "info" \| "warn" \| "error" \| "fatal" \| "notice" | "info" | Yes | Logging level for the application. Example: "info". Default: "info" |

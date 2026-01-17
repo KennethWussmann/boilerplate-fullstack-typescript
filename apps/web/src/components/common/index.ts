@@ -2,6 +2,7 @@ export * from './empty-state';
 export * from './error-boundary';
 export * from './loading-state';
 export * from './metric-card';
+export * from './navigation';
 export * from './pwa-prompt';
 export * from './server-health-badge';
 export * from './shortcuts';

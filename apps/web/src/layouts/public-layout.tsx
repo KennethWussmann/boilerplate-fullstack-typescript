@@ -1,9 +1,12 @@
 import { Link, Outlet } from 'react-router';
+import { useNavigation } from '@/components/common/navigation';
 import { Button } from '@/components/ui';
 import { ThemeDropdownMenu, track } from '@/lib';
 import { legalUrl, privacyPolicyUrl, productName } from '@/lib/constants';
 
 export const PublicLayout = () => {
+  const { items } = useNavigation('public');
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b">
@@ -12,16 +15,19 @@ export const PublicLayout = () => {
             {productName}
           </Link>
           <nav className="flex items-center gap-4">
-            <Button variant="ghost" asChild>
-              <Link
-                to="/dashboard"
-                onClick={() => {
-                  track('public_layout_cta_click');
-                }}
-              >
-                Dashboard
-              </Link>
-            </Button>
+            {items.map((item) => (
+              <Button key={item.id} variant="ghost" asChild>
+                <Link
+                  to={item.href}
+                  target={item.external ? '_blank' : undefined}
+                  onClick={() => {
+                    track('public_layout_nav_click', { props: { item: item.name } });
+                  }}
+                >
+                  {item.name}
+                </Link>
+              </Button>
+            ))}
             <ThemeDropdownMenu />
           </nav>
         </div>
