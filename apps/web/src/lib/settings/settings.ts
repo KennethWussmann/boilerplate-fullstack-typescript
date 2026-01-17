@@ -58,9 +58,12 @@ export type Settings = typeof settings;
 export type Shortcut = keyof Settings['shortcuts'];
 export type FeatureToggle = keyof Settings['featureToggles'];
 
-export const resetLocalStorage = () => {
+export const resetLocalStorage = (mode: 'application' | 'all' = 'application') => {
   for (const key in localStorage) {
-    localStorage.removeItem(key);
+    const isAppKey = key.startsWith(settingsLocalStorageBaseKey);
+    if (isAppKey || mode === 'all') {
+      localStorage.removeItem(key);
+    }
   }
 };
 
@@ -71,7 +74,8 @@ export const exportLocalStorageToJSON = () => {
   };
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    if (key) {
+    const isAppKey = key?.startsWith(settingsLocalStorageBaseKey);
+    if (key && isAppKey) {
       data[key] = localStorage.getItem(key) ?? '';
     }
   }

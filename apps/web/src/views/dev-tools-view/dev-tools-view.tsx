@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ErrorBoundary } from '@/components';
 import { Button } from '@/components/ui/button';
 import { productVersion } from '@/lib';
+import { SettingsManagementCard } from './settings-management';
 
 const ErrorThrower = ({ shouldThrow }: { shouldThrow: boolean }) => {
   if (shouldThrow) {
@@ -28,6 +29,7 @@ export const DevToolsView = () => {
           Throw Error
         </Button>
       </div>
+      <SettingsManagementCard />
     </div>
   );
 };
