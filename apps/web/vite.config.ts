@@ -54,8 +54,8 @@ export default defineConfig({
           ? `/${process.env.VITE_BASE_PATH}/#/dashboard`
           : '/dashboard',
         display: 'standalone',
-        background_color: '#ffffff',
-        theme_color: '#000000',
+        background_color: '#f8f7fc',
+        theme_color: '#7c3aed',
         icons: [
           {
             src: 'icons/icon-48x48.png',
