@@ -1,12 +1,13 @@
 import { ArrowRight, Code2, Database, Zap } from 'lucide-react';
 import { Link } from 'react-router';
 import { Button, Card } from '@/components/ui';
+import { githubUrl, productName } from '@/lib/constants';
 
 export const HomePage = () => {
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="mx-auto max-w-4xl text-center">
-        <h1 className="mb-4 text-5xl font-bold tracking-tight">Fullstack TypeScript Boilerplate</h1>
+        <h1 className="mb-4 text-5xl font-bold tracking-tight">{productName}</h1>
         <p className="mb-8 text-xl text-muted-foreground">
           A modern, production-ready starter template with React, GraphQL, and TypeScript
         </p>
@@ -17,11 +18,7 @@ export const HomePage = () => {
             </Link>
           </Button>
           <Button size="lg" variant="outline" asChild>
-            <a
-              href="https://github.com/KennethWussmann/boilerplate-fullstack-typescript"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={githubUrl} target="_blank" rel="noopener noreferrer">
               View on GitHub
             </a>
           </Button>

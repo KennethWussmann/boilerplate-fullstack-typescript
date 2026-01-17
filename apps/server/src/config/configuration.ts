@@ -67,6 +67,21 @@ export const configurationSchema = z.object({
         'Enable CORS (Cross-Origin Resource Sharing) for the HTTP API. Example: "yes" or "no". Default: "yes"'
       ),
   }),
+  frontend: z.object({
+    enabled: stringBoolSchema
+      .default(false)
+      .describe('Enable serving frontend static files. Example: "yes" or "no". Default: "no"'),
+    base_path: z
+      .string()
+      .default('/')
+      .describe('Serve the frontend on a different base path. Example: "/app". Default: "/"'),
+    local_path: z
+      .string()
+      .default('./www')
+      .describe(
+        'Path to the frontend build directory. Example: "/app/apps/web/dist". Default: "./www"'
+      ),
+  }),
 });
 
 export type Configuration = z.infer<typeof configurationSchema>;
@@ -97,6 +112,11 @@ export const defaultConfigOptions: ConfigurationCompositionOptions<typeof config
     database: {
       enabled: env('DATABASE_ENABLED'),
       connection_url: env('DATABASE_CONNECTION_URL'),
+    },
+    frontend: {
+      enabled: env('FRONTEND_ENABLED'),
+      base_path: env('FRONTEND_BASE_PATH'),
+      local_path: env('FRONTEND_LOCAL_PATH'),
     },
   }),
   fileSystem: new LocalFileSystem(),

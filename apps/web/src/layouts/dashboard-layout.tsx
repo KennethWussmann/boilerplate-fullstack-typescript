@@ -1,6 +1,7 @@
 import { Activity, Home, Settings } from 'lucide-react';
 import { Link, Outlet, useLocation } from 'react-router';
 import { Button } from '@/components/ui';
+import { productName } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
 const navigation = [
@@ -18,7 +19,7 @@ export const DashboardLayout = () => {
           <div className="flex h-16 items-center border-b px-6">
             <Link to="/" className="flex items-center gap-2 text-xl font-bold">
               <Activity className="h-6 w-6" />
-              Boilerplate
+              {productName}
             </Link>
           </div>
           <nav className="flex-1 space-y-1 p-4">

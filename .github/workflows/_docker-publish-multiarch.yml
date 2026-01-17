@@ -1,20 +1,8 @@
 name: _docker-publish-multiarch
 
-# Reusable workflow for building and publishing multi-architecture Docker images
-# Handles both arm64 and amd64 builds, then creates and pushes a manifest
-
 on:
   workflow_call:
     inputs:
-      app_name:
-        description: 'Name of the app to build (e.g., server, web)'
-        required: true
-        type: string
-      image_suffix:
-        description: 'Suffix for the image name (e.g., -server, -web, or empty for root)'
-        required: false
-        type: string
-        default: ''
       context:
         description: 'Build context path'
         required: false
@@ -68,7 +56,6 @@ jobs:
       repository: ${{ steps.repository-lowercase.outputs.repository }}
       version_tag: ${{ inputs.version_tag }}
       additional_tags: ${{ inputs.additional_tags }}
-      image_suffix: ${{ inputs.image_suffix }}
     steps:
       - uses: actions/checkout@v6
 
@@ -79,10 +66,9 @@ jobs:
       - uses: ./.github/actions/docker-publish
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          tags: ghcr.io/${{ steps.repository-lowercase.outputs.repository }}${{ inputs.image_suffix }}:${{ matrix.arch }}-${{ inputs.version_tag }}
+          tags: ghcr.io/${{ steps.repository-lowercase.outputs.repository }}:${{ matrix.arch }}-${{ inputs.version_tag }}
           build-args: |
             VERSION=${{ inputs.version_tag }}
-            APP_NAME=${{ inputs.app_name }}
             ${{ inputs.build_args }}
           context: ${{ inputs.context }}
           dockerfile: ${{ inputs.dockerfile }}
@@ -115,10 +101,10 @@ jobs:
 
       - name: Create and push version manifest
         run: |
-          docker manifest create ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:${{ needs.build.outputs.version_tag }} \
-            --amend ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:amd64-${{ needs.build.outputs.version_tag }} \
-            --amend ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:arm64-${{ needs.build.outputs.version_tag }}
-          docker manifest push ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:${{ needs.build.outputs.version_tag }}
+          docker manifest create ghcr.io/${{ needs.build.outputs.repository }}:${{ needs.build.outputs.version_tag }} \
+            --amend ghcr.io/${{ needs.build.outputs.repository }}:amd64-${{ needs.build.outputs.version_tag }} \
+            --amend ghcr.io/${{ needs.build.outputs.repository }}:arm64-${{ needs.build.outputs.version_tag }}
+          docker manifest push ghcr.io/${{ needs.build.outputs.repository }}:${{ needs.build.outputs.version_tag }}
 
       - name: Create and push additional manifests
         if: needs.build.outputs.additional_tags != '[]'
@@ -126,8 +112,8 @@ jobs:
           TAGS='${{ needs.build.outputs.additional_tags }}'
           echo "$TAGS" | jq -r '.[]' | while read tag; do
             echo "Creating manifest for tag: $tag"
-            docker manifest create ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:$tag \
-              --amend ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:amd64-${{ needs.build.outputs.version_tag }} \
-              --amend ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:arm64-${{ needs.build.outputs.version_tag }}
-            docker manifest push ghcr.io/${{ needs.build.outputs.repository }}${{ needs.build.outputs.image_suffix }}:$tag
+            docker manifest create ghcr.io/${{ needs.build.outputs.repository }}:$tag \
+              --amend ghcr.io/${{ needs.build.outputs.repository }}:amd64-${{ needs.build.outputs.version_tag }} \
+              --amend ghcr.io/${{ needs.build.outputs.repository }}:arm64-${{ needs.build.outputs.version_tag }}
+            docker manifest push ghcr.io/${{ needs.build.outputs.repository }}:$tag
           done

@@ -1,28 +1,28 @@
 # Build stage
 FROM node:24-alpine AS builder
-ARG APP_NAME=server
 
 RUN corepack enable
 
 WORKDIR /app
 
-# Copy all files needed for build
 COPY . .
 
-RUN pnpm install --frozen-lockfile
-RUN pnpm build --filter ${APP_NAME}
+RUN pnpm install --frozen-lockfile --ignore-scripts
+
+ENV VITE_API_URL=/api/graphql
+RUN pnpm build
 
 # Production stage
 FROM node:24-alpine AS runner
 ARG VERSION
-ARG APP_NAME=server
 
-# Set environment variables
 ENV NODE_ENV=production
 ENV API_PORT=8080
+ENV API_BASE_PATH=/api
 ENV VERSION=${VERSION}
-ENV APP_NAME=${APP_NAME}
 ENV CONFIG_PATH=/data
+ENV FRONTEND_ENABLED=true
+ENV FRONTEND_LOCAL_PATH=/app/apps/web/dist
 
 WORKDIR ${CONFIG_PATH}
 
@@ -30,5 +30,4 @@ COPY --from=builder /app /app
 
 EXPOSE 8080
 
-# Start the application
-ENTRYPOINT sh -c "node /app/apps/${APP_NAME}/dist/run.js"
+ENTRYPOINT ["node", "/app/apps/server/dist/run.js"]

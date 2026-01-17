@@ -2,9 +2,12 @@ import { createPubSub } from 'graphql-yoga';
 import type { Logger } from 'winston';
 import type { Configuration } from './config/index.js';
 import { DatabaseService } from './database/index.js';
+import type { AbstractFileSystem } from './file-system/abstractFileSystem.js';
+import { LocalFileSystem } from './file-system/localFileSystem.js';
 import { type GraphQLPubSub, HTTPServer } from './http/index.js';
 export class ApplicationContext {
   public readonly configuration: Configuration;
+  public fileSystem: AbstractFileSystem = new LocalFileSystem();
 
   public readonly pubSub: GraphQLPubSub;
   public httpServer: HTTPServer | null = null;

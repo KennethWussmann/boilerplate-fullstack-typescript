@@ -1,4 +1,5 @@
 import type { Server } from 'node:http';
+import { join } from 'node:path';
 import cors from 'cors';
 import express, { type Application } from 'express';
 import type { Logger } from 'winston';
@@ -6,12 +7,18 @@ import type { ApplicationContext } from '../applicationContext.js';
 import type { Configuration } from '../config/index.js';
 import { toError } from '../utils/error.js';
 import { HealthModule } from './routers/health/healthModule.js';
-import { GraphQLRouter, HealthBroadcastService, HealthRouter } from './routers/index.js';
+import {
+  GraphQLRouter,
+  HealthBroadcastService,
+  HealthRouter,
+  StaticFrontendRouter,
+} from './routers/index.js';
 
 export class HTTPServer {
   private app: Application;
   private server: Server | null = null;
   private healthBroadcastService: HealthBroadcastService;
+
   constructor(
     private readonly logger: Logger,
     private readonly config: Configuration,
@@ -46,11 +53,22 @@ export class HTTPServer {
           [HealthModule]
         ),
         new HealthRouter(this.healthBroadcastService),
+        ...(this.config.frontend.enabled ? [] : []),
       ].map(async (router) => {
         await router.initialize();
         this.app.use(basePath, router.router);
       })
     );
+
+    if (this.config.frontend.enabled) {
+      const router = new StaticFrontendRouter(
+        this.logger.child({ name: 'frontend' }),
+        this.config.frontend.local_path,
+        join(this.config.frontend.local_path, 'index.html')
+      );
+      await router.initialize();
+      this.app.use(this.config.frontend.base_path, router.router);
+    }
   }
 
   public initialize = async (): Promise<void> => {

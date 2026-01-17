@@ -8,8 +8,9 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm codegen && tsx watch src/run.ts",
-    "build": "pnpm codegen && tsc",
+    "build": "pnpm codegen && tsc && pnpm copy-graphql",
     "build:watch": "pnpm codegen && tsc --watch",
+    "copy-graphql": "cd src && find . -name '*.graphql' -exec sh -c 'mkdir -p ../dist/$(dirname {}) && cp {} ../dist/{}' \\;",
     "codegen": "graphql-codegen && tsx scripts/update-config-options-doc.ts",
     "drizzle-kit": "CONFIG_JSON=$(tsx --no-warnings './scripts/print-config.ts') drizzle-kit",
     "db:migrate": "pnpm drizzle-kit migrate --config=drizzle.config.ts",

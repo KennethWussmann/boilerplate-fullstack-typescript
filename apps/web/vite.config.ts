@@ -16,16 +16,21 @@ export default defineConfig({
       },
       workbox: {
         maximumFileSizeToCacheInBytes: 5 * 1024 ** 2,
+        navigateFallbackDenylist: [/^\/api/],
         runtimeCaching: [
           {
-            urlPattern: /.*\.(js|css|html)$/,
+            urlPattern: /^\/api/,
+            handler: 'NetworkOnly',
+          },
+          {
+            urlPattern: /^(?!\/api).*\.(js|css|html)$/,
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'app',
             },
           },
           {
-            urlPattern: /.*\.(png|jpg|jpeg|svg|gif)$/,
+            urlPattern: /^(?!\/api).*\.(png|jpg|jpeg|svg|gif)$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'image-assets',

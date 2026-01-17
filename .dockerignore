@@ -1,43 +1,61 @@
 # Exclude everything
 *
 
-# Include package files and source code from apps and libs
-!apps/*/src
-!apps/*/package.json
-!apps/*/tsconfig.json
-!apps/*/codegen.ts
-!apps/*/scripts
-!libs/*/src
-!libs/*/package.json
-!libs/*/tsconfig.json
+# Include root config files
 !package.json
 !pnpm-lock.yaml
 !pnpm-workspace.yaml
 !turbo.json
 !biome.json
-!scripts/
 !.npmrc
 !patches/
 
-# Exclude node_modules and dist directories
+# Include apps and libs directories
+!apps
+!libs
+
+# Include package files and source code from apps
+!apps/*/src
+!apps/*/src/**
+!apps/*/package.json
+!apps/*/tsconfig.json
+!apps/*/tsconfig.*.json
+!apps/*/codegen.ts
+!apps/*/scripts
+!apps/*/scripts/**
+!apps/*/vite.config.ts
+!apps/*/index.html
+!apps/*/public
+!apps/*/public/**
+!apps/*/components.json
+!apps/*/drizzle.config.ts
+!apps/*/schema.graphql
+
+# Include package files and source code from libs
+!libs/*/src
+!libs/*/src/**
+!libs/*/package.json
+!libs/*/tsconfig.json
+
+# Exclude node_modules and dist directories everywhere
 **/node_modules
 **/dist
+**/.turbo
 
 # Exclude test files
 **/*.test.ts
 **/*.spec.ts
 **/tests
 
-# Exclude git and environment files
+# Exclude environment and other files
 .git
 .github
 .env*
 !.env.example
-.env
 Dockerfile
 .dockerignore
 npm-debug.log
 README.md
-.git
 docs
 build
+*.md

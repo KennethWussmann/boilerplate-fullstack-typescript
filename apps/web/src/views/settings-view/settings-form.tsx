@@ -11,6 +11,7 @@ import {
   Input,
   Switch,
 } from '@/components/ui';
+import { productName } from '@/lib/constants';
 
 const formSchema = z.object({
   serverName: z
@@ -27,7 +28,7 @@ interface SettingsFormProps {
 export const SettingsForm = ({ onSave }: SettingsFormProps) => {
   const form = useForm({
     defaultValues: {
-      serverName: 'Boilerplate Server',
+      serverName: productName,
       enableNotifications: true,
     },
     validators: {

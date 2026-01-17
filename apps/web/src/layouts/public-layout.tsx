@@ -1,5 +1,6 @@
 import { Link, Outlet } from 'react-router';
 import { Button } from '@/components/ui';
+import { productName } from '@/lib/constants';
 
 export const PublicLayout = () => {
   return (
@@ -7,7 +8,7 @@ export const PublicLayout = () => {
       <header className="border-b">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <Link to="/" className="text-xl font-bold">
-            Boilerplate
+            {productName}
           </Link>
           <nav className="flex items-center gap-4">
             <Button variant="ghost" asChild>
@@ -21,7 +22,7 @@ export const PublicLayout = () => {
       </main>
       <footer className="border-t py-6">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          Fullstack TypeScript Boilerplate - A modern starter template
+          {productName} - A modern starter template
         </div>
       </footer>
     </div>
