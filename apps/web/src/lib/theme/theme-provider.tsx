@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai/react';
 import { createContext, useContext, useEffect } from 'react';
-import { settings } from '@/lib';
+import { settings, track } from '@/lib';
 
 type Theme = string;
 
@@ -43,6 +43,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   const value = {
     theme,
     setTheme: (theme: Theme) => {
+      track('theme_selected', { props: { theme } });
       setTheme(theme);
     },
   };

@@ -1,19 +1,25 @@
-import { Activity, Home, Menu, Settings } from 'lucide-react';
+import { Activity, Code, Home, Menu, Settings } from 'lucide-react';
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
+import { useDevMode } from '@/components/common/dev-tools';
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui';
-import { track } from '@/lib';
+import { ThemeDropdownMenu, track } from '@/lib';
 import { legalUrl, privacyPolicyUrl, productName } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
-const navigation = [
+const baseNavigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];
 
+const devNavigation = [{ name: 'Dev Tools', href: '/dev-tools', icon: Code }];
+
 export const DashboardLayout = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isDevMode = useDevMode();
+
+  const navigation = isDevMode ? [...baseNavigation, ...devNavigation] : baseNavigation;
 
   const NavigationLinks = ({ onNavigate }: { onNavigate?: () => void }) => (
     <>
@@ -92,22 +98,25 @@ export const DashboardLayout = () => {
         </div>
       </aside>
       <div className="flex flex-1 flex-col overflow-hidden">
-        <header className="flex h-16 items-center border-b px-4 md:px-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden mr-2"
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Open menu</span>
-          </Button>
-          <h1 className="text-lg font-semibold">
-            {navigation.find((item) => item.href === location.pathname)?.name || 'Dashboard'}
-          </h1>
+        <header className="flex h-16 items-center justify-between border-b px-4">
+          <div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden mr-2"
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Open menu</span>
+            </Button>
+            <h1 className="text-lg font-semibold">
+              {navigation.find((item) => item.href === location.pathname)?.name || 'Dashboard'}
+            </h1>
+          </div>
+          <ThemeDropdownMenu />
         </header>
-        <main className="flex-1 overflow-auto">
-          <div className="container mx-auto p-6">
+        <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
+          <div className="flex min-h-0 flex-1 flex-col p-4">
             <Outlet />
           </div>
         </main>

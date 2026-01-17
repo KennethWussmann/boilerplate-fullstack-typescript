@@ -3,6 +3,7 @@ import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-rou
 import { DashboardLayout, PublicLayout } from '@/layouts';
 import { AnalyticsProvider, apolloClient, ThemeProvider } from '@/lib/';
 import { DashboardPage } from '@/pages/dashboard-page';
+import { DevToolsPage } from '@/pages/dev-tools-page';
 import { HomePage } from '@/pages/home-page';
 import { SettingsPage } from '@/pages/settings-page';
 import { PWAPrompt } from './components';
@@ -30,6 +31,10 @@ const routes = [
       {
         path: '/settings',
         element: <SettingsPage />,
+      },
+      {
+        path: '/dev-tools',
+        element: <DevToolsPage />,
       },
     ],
   },
