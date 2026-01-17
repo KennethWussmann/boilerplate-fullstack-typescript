@@ -31,6 +31,7 @@ jobs:
         uses: ./.github/actions/pnpm-install
       - name: Build web app
         env:
+          VITE_BASE_PATH: ${{ github.event.repository.name }}
           VITE_API_ENABLED: false
         run: pnpm build --filter=web
       - run: cp ./apps/web/dist/index.html ./apps/web/dist/404.html

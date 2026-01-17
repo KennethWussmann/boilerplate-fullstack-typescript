@@ -13,10 +13,10 @@ export const githubUrl = `https://github.com/KennethWussmann/${productName}`;
 export const legalUrl = 'https://kenneth.wussmann.net/imprint/';
 export const privacyPolicyUrl = 'https://kenneth.wussmann.net/privacy/';
 
-export const plausibleDomain = import.meta.env.VITE_PLAUSIBLE_DOMAIN ?? null;
-export const plausibleEndpoint = import.meta.env.VITE_PLAUSIBLE_ENDPOINT ?? null;
+export const plausibleDomain = import.meta.env.PLAUSIBLE_DOMAIN ?? null;
+export const plausibleEndpoint = import.meta.env.PLAUSIBLE_ENDPOINT ?? null;
 
 export const defaultApiUrl = 'http://localhost:8080/graphql';
-export const httpApiUrl = import.meta.env.VITE_HTTP_API_URL ?? defaultApiUrl;
-export const wsApiUrl = import.meta.env.VITE_WS_API_URL || getWebSocketUrl(httpApiUrl);
-export const isApiEnabled = false; //import.meta.env.VITE_API_ENABLED !== 'false';
+export const httpApiUrl = import.meta.env.HTTP_API_URL ?? defaultApiUrl;
+export const wsApiUrl = import.meta.env.WS_API_URL || getWebSocketUrl(httpApiUrl);
+export const isApiEnabled = import.meta.env.API_ENABLED !== 'false';
