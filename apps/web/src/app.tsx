@@ -1,3 +1,4 @@
+import type { ApolloClient } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client/react';
 import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router';
 import { DashboardLayout, PublicLayout } from '@/layouts';
@@ -41,16 +42,30 @@ const routes = [
 ];
 const router = isHashBasedRouting ? createHashRouter(routes) : createBrowserRouter(routes);
 
+function AppWithoutGraphQL() {
+  return (
+    <>
+      <AnalyticsProvider />
+      <PWAPrompt />
+      <Toaster />
+      <CookieBanner />
+      <RouterProvider router={router} />
+    </>
+  );
+}
+
+function AppWithGraphQL({ client }: { client: ApolloClient }) {
+  return (
+    <ApolloProvider client={client}>
+      <AppWithoutGraphQL />
+    </ApolloProvider>
+  );
+}
+
 function App() {
   return (
     <ThemeProvider>
-      <ApolloProvider client={apolloClient}>
-        <AnalyticsProvider />
-        <PWAPrompt />
-        <Toaster />
-        <CookieBanner />
-        <RouterProvider router={router} />
-      </ApolloProvider>
+      {apolloClient ? <AppWithGraphQL client={apolloClient} /> : <AppWithoutGraphQL />}
     </ThemeProvider>
   );
 }

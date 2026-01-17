@@ -9,7 +9,8 @@ COPY . .
 
 RUN pnpm install --frozen-lockfile --ignore-scripts
 
-ENV VITE_API_URL=/api/graphql
+ENV VITE_HTTP_API_URL=/api/graphql
+ENV VITE_API_ENABLED=true
 RUN pnpm build
 
 # Production stage
