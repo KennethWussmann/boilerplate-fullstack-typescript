@@ -36,9 +36,7 @@ export const MobileAppLayout = () => {
                   }}
                   className={cn(
                     'flex flex-col items-center justify-center gap-1 rounded-lg px-3 py-2 transition-colors',
-                    isActive
-                      ? 'text-primary'
-                      : 'text-muted-foreground hover:text-foreground'
+                    isActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
                   )}
                 >
                   {Icon && <Icon className="size-5" />}
