@@ -13,7 +13,7 @@ const baseNavigation = [
   { name: 'Settings', href: '/settings', icon: Settings },
 ];
 
-const devNavigation = [{ name: 'Dev Tools', href: '/dev-tools', icon: Code }];
+const devNavigation = [{ name: 'Developer Tools', href: '/dev-tools', icon: Code }];
 
 export const DashboardLayout = () => {
   const location = useLocation();

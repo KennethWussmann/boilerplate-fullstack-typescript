@@ -1,4 +1,13 @@
-import { Card, Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldLabel,
+} from '@/components/ui';
 import { ThemeSelector } from '@/lib';
 import { productName } from '@/lib/constants';
 import { SettingsForm } from './settings-form';
@@ -18,23 +27,30 @@ export const SettingsView = () => {
       </div>
 
       <div className="md:col-span-2">
-        <Card className="p-6">
-          <h3 className="mb-4 text-lg font-semibold">General Settings</h3>
-
-          <Field>
-            <FieldLabel>Theme</FieldLabel>
-            <FieldContent>
-              <ThemeSelector />
-            </FieldContent>
-            <FieldDescription>Change the appearance of {productName}</FieldDescription>
-          </Field>
+        <Card>
+          <CardHeader>
+            <CardTitle>General Settings</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Field>
+              <FieldLabel>Theme</FieldLabel>
+              <FieldContent>
+                <ThemeSelector />
+              </FieldContent>
+              <FieldDescription>Change the appearance of {productName}</FieldDescription>
+            </Field>
+          </CardContent>
         </Card>
       </div>
 
       <div className="md:col-span-2">
-        <Card className="p-6">
-          <h3 className="mb-4 text-lg font-semibold">Profile Settings</h3>
-          <SettingsForm onSave={handleSave} />
+        <Card>
+          <CardHeader>
+            <CardTitle>Profile Settings</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <SettingsForm onSave={handleSave} />
+          </CardContent>
         </Card>
       </div>
     </div>
