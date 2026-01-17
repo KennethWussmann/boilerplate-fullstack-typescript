@@ -1,5 +1,6 @@
 import { Link, Outlet } from 'react-router';
 import { Button } from '@/components/ui';
+import { ThemeDropdownMenu } from '@/lib';
 import { productName } from '@/lib/constants';
 
 export const PublicLayout = () => {
@@ -14,6 +15,7 @@ export const PublicLayout = () => {
             <Button variant="ghost" asChild>
               <Link to="/dashboard">Dashboard</Link>
             </Button>
+            <ThemeDropdownMenu />
           </nav>
         </div>
       </header>

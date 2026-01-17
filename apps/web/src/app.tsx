@@ -1,7 +1,7 @@
 import { ApolloProvider } from '@apollo/client/react';
 import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router';
 import { DashboardLayout, PublicLayout } from '@/layouts';
-import { apolloClient } from '@/lib/';
+import { apolloClient, ThemeProvider } from '@/lib/';
 import { DashboardPage } from '@/pages/dashboard-page';
 import { HomePage } from '@/pages/home-page';
 import { SettingsPage } from '@/pages/settings-page';
@@ -36,10 +36,12 @@ const router = isHashBasedRouting ? createHashRouter(routes) : createBrowserRout
 
 function App() {
   return (
-    <ApolloProvider client={apolloClient}>
-      <Toaster />
-      <RouterProvider router={router} />
-    </ApolloProvider>
+    <ThemeProvider>
+      <ApolloProvider client={apolloClient}>
+        <Toaster />
+        <RouterProvider router={router} />
+      </ApolloProvider>
+    </ThemeProvider>
   );
 }
 

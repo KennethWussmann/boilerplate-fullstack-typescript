@@ -11,6 +11,8 @@ export const githubUrl = `https://github.com/KennethWussmann/${productName}`;
 export const legalUrl = 'https://kenneth.wussmann.net/imprint/';
 export const privacyPolicyUrl = 'https://kenneth.wussmann.net/privacy/';
 
+export const plausibleDomain = import.meta.env.VITE_PLAUSIBLE_DOMAIN ?? null;
+
 export const DEFAULT_API_URL = 'http://localhost:8080/graphql';
 
 export const getWebSocketUrl = (apiUrl: string): string => {
