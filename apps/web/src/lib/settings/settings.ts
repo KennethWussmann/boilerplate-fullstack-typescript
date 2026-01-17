@@ -50,7 +50,11 @@ export const settings = {
     theme: atomWithStorage(`${settingsLocalStorageBaseKey}.appearance.theme`, 'system'),
   },
   shortcuts: {
-    openSettings: atomWithStorage(`${settingsLocalStorageBaseKey}.shortcuts.openSettings`, 'mod+,'),
+    openDevTools: atomWithStorage(`${settingsLocalStorageBaseKey}.shortcuts.openDevTools`, 'f1'),
+    openSettings: atomWithStorage(
+      `${settingsLocalStorageBaseKey}.shortcuts.openSettings`,
+      'mod+comma'
+    ),
   },
 } as const;
 

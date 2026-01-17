@@ -6,3 +6,4 @@ export * from './pwa-prompt';
 export * from './server-health-badge';
 export * from './status-indicator';
 export * from './typography';
+export * from "./shortcuts"

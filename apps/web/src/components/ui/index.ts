@@ -6,6 +6,7 @@ export * from './dialog';
 export * from './dropdown-menu';
 export * from './field';
 export * from './input';
+export * from './kbd';
 export * from './label';
 export * from './scroll-area';
 export * from './select';

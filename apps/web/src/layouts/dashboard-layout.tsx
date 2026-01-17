@@ -1,26 +1,36 @@
-import { Activity, Code, Home, Menu, Settings } from 'lucide-react';
+import { Activity, Code, Home, type LucideIcon, Menu, Settings } from 'lucide-react';
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
 import { ErrorBoundary } from '@/components';
 import { useDevMode } from '@/components/common/dev-tools';
+import { ShortcutKeys } from '@/components/common/shortcuts/shortcut-keys';
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui';
-import { ThemeDropdownMenu, track } from '@/lib';
+import { type Shortcut, ThemeDropdownMenu, track } from '@/lib';
 import { legalUrl, privacyPolicyUrl, productName } from '@/lib/constants';
+import { useGlobalShortcuts } from '@/lib/shortcuts';
 import { cn } from '@/lib/utils';
 
-const baseNavigation = [
+type NavItem = {
+  name: string;
+  href: string;
+  icon: LucideIcon;
+  shortcut?: Shortcut;
+};
+
+const baseNavigation: NavItem[] = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
-  { name: 'Settings', href: '/settings', icon: Settings },
+  { name: 'Settings', href: '/settings', icon: Settings, shortcut: 'openSettings' },
 ];
 
-const devNavigation = [{ name: 'Developer Tools', href: '/dev-tools', icon: Code }];
+const devNavigation: NavItem[] = [{ name: 'Developer Tools', href: '/dev-tools', icon: Code, shortcut: "openDevTools" }];
 
 export const DashboardLayout = () => {
+  useGlobalShortcuts();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isDevMode = useDevMode();
 
-  const navigation = isDevMode ? [...baseNavigation, ...devNavigation] : baseNavigation;
+  const navigation: NavItem[] = isDevMode ? [...baseNavigation, ...devNavigation] : baseNavigation;
 
   const NavigationLinks = ({ onNavigate }: { onNavigate?: () => void }) => (
     <>
@@ -40,9 +50,13 @@ export const DashboardLayout = () => {
                 track('dashboard_layout_nav_click', { props: { item: item.name } });
                 onNavigate?.();
               }}
+              className="flex flex-row justify-between w-full"
             >
-              <Icon className="mr-2 h-4 w-4" />
-              {item.name}
+              <div className="flex flex-row gap-4 items-center">
+                <Icon className="size-6" />
+                {item.name}
+              </div>
+              {item.shortcut && <ShortcutKeys shortcut={item.shortcut} className="ml-auto" />}
             </Link>
           </Button>
         );
