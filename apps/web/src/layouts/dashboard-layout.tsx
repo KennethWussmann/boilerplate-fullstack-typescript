@@ -1,6 +1,7 @@
 import { Activity, Code, Home, Menu, Settings } from 'lucide-react';
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
+import { ErrorBoundary } from '@/components';
 import { useDevMode } from '@/components/common/dev-tools';
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui';
 import { ThemeDropdownMenu, track } from '@/lib';
@@ -80,69 +81,71 @@ export const DashboardLayout = () => {
   );
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <aside className="hidden w-64 border-r bg-muted/10 md:block">
-        <div className="flex h-full flex-col">
-          <div className="flex h-16 items-center border-b px-6">
-            <Link to="/" className="flex items-center gap-2 text-xl font-bold">
-              <Activity className="h-6 w-6" />
-              {productName}
-            </Link>
-          </div>
-          <nav className="flex-1 space-y-1 p-4">
-            <NavigationLinks />
-          </nav>
-          <div className="border-t p-4 space-y-4">
-            <FooterLinks />
-          </div>
-        </div>
-      </aside>
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <header className="flex h-16 items-center justify-between border-b px-4">
-          <div>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden mr-2"
-              onClick={() => setMobileMenuOpen(true)}
-            >
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Open menu</span>
-            </Button>
-            <h1 className="text-lg font-semibold">
-              {navigation.find((item) => item.href === location.pathname)?.name || 'Dashboard'}
-            </h1>
-          </div>
-          <ThemeDropdownMenu />
-        </header>
-        <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
-          <div className="flex min-h-0 flex-1 flex-col p-4">
-            <Outlet />
-          </div>
-        </main>
-      </div>
-      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side="left" className="w-64 p-0">
-          <SheetHeader className="border-b px-6 py-4">
-            <SheetTitle asChild>
-              <Link
-                to="/"
-                className="flex items-center gap-2 text-xl font-bold"
-                onClick={() => setMobileMenuOpen(false)}
-              >
+    <ErrorBoundary>
+      <div className="flex h-screen overflow-hidden">
+        <aside className="hidden w-64 border-r bg-muted/10 md:block">
+          <div className="flex h-full flex-col">
+            <div className="flex h-16 items-center border-b px-6">
+              <Link to="/" className="flex items-center gap-2 text-xl font-bold">
                 <Activity className="h-6 w-6" />
                 {productName}
               </Link>
-            </SheetTitle>
-          </SheetHeader>
-          <nav className="flex-1 space-y-1 p-4">
-            <NavigationLinks onNavigate={() => setMobileMenuOpen(false)} />
-          </nav>
-          <div className="border-t p-4 space-y-4">
-            <FooterLinks />
+            </div>
+            <nav className="flex-1 space-y-1 p-4">
+              <NavigationLinks />
+            </nav>
+            <div className="border-t p-4 space-y-4">
+              <FooterLinks />
+            </div>
           </div>
-        </SheetContent>
-      </Sheet>
-    </div>
+        </aside>
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <header className="flex h-16 items-center justify-between border-b px-4">
+            <div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden mr-2"
+                onClick={() => setMobileMenuOpen(true)}
+              >
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+              <h1 className="text-lg font-semibold">
+                {navigation.find((item) => item.href === location.pathname)?.name || 'Dashboard'}
+              </h1>
+            </div>
+            <ThemeDropdownMenu />
+          </header>
+          <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
+            <div className="flex min-h-0 flex-1 flex-col p-4">
+              <Outlet />
+            </div>
+          </main>
+        </div>
+        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+          <SheetContent side="left" className="w-64 p-0">
+            <SheetHeader className="border-b px-6 py-4">
+              <SheetTitle asChild>
+                <Link
+                  to="/"
+                  className="flex items-center gap-2 text-xl font-bold"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Activity className="h-6 w-6" />
+                  {productName}
+                </Link>
+              </SheetTitle>
+            </SheetHeader>
+            <nav className="flex-1 space-y-1 p-4">
+              <NavigationLinks onNavigate={() => setMobileMenuOpen(false)} />
+            </nav>
+            <div className="border-t p-4 space-y-4">
+              <FooterLinks />
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </ErrorBoundary>
   );
 };

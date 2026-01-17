@@ -8,7 +8,7 @@ import { DevToolsPage } from '@/pages/dev-tools-page';
 import { HomePage } from '@/pages/home-page';
 import { NotFoundPage } from '@/pages/not-found-page';
 import { SettingsPage } from '@/pages/settings-page';
-import { PWAPrompt } from './components';
+import { ErrorBoundaryProvider, PWAPrompt } from './components';
 import { CookieBanner } from './components/common/cookie-banner';
 import { Toaster } from './components/ui/sonner';
 import { isHashBasedRouting } from './lib/constants';
@@ -70,7 +70,9 @@ function AppWithGraphQL({ client }: { client: ApolloClient }) {
 function App() {
   return (
     <ThemeProvider>
-      {apolloClient ? <AppWithGraphQL client={apolloClient} /> : <AppWithoutGraphQL />}
+      <ErrorBoundaryProvider>
+        {apolloClient ? <AppWithGraphQL client={apolloClient} /> : <AppWithoutGraphQL />}
+      </ErrorBoundaryProvider>
     </ThemeProvider>
   );
 }
