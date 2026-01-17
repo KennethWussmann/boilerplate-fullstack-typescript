@@ -1,6 +1,7 @@
 import { atomWithStorage } from 'jotai/utils';
 import { createStore } from 'jotai/vanilla';
 import {
+  isDev,
   productVersion,
   settingsLocalStorageBaseKey,
   settingsMetaLocalStorageBaseKey,
@@ -23,7 +24,7 @@ export const settings = {
   featureToggles: {
     developerTools: atomWithStorage(
       `${settingsLocalStorageBaseKey}.featureToggles.developerTools`,
-      false
+      isDev
     ),
   },
   analytics: {
