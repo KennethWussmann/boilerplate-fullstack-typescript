@@ -1,8 +1,8 @@
+import { useAtom } from 'jotai/react';
 import { Kbd } from '@/components/ui';
-import { settings, type Shortcut } from '@/lib';
+import { type Shortcut, settings } from '@/lib';
 import { replaceShortcutSymbols } from '@/lib/shortcuts';
 import { isTouchDevice } from '@/lib/utils';
-import { useAtom } from 'jotai/react';
 
 type ShortcutKeysProps = {
   shortcut: Shortcut;

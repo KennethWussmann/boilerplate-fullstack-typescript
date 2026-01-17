@@ -22,7 +22,9 @@ const baseNavigation: NavItem[] = [
   { name: 'Settings', href: '/settings', icon: Settings, shortcut: 'openSettings' },
 ];
 
-const devNavigation: NavItem[] = [{ name: 'Developer Tools', href: '/dev-tools', icon: Code, shortcut: "openDevTools" }];
+const devNavigation: NavItem[] = [
+  { name: 'Developer Tools', href: '/dev-tools', icon: Code, shortcut: 'openDevTools' },
+];
 
 export const DashboardLayout = () => {
   useGlobalShortcuts();
