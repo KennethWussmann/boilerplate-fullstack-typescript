@@ -1,7 +1,7 @@
 import type { ApolloClient } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client/react';
 import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router';
-import { DashboardLayout, PublicLayout } from '@/layouts';
+import { PublicLayout, ResponsiveDashboardLayout } from '@/layouts';
 import { AnalyticsProvider, apolloClient, ThemeProvider } from '@/lib/';
 import { DashboardPage } from '@/pages/dashboard-page';
 import { DevToolsPage } from '@/pages/dev-tools-page';
@@ -28,7 +28,7 @@ const routes = [
     ],
   },
   {
-    element: <DashboardLayout />,
+    element: <ResponsiveDashboardLayout />,
     children: [
       {
         path: '/dashboard',
