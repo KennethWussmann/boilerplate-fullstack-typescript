@@ -20,3 +20,23 @@ export const defaultApiUrl = 'http://localhost:8080/graphql';
 export const httpApiUrl = import.meta.env.HTTP_API_URL ?? defaultApiUrl;
 export const wsApiUrl = import.meta.env.WS_API_URL || getWebSocketUrl(httpApiUrl);
 export const isApiEnabled = import.meta.env.API_ENABLED !== 'false';
+
+console.log('Config', {
+  productName,
+  productNameSlug,
+  productVersion,
+  isDev,
+  basePath,
+  isHashBasedRouting,
+  settingsLocalStorageBaseKey,
+  settingsMetaLocalStorageBaseKey,
+  githubUrl,
+  legalUrl,
+  privacyPolicyUrl,
+  plausibleDomain,
+  plausibleEndpoint,
+  defaultApiUrl,
+  httpApiUrl,
+  wsApiUrl,
+  isApiEnabled,
+});
