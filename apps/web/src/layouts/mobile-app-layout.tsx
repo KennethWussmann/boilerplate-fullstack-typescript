@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation } from 'react-router';
-import { ErrorBoundary, SlotTarget } from '@/components';
+import { DefaultToolbar, ErrorBoundary, SlotTarget } from '@/components';
 import { useNavigation } from '@/components/common/navigation';
-import { ThemeDropdownMenu, track } from '@/lib';
+import { track } from '@/lib';
 import { useGlobalShortcuts } from '@/lib/shortcuts';
 import { cn } from '@/lib/utils';
 
@@ -17,7 +17,7 @@ export const MobileAppLayout = () => {
           <h1 className="text-lg font-semibold">
             <SlotTarget name="title" fallback={active?.name || 'Dashboard'} />
           </h1>
-          <SlotTarget name="toolbar" fallback={<ThemeDropdownMenu />} />
+          <SlotTarget name="toolbar" fallback={<DefaultToolbar />} />
         </header>
         <main className="flex min-h-0 flex-1 flex-col overflow-auto">
           <div className="flex-1 p-4">

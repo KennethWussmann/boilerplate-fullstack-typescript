@@ -1,3 +1,4 @@
+export * from './default-toolbar';
 export * from './layout-slots-context';
 export * from './slot-content';
 export * from './slot-target';

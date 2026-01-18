@@ -47,6 +47,7 @@ export const ProfileSettingsForm = ({ onSave }: ProfileSettingsFormProps) => {
         e.preventDefault();
         form.handleSubmit();
       }}
+      className="flex flex-col gap-4"
     >
       <FieldGroup>
         <form.Field name="serverName">
@@ -97,7 +98,7 @@ export const ProfileSettingsForm = ({ onSave }: ProfileSettingsFormProps) => {
         </form.Field>
       </FieldGroup>
 
-      <div className="flex justify-end gap-3">
+      <div className="flex justify-end gap-2">
         <Button type="button" variant="outline" onClick={() => form.reset()}>
           Reset
         </Button>

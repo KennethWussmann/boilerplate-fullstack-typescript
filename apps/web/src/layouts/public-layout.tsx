@@ -1,8 +1,8 @@
 import { Link, Outlet } from 'react-router';
-import { SlotTarget } from '@/components';
+import { DefaultToolbar, SlotTarget } from '@/components';
 import { useNavigation } from '@/components/common/navigation';
 import { Button } from '@/components/ui';
-import { ThemeDropdownMenu, track } from '@/lib';
+import { track } from '@/lib';
 import { legalUrl, privacyPolicyUrl, productName } from '@/lib/constants';
 
 export const PublicLayout = () => {
@@ -29,7 +29,7 @@ export const PublicLayout = () => {
                 </Link>
               </Button>
             ))}
-            <SlotTarget name="toolbar" fallback={<ThemeDropdownMenu />} />
+            <SlotTarget name="toolbar" fallback={<DefaultToolbar />} />
           </nav>
         </div>
       </header>

@@ -33,6 +33,7 @@ jobs:
         env:
           VITE_BASE_PATH: ${{ github.event.repository.name }}
           VITE_API_ENABLED: false
+          VITE_ALLOW_PUBLIC_DEVELOPER_MODE: true
         run: pnpm build --filter=web
       - run: cp ./apps/web/dist/index.html ./apps/web/dist/404.html
       - name: Setup Pages

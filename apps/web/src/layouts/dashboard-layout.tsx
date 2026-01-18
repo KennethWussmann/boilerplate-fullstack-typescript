@@ -1,10 +1,10 @@
 import { Activity, Menu } from 'lucide-react';
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
-import { ErrorBoundary, ShortcutKeys, SlotTarget } from '@/components';
+import { DefaultToolbar, ErrorBoundary, ShortcutKeys, SlotTarget } from '@/components';
 import { useNavigation } from '@/components/common/navigation';
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui';
-import { ThemeDropdownMenu, track } from '@/lib';
+import { track } from '@/lib';
 import { legalUrl, privacyPolicyUrl, productName } from '@/lib/constants';
 import { useGlobalShortcuts } from '@/lib/shortcuts';
 import { cn } from '@/lib/utils';
@@ -129,7 +129,7 @@ export const DashboardLayout = () => {
                 <SlotTarget name="title" fallback={active?.name || 'Dashboard'} />
               </h1>
             </div>
-            <SlotTarget name="toolbar" fallback={<ThemeDropdownMenu />} />
+            <SlotTarget name="toolbar" fallback={<DefaultToolbar />} />
           </header>
           <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
             <div className="flex min-h-0 flex-1 flex-col p-4">

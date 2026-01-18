@@ -46,7 +46,7 @@ export const ShortcutsTableRow = ({ shortcut }: ShortcutsTableRowProps) => {
 
   return (
     <div className="flex items-center gap-4 py-3 border-b last:border-b-0">
-      <div className="flex items-center gap-3 flex-1 min-w-0">
+      <div className="flex items-center gap-2 flex-1 min-w-0">
         <div className="flex-shrink-0 text-muted-foreground">
           <Icon className="size-6" />
         </div>
