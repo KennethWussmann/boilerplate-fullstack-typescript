@@ -18,11 +18,11 @@ export const SettingsView = () => {
         <GeneralSettingsCard />
       </div>
 
-      <div className="md:col-span-2">
-        <ProfileSettingsCard />
-      </div>
-
       <DeveloperOnly>
+        <div className="md:col-span-2">
+          <ProfileSettingsCard />
+        </div>
+
         <div className="md:col-span-2">
           <BackendSettingsCard />
         </div>
