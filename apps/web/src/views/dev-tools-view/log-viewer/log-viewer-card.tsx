@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle, ScrollArea } from '@/components/ui';
+import { Card, CardContent, ScrollArea } from '@/components/ui';
 import { LogEntry } from './log-entry';
 import { LogViewerToolbar } from './log-viewer-toolbar';
 import { useLogStream } from './use-log-stream';
@@ -7,10 +7,7 @@ export const LogViewerCard = () => {
   const { logs, isPaused, clear, togglePause } = useLogStream();
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Server Logs</CardTitle>
-      </CardHeader>
+    <Card className="p-0">
       <CardContent className="p-0">
         <LogViewerToolbar
           isPaused={isPaused}

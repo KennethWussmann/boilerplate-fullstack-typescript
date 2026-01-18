@@ -8,16 +8,19 @@ import {
 } from 'react-router';
 import { PublicLayout, ResponsiveDashboardLayout } from '@/layouts';
 import { AnalyticsProvider, apolloClient, ThemeProvider } from '@/lib/';
-import { DashboardPage } from '@/pages/dashboard-page';
-import { DevToolsPage } from '@/pages/dev-tools-page';
-import { HomePage } from '@/pages/home-page';
-import { NotFoundPage } from '@/pages/not-found-page';
-import { SettingsPage } from '@/pages/settings-page';
+import {
+  DashboardPage,
+  DevToolsPage,
+  DocsPage,
+  GraphiQLPage,
+  HomePage,
+  NotFoundPage,
+  SettingsPage,
+} from '@/pages';
 import { ErrorBoundaryProvider, LayoutSlotsProvider, PWAPrompt } from './components';
 import { CookieBanner } from './components/common/cookie-banner';
 import { Toaster } from './components/ui/sonner';
 import { isHashBasedRouting } from './lib/constants';
-import { DocsPage } from './pages/docs';
 
 const routes: RouteObject[] = [
   {
@@ -55,6 +58,11 @@ const routes: RouteObject[] = [
       {
         path: '/dev-tools',
         element: <DevToolsPage />,
+        handle: { title: 'Developer' },
+      },
+      {
+        path: '/dev-tools/graphql',
+        element: <GraphiQLPage />,
         handle: { title: 'Developer' },
       },
     ],

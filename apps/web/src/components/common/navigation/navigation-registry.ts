@@ -1,5 +1,5 @@
 import { Code, Home, Settings, Telescope } from 'lucide-react';
-import { getHttpApiUrl, shortcutRegistry } from '@/lib';
+import { shortcutRegistry } from '@/lib';
 import type { NavigationConfig, NavigationGroup, NavigationItem } from './types';
 
 const items: Record<string, NavigationItem> = {
@@ -43,12 +43,11 @@ const items: Record<string, NavigationItem> = {
   graphiQL: {
     id: 'graphiQL',
     name: 'GraphiQL',
-    href: getHttpApiUrl(),
+    href: '/dev-tools/graphql',
     icon: Telescope,
     description: 'Open then GraphiQL Playground',
     devOnly: true,
     trees: ['dashboard'],
-    external: true,
   },
 };
 

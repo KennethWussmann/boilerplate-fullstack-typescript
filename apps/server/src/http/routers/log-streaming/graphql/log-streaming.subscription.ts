@@ -1,6 +1,5 @@
 import { Repeater } from 'graphql-yoga';
 import type { LogEntryData } from '../../../../log-streaming/index.js';
-import type { LogEntryEvent } from '../../graphql/graphQLContext.js';
 import type { LogEntryGQL, ResolversGQL } from '../../graphql/index.js';
 
 const mapLogLevel = (level: string): LogEntryGQL['level'] => {
@@ -51,8 +50,8 @@ export const logStreamingSubscription: Partial<ResolversGQL> = {
             subscription.return?.();
           });
 
-          for await (const eventTuple of subscription as AsyncIterable<LogEntryEvent>) {
-            push(eventTuple[0]);
+          for await (const entry of subscription) {
+            push(entry);
           }
         });
       },

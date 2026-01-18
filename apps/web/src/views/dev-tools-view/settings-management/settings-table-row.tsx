@@ -24,12 +24,7 @@ export const SettingsTableRow = ({ storageKey, value, onDelete }: SettingsTableR
         >
           {storageKey}
         </code>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="size-6 flex-shrink-0"
-          onClick={() => copyToClipboard(storageKey, 'Key')}
-        >
+        <Button variant="ghost" size="icon" onClick={() => copyToClipboard(storageKey, 'Key')}>
           <Copy className="size-4" />
         </Button>
       </div>
@@ -40,7 +35,6 @@ export const SettingsTableRow = ({ storageKey, value, onDelete }: SettingsTableR
         <Button
           variant="ghost"
           size="icon"
-          className="size-6 flex-shrink-0"
           onClick={() => copyToClipboard(stripQuotes(value), 'Value')}
         >
           <Copy className="size-4" />
@@ -49,7 +43,7 @@ export const SettingsTableRow = ({ storageKey, value, onDelete }: SettingsTableR
       <Button
         variant="ghost"
         size="icon"
-        className="size-6 flex-shrink-0 text-destructive hover:text-destructive"
+        className="text-destructive hover:text-destructive"
         onClick={() => onDelete(storageKey)}
       >
         <Trash2 className="size-4" />
