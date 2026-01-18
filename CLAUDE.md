@@ -8,6 +8,8 @@ These rules are so fundamentally important, violating a single one of them would
 
 1. Never write a single line of code comments, unless it's for documentation purposes in a .md Markdown file like this one or the comment was already there when you read the file. Any means of communicating with me as the user through code comments or code is strictly forbidden. 
 2. Never use the `function` keyword in TypeScript, always prefer `() => {}`.
+3. Never use the `interface` in TypeScript if you could use `type`, always prefer `type` unless interface is used for inheritance.
+4. Never make anything backward compatible in TypeScript. Whenever a change by me as the user is requested, do not blindly add onto the existing code, possibly leaving behind dead code - or as you like to call it "backwards compatibility". Instead remove everything that belong to old implementation and is considered obsolete, not only because it's no longer called, but even if called remove when it no longer belongs to the business logic requirements. 
 
 ## Repository Overview
 

@@ -1,13 +1,4 @@
-const getWebSocketUrl = (apiUrl: string): string => {
-  if (apiUrl.startsWith('/')) {
-    if (typeof window === 'undefined') {
-      return `ws://localhost:8080${apiUrl}`;
-    }
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    return `${protocol}//${window.location.host}${apiUrl}`;
-  }
-  return apiUrl.replace(/^http/, 'ws');
-};
+
 
 export const productName = 'Boilerplate';
 export const productNameSlug = 'boilerplate-fullstack-typescript';
@@ -28,8 +19,7 @@ export const plausibleEndpoint = import.meta.env.VITE_PLAUSIBLE_ENDPOINT ?? null
 
 export const defaultApiUrl = 'http://localhost:8080/graphql';
 export const httpApiUrl = import.meta.env.VITE_HTTP_API_URL ?? defaultApiUrl;
-export const wsApiUrl = import.meta.env.VITE_WS_API_URL || getWebSocketUrl(httpApiUrl);
-export const isApiEnabled = import.meta.env.VITE_API_ENABLED !== 'false';
+export const wsApiUrl = import.meta.env.VITE_WS_API_URL;
 
 export const config = {
   productName,
@@ -48,5 +38,4 @@ export const config = {
   defaultApiUrl,
   httpApiUrl,
   wsApiUrl,
-  isApiEnabled,
 };

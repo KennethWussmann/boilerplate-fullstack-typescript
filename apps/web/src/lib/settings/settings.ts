@@ -6,6 +6,7 @@ import {
   settingsLocalStorageBaseKey,
   settingsMetaLocalStorageBaseKey,
 } from '../constants';
+import { getHttpApiUrl, getWsApiUrl, isApiEnabled } from '../graphql';
 
 export const settingsStore = createStore();
 
@@ -56,6 +57,11 @@ export const settings = {
       'mod+comma'
     ),
   },
+  backend: {
+    enabled: atomWithStorage<boolean>(`${settingsLocalStorageBaseKey}.backend.enabled`, isApiEnabled()),
+    httpUrl: atomWithStorage<string>(`${settingsLocalStorageBaseKey}.backend.httpUrl`, getHttpApiUrl()),
+    wsUrl: atomWithStorage<string>(`${settingsLocalStorageBaseKey}.backend.wsUrl`, getWsApiUrl()),
+  }
 } as const;
 
 export type Settings = typeof settings;

@@ -42,6 +42,7 @@ export const DashboardLayout = () => {
                     onNavigate?.();
                   }}
                   className="flex flex-row justify-between w-full"
+                  viewTransition
                 >
                   <div className="flex flex-row gap-4 items-center">
                     {Icon && <Icon className="size-6" />}

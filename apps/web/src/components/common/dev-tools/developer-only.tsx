@@ -9,7 +9,7 @@ export const DeveloperOnly = ({
   children: ReactNode;
   redirect?: boolean;
 }) => {
-  const isDev = useDevMode();
+  const { isDev } = useDevMode();
   const navigate = useNavigate();
 
   useEffect(() => {

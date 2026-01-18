@@ -1,5 +1,6 @@
 import { Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { useDevMode } from '@/components/common/dev-tools';
 import { Input } from '@/components/ui';
 import type { Shortcut } from '@/lib/settings';
 import { getAllShortcuts, getShortcutMetadata } from '@/lib/shortcuts';
@@ -25,12 +26,16 @@ const matchesSearch = (shortcut: Shortcut, query: string): boolean => {
 };
 
 export const ShortcutsTable = () => {
+  const { isDev } = useDevMode();
   const [searchQuery, setSearchQuery] = useState('');
   const allShortcuts = getAllShortcuts();
 
   const filteredShortcuts = useMemo(
-    () => allShortcuts.filter((shortcut) => matchesSearch(shortcut, searchQuery)),
-    [allShortcuts, searchQuery]
+    () =>
+      allShortcuts
+        .filter((shortcutKey) => matchesSearch(shortcutKey, searchQuery))
+        .filter((shortcutKey) => getShortcutMetadata(shortcutKey).devOnly !== true || isDev),
+    [allShortcuts, searchQuery, isDev]
   );
 
   return (

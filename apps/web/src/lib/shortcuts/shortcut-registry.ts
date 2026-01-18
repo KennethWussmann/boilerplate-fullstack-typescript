@@ -5,6 +5,7 @@ type ShortcutMetadata = {
   name: string;
   description: string;
   icon: LucideIcon;
+  devOnly?: boolean;
 };
 
 export const shortcutRegistry: Record<Shortcut, ShortcutMetadata> = {
@@ -12,6 +13,7 @@ export const shortcutRegistry: Record<Shortcut, ShortcutMetadata> = {
     name: 'Open Developer Tools',
     description: 'Opens the developer tools panel',
     icon: Code,
+    devOnly: true,
   },
   openSettings: {
     name: 'Open Settings',

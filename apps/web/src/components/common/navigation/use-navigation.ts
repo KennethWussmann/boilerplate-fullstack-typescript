@@ -17,7 +17,7 @@ export type UseNavigationResult = {
 };
 
 export const useNavigation = (tree: NavigationTree): UseNavigationResult => {
-  const isDevMode = useDevMode();
+  const { isDev } = useDevMode();
   const location = useLocation();
 
   return useMemo(() => {
@@ -30,7 +30,7 @@ export const useNavigation = (tree: NavigationTree): UseNavigationResult => {
           .filter((item): item is NavigationItem => {
             if (!item) return false;
             if (!item.trees.includes(tree)) return false;
-            if (item.devOnly && !isDevMode) return false;
+            if (item.devOnly && !isDev) return false;
             return true;
           });
 
@@ -48,5 +48,5 @@ export const useNavigation = (tree: NavigationTree): UseNavigationResult => {
     const active = items.find((item) => location.pathname === item.href);
 
     return { groups, items, active };
-  }, [tree, isDevMode, location.pathname]);
+  }, [tree, isDev, location.pathname]);
 };

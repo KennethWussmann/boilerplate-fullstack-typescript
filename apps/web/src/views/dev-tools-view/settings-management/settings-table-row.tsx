@@ -1,18 +1,12 @@
 import { Copy, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui';
+import { stripQuotes } from '@/lib';
 
 type SettingsTableRowProps = {
   storageKey: string;
   value: string;
   onDelete: (key: string) => void;
-};
-
-const stripQuotes = (text: string): string => {
-  if (text.startsWith('"') && text.endsWith('"')) {
-    return text.slice(1, -1);
-  }
-  return text;
 };
 
 export const SettingsTableRow = ({ storageKey, value, onDelete }: SettingsTableRowProps) => {

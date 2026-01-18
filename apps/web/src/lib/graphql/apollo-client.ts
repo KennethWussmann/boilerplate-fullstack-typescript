@@ -2,15 +2,15 @@ import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/clien
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
-import { httpApiUrl, isApiEnabled, wsApiUrl } from '../constants';
+import { getHttpApiUrl, getWsApiUrl, isApiEnabled } from './api-url';
 
 const httpLink = new HttpLink({
-  uri: httpApiUrl,
+  uri: getHttpApiUrl(),
 });
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: wsApiUrl,
+    url: getWsApiUrl(),
   })
 );
 
@@ -23,9 +23,9 @@ const splitLink = ApolloLink.split(
   httpLink
 );
 
-export const apolloClient = isApiEnabled
+export const apolloClient = isApiEnabled()
   ? new ApolloClient({
-      link: splitLink,
-      cache: new InMemoryCache(),
-    })
+    link: splitLink,
+    cache: new InMemoryCache(),
+  })
   : null;
