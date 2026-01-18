@@ -12,7 +12,7 @@ export const GraphiQLPage = () => {
       <SlotContent name="toolbar">
         <Button variant="secondary" asChild>
           <Link to={httpApiUrl} target="_blank">
-            <ExternalLink /> GraphiQL
+            <ExternalLink /> Open in new tab
           </Link>
         </Button>
       </SlotContent>

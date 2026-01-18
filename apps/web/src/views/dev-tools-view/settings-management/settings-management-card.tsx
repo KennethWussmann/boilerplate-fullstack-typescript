@@ -21,7 +21,7 @@ export const SettingsManagementCard = () => {
         const json = event.target?.result as string;
         try {
           importLocalStorageFromJSON(json);
-          document.location.reload();
+          window.location.reload();
         } catch {
           alert('Invalid JSON file');
         }
