@@ -1,5 +1,7 @@
+import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { apolloClient, graphql } from '@/lib/graphql';
+import { settings } from '../settings';
 
 const HEALTH_SUBSCRIPTION = graphql(`
   subscription OnServerHealthChange {
@@ -10,17 +12,18 @@ const HEALTH_SUBSCRIPTION = graphql(`
   }
 `);
 
-export type ServerStatus = 'online' | 'offline';
+export type ServerStatus = 'online' | 'offline' | 'disabled';
 
 export const useServerStatus = (): {
-  status: 'online' | 'offline';
+  status: ServerStatus;
   isOnline: boolean;
 } => {
-  const [status, setStatus] = useState<ServerStatus>('offline');
+  const [isApiEnabled] = useAtom(settings.backend.enabled);
+  const [status, setStatus] = useState<ServerStatus>(!isApiEnabled ? 'disabled' : 'offline');
 
   useEffect(() => {
-    if (!apolloClient) {
-      setStatus('offline');
+    if (!isApiEnabled || !apolloClient) {
+      setStatus('disabled');
       return;
     }
     const observable = apolloClient.subscribe({
@@ -39,7 +42,7 @@ export const useServerStatus = (): {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [isApiEnabled]);
 
   return { isOnline: status === 'online', status };
 };

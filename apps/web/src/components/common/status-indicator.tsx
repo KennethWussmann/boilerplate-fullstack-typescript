@@ -1,7 +1,8 @@
+import type { ServerStatus } from '@/lib';
 import { cn } from '@/lib/utils';
 
 interface StatusIndicatorProps {
-  status: 'online' | 'offline' | 'warning' | 'error';
+  status: ServerStatus | 'warning' | 'error';
   label?: string;
   showDot?: boolean;
 }
@@ -11,21 +12,29 @@ const statusConfig = {
     color: 'bg-green-500',
     textColor: 'text-green-700',
     label: 'Online',
+    animate: true,
   },
   offline: {
+    color: 'bg-red-500',
+    textColor: 'text-red-700',
+    label: 'Offline',
+  },
+  disabled: {
     color: 'bg-gray-400',
     textColor: 'text-gray-700',
-    label: 'Offline',
+    label: 'Disabled',
   },
   warning: {
     color: 'bg-yellow-500',
     textColor: 'text-yellow-700',
     label: 'Warning',
+    animate: true,
   },
   error: {
     color: 'bg-red-500',
     textColor: 'text-red-700',
     label: 'Error',
+    animate: true,
   },
 };
 

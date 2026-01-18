@@ -7,6 +7,9 @@ export const isHashBasedRouting =
   import.meta.env.VITE_HASH_ROUTER_ENABLED === 'true' || basePath !== '/';
 export const settingsLocalStorageBaseKey = `${productNameSlug}.settings`;
 export const settingsMetaLocalStorageBaseKey = `${productNameSlug}._meta`;
+// Whether or not to allow any ordinary user to enable developer mode simply via the settings
+export const allowPublicDeveloperMode =
+  import.meta.env.VITE_ALLOW_PUBLIC_DEVELOPER_MODE === 'true' || isDev;
 
 export const githubUrl = `https://github.com/KennethWussmann/${productNameSlug}`;
 export const legalUrl = 'https://kenneth.wussmann.net/imprint/';
