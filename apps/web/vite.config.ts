@@ -1,4 +1,5 @@
 import path from 'node:path';
+import mdx from '@mdx-js/rollup';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
@@ -11,7 +12,8 @@ export default defineConfig({
     target: 'esnext',
   },
   plugins: [
-    react(),
+    { enforce: 'pre', ...mdx() },
+    react({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
     tailwindcss(),
     VitePWA({
       registerType: 'prompt',

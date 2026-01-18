@@ -7,5 +7,6 @@ export const useGlobalShortcuts = () => {
   const navigate = useNavigate();
 
   useShortcut('openDevTools', () => isDev && navigate('/dev-tools'));
+  useShortcut('openDocs', () => isDev && navigate('/docs'));
   useShortcut('openSettings', () => navigate('/settings'));
 };

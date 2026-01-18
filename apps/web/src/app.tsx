@@ -12,6 +12,7 @@ import { ErrorBoundaryProvider, LayoutSlotsProvider, PWAPrompt } from './compone
 import { CookieBanner } from './components/common/cookie-banner';
 import { Toaster } from './components/ui/sonner';
 import { isHashBasedRouting } from './lib/constants';
+import { DocsPage } from './pages/docs';
 
 const routes = [
   {
@@ -37,6 +38,10 @@ const routes = [
       {
         path: '/settings',
         element: <SettingsPage />,
+      },
+      {
+        path: '/docs',
+        element: <DocsPage />,
       },
       {
         path: '/dev-tools',

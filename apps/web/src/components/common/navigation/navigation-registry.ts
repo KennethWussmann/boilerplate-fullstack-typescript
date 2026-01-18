@@ -1,4 +1,5 @@
 import { Code, Home, Settings } from 'lucide-react';
+import { shortcutRegistry } from '@/lib';
 import type { NavigationConfig, NavigationGroup, NavigationItem } from './types';
 
 const items: Record<string, NavigationItem> = {
@@ -19,6 +20,16 @@ const items: Record<string, NavigationItem> = {
     shortcut: 'openSettings',
     trees: ['dashboard'],
   },
+  docs: {
+    id: 'docs',
+    name: 'Documentation',
+    href: '/docs',
+    icon: shortcutRegistry.openDocs.icon,
+    description: 'Read the application documentation',
+    shortcut: 'openDocs',
+    devOnly: true,
+    trees: ['public', 'dashboard'],
+  },
   devTools: {
     id: 'devTools',
     name: 'Developer Tools',
@@ -34,7 +45,7 @@ const items: Record<string, NavigationItem> = {
 const groups: NavigationGroup[] = [
   {
     id: 'main',
-    items: ['dashboard', 'settings'],
+    items: ['dashboard', 'docs', 'settings'],
     trees: ['dashboard'],
   },
   {
@@ -45,7 +56,7 @@ const groups: NavigationGroup[] = [
   },
   {
     id: 'public-main',
-    items: ['dashboard'],
+    items: ['docs', 'dashboard'],
     trees: ['public'],
   },
 ];

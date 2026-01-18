@@ -1,4 +1,4 @@
-import { Code, type LucideIcon, Settings } from 'lucide-react';
+import { Book, Code, type LucideIcon, Settings } from 'lucide-react';
 import type { Shortcut } from '@/lib/settings';
 
 type ShortcutMetadata = {
@@ -19,6 +19,11 @@ export const shortcutRegistry: Record<Shortcut, ShortcutMetadata> = {
     name: 'Open Settings',
     description: 'Opens the settings page',
     icon: Settings,
+  },
+  openDocs: {
+    name: 'Open Documentation',
+    description: 'Opens the applications documenation',
+    icon: Book,
   },
 };
 

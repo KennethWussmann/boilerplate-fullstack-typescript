@@ -131,8 +131,8 @@ export const DashboardLayout = () => {
             </div>
             <SlotTarget name="toolbar" fallback={<DefaultToolbar />} />
           </header>
-          <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
-            <div className="flex min-h-0 flex-1 flex-col p-4">
+          <main className="flex min-h-0 flex-1 flex-col overflow-auto">
+            <div className="flex-1 p-4">
               <Outlet />
             </div>
           </main>

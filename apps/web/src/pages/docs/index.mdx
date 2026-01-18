@@ -1,0 +1,123 @@
+## Fullstack TypeScript Boilerplate
+
+Welcome to the Fullstack TypeScript Monorepo Boilerplate. This documentation serves as both a guide to using the boilerplate and a demonstration of the built-in Markdown documentation capabilities.
+
+## Getting Started
+
+After cloning this repository, the first step is to bootstrap your project. If you're using Claude Code, run:
+
+```bash
+/bootstrap
+```
+
+This command will guide you through:
+- Setting your application name and description
+- Updating package metadata across the monorepo
+- Configuring the PWA manifest
+- Creating a customized README
+
+Alternatively, you can manually configure the project by updating the `package.json` files in the root, `apps/server`, and `apps/web` directories.
+
+## Quick Start
+
+```bash
+# Install dependencies
+pnpm install
+
+# Build all packages
+pnpm build
+
+# Start the backend server
+cd apps/server && pnpm dev
+
+# In a new terminal, start the frontend
+cd apps/web && pnpm dev
+```
+
+The backend runs on `http://localhost:8080` and the frontend on `http://localhost:5173`.
+
+## Project Structure
+
+```
+├── apps/
+│   ├── server/     # Express + GraphQL backend
+│   └── web/        # React + Vite frontend
+├── libs/           # Shared libraries
+└── CLAUDE.md       # AI assistant instructions
+```
+
+## Backend Features
+
+### GraphQL API
+
+The backend uses GraphQL Yoga with a modular architecture powered by `graphql-modules`. Key features:
+
+- **Code-first schema** with `.graphql` files and generated TypeScript types
+- **WebSocket subscriptions** for real-time updates
+- **Custom scalars** including `DateTime` and `Void`
+- **Type-safe resolvers** via GraphQL Code Generator
+
+Access the GraphQL playground at `http://localhost:8080/graphql`.
+
+### Database
+
+SQLite database with Drizzle ORM:
+
+```bash
+cd apps/server
+
+# Generate migrations from schema changes
+pnpm db:generate
+
+# Apply migrations
+pnpm db:migrate
+
+# Open visual database manager
+pnpm db:studio
+```
+
+### Configuration
+
+Multi-source configuration system with precedence:
+1. Environment variables (highest priority)
+2. YAML config files (`config.local.yaml`, `config.yaml`)
+3. Default values
+
+## Frontend Features
+
+### Tech Stack
+
+- **React 19** with React Router v7
+- **Tailwind CSS v4** via the Vite plugin
+- **shadcn/ui** component library
+- **Apollo Client** for GraphQL operations
+- **gql.tada** for compile-time type safety
+
+### PWA Support
+
+The frontend is configured as a Progressive Web App with:
+- Offline caching via Workbox
+- Installable on desktop and mobile
+- Configurable via `vite.config.ts`
+
+Enable PWA in development with `PWA_DEV=true`.
+
+## Development Workflow
+
+### Code Quality
+
+```bash
+# Lint and format
+pnpm check
+pnpm check:fix
+
+# Run tests
+pnpm test
+pnpm test:watch
+```
+
+The project uses Biome for linting and formatting with pre-commit hooks via Husky.
+
+## Docker Deployment
+
+Multi-architecture builds (ARM64 and AMD64) are supported via GitHub Actions.
