@@ -79,7 +79,7 @@ export const useServerStatus = (): {
     pollStatus();
     setupSubscription();
 
-    const interval = setInterval(pollStatus, 10000);
+    const interval = setInterval(pollStatus, 30000);
 
     return () => {
       subscription?.unsubscribe();
