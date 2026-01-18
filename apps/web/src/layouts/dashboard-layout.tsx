@@ -1,7 +1,13 @@
 import { Activity, Menu } from 'lucide-react';
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
-import { DefaultToolbar, ErrorBoundary, ShortcutKeys, SlotTarget } from '@/components';
+import {
+  DefaultToolbar,
+  DocumentTitle,
+  ErrorBoundary,
+  ShortcutKeys,
+  SlotTarget,
+} from '@/components';
 import { useNavigation } from '@/components/common/navigation';
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui';
 import { track } from '@/lib';
@@ -99,6 +105,7 @@ export const DashboardLayout = () => {
 
   return (
     <ErrorBoundary>
+      <DocumentTitle />
       <div className="flex h-screen overflow-hidden">
         <aside className="hidden w-64 border-r bg-muted/10 md:block">
           <div className="flex h-full flex-col">

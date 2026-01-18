@@ -1,3 +1,4 @@
+export * from './document-title';
 export * from './empty-state';
 export * from './error-boundary';
 export * from './layout';

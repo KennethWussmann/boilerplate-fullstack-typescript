@@ -1,6 +1,11 @@
 import type { ApolloClient } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client/react';
-import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router';
+import {
+  createBrowserRouter,
+  createHashRouter,
+  type RouteObject,
+  RouterProvider,
+} from 'react-router';
 import { PublicLayout, ResponsiveDashboardLayout } from '@/layouts';
 import { AnalyticsProvider, apolloClient, ThemeProvider } from '@/lib/';
 import { DashboardPage } from '@/pages/dashboard-page';
@@ -14,7 +19,7 @@ import { Toaster } from './components/ui/sonner';
 import { isHashBasedRouting } from './lib/constants';
 import { DocsPage } from './pages/docs';
 
-const routes = [
+const routes: RouteObject[] = [
   {
     element: <PublicLayout />,
     children: [
@@ -25,6 +30,7 @@ const routes = [
       {
         path: '*',
         element: <NotFoundPage />,
+        handle: { title: 'Not Found' },
       },
     ],
   },
@@ -34,18 +40,22 @@ const routes = [
       {
         path: '/dashboard',
         element: <DashboardPage />,
+        handle: { title: 'Dashboard' },
       },
       {
         path: '/settings',
         element: <SettingsPage />,
+        handle: { title: 'Settings' },
       },
       {
         path: '/docs',
         element: <DocsPage />,
+        handle: { title: 'Documentation' },
       },
       {
         path: '/dev-tools',
         element: <DevToolsPage />,
+        handle: { title: 'Developer' },
       },
     ],
   },

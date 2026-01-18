@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from 'react-router';
-import { DefaultToolbar, ErrorBoundary, SlotTarget } from '@/components';
+import { DefaultToolbar, DocumentTitle, ErrorBoundary, SlotTarget } from '@/components';
 import { useNavigation } from '@/components/common/navigation';
 import { track } from '@/lib';
 import { useGlobalShortcuts } from '@/lib/shortcuts';
@@ -12,6 +12,7 @@ export const MobileAppLayout = () => {
 
   return (
     <ErrorBoundary>
+      <DocumentTitle />
       <div className="flex h-screen flex-col overflow-hidden">
         <header className="flex h-14 shrink-0 items-center justify-between border-b px-4">
           <h1 className="text-lg font-semibold">
