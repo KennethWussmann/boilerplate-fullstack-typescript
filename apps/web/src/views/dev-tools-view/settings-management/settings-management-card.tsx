@@ -48,7 +48,7 @@ export const SettingsManagementCard = () => {
       </CardHeader>
 
       <CardContent className="space-y-6">
-        <div className="flex justify-between">
+        <div className="flex flex-wrap justify-between gap-8">
           <div className="flex gap-2">
             <DoubleConfirmationDialog message="All your current settings will be overwritten and the page will reload after import.">
               <Button variant="destructive" onClick={selectFile}>
