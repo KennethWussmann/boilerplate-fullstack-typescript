@@ -11,7 +11,7 @@ type ShortcutMetadata = {
 export const shortcutRegistry: Record<Shortcut, ShortcutMetadata> = {
   openDevTools: {
     name: 'Open Developer Tools',
-    description: 'Opens the developer tools panel',
+    description: 'Opens the developer tools',
     icon: Code,
     devOnly: true,
   },
