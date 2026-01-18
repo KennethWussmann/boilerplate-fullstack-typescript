@@ -31,7 +31,7 @@ export const GeneralSettingsCard = () => {
         <Field orientation="horizontal">
           <div className="flex-1 space-y-1">
             <FieldLabel htmlFor="developer-mode">Enable Developer Mode</FieldLabel>
-            <FieldDescription className='max-w-[700px]'>
+            <FieldDescription className="max-w-[700px]">
               The developer mode unlocks a few hidden features and menus meant for debugging and
               development of {productName}. Use them at your own risk.
             </FieldDescription>

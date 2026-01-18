@@ -1,5 +1,3 @@
-
-
 export const productName = 'Boilerplate';
 export const productNameSlug = 'boilerplate-fullstack-typescript';
 export const productVersion = import.meta.env.VITE_VERSION;

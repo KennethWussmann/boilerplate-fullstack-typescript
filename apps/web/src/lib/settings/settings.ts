@@ -58,10 +58,16 @@ export const settings = {
     ),
   },
   backend: {
-    enabled: atomWithStorage<boolean>(`${settingsLocalStorageBaseKey}.backend.enabled`, isApiEnabled()),
-    httpUrl: atomWithStorage<string>(`${settingsLocalStorageBaseKey}.backend.httpUrl`, getHttpApiUrl()),
+    enabled: atomWithStorage<boolean>(
+      `${settingsLocalStorageBaseKey}.backend.enabled`,
+      isApiEnabled()
+    ),
+    httpUrl: atomWithStorage<string>(
+      `${settingsLocalStorageBaseKey}.backend.httpUrl`,
+      getHttpApiUrl()
+    ),
     wsUrl: atomWithStorage<string>(`${settingsLocalStorageBaseKey}.backend.wsUrl`, getWsApiUrl()),
-  }
+  },
 } as const;
 
 export type Settings = typeof settings;

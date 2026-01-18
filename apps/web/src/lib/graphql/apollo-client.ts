@@ -25,7 +25,7 @@ const splitLink = ApolloLink.split(
 
 export const apolloClient = isApiEnabled()
   ? new ApolloClient({
-    link: splitLink,
-    cache: new InMemoryCache(),
-  })
+      link: splitLink,
+      cache: new InMemoryCache(),
+    })
   : null;
