@@ -18,6 +18,7 @@ const mapLogLevel = (level: string): LogEntryGQL['level'] => {
 const mapToLogEntry = (entry: LogEntryData): LogEntryGQL => ({
   timestamp: entry.timestamp,
   level: mapLogLevel(entry.level),
+  name: entry.name,
   message: entry.message,
   metadata: entry.metadata,
 });
@@ -25,7 +26,7 @@ const mapToLogEntry = (entry: LogEntryData): LogEntryGQL => ({
 export const logStreamingSubscription: Partial<ResolversGQL> = {
   Subscription: {
     logStream: {
-      subscribe: (_, __, { applicationContext, pubSub }) => {
+      subscribe: (_, args: { history?: boolean }, { applicationContext, pubSub }) => {
         const logStreamingService = applicationContext.logStreamingService;
         if (!logStreamingService) {
           throw new Error('Log streaming is not enabled');
@@ -36,7 +37,8 @@ export const logStreamingSubscription: Partial<ResolversGQL> = {
           throw new Error('Log streaming transport not initialized');
         }
 
-        const cachedLogs = transport.getCachedLogs();
+        const includeHistory = args.history !== false;
+        const cachedLogs = includeHistory ? transport.getCachedLogs() : [];
 
         return new Repeater<LogEntryData>(async (push, stop) => {
           for (const entry of cachedLogs) {

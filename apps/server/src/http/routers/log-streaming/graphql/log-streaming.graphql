@@ -1,10 +1,11 @@
 type Subscription {
-  logStream: LogEntry!
+  logStream(history: Boolean = true): LogEntry!
 }
 
 type LogEntry {
   timestamp: DateTime!
   level: LogLevel!
+  name: String
   message: String!
   metadata: String
 }

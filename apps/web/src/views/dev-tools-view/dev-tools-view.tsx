@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ErrorBoundary } from '@/components';
 import { Button } from '@/components/ui/button';
 import { productVersion } from '@/lib';
+import { LogViewerCard } from './log-viewer';
 import { SettingsManagementCard } from './settings-management';
 
 const ErrorThrower = ({ shouldThrow }: { shouldThrow: boolean }) => {
@@ -15,7 +16,7 @@ export const DevToolsView = () => {
   const [shouldThrow, setShouldThrow] = React.useState(false);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div>
         <h2 className="text-2xl font-bold">Developer Tools</h2>
         <p className="text-muted-foreground">Development utilities and debugging tools</p>
@@ -29,6 +30,7 @@ export const DevToolsView = () => {
           Throw Error
         </Button>
       </div>
+      <LogViewerCard />
       <SettingsManagementCard />
     </div>
   );
