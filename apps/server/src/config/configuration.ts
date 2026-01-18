@@ -47,7 +47,8 @@ export const configurationSchema = z.object({
   api: z.object({
     enabled: stringBoolSchema
       .optional()
-      .describe('Enable the HTTP API. Example: "yes" or "no". Default: "no"'),
+      .default(true)
+      .describe('Enable the HTTP API. Example: "yes" or "no". Default: "yes"'),
     bind_address: z
       .string()
       .default('0.0.0.0')
