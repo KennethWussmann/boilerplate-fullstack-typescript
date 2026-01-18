@@ -12,6 +12,7 @@ The server can be configured with JSON, YAML or Environment Variables.
 | `api.bind_address` | `API_BIND_ADDRESS` | string | "0.0.0.0" | Yes | Bind address of the HTTP server. Example: "127.0.0.1". Default: "0.0.0.0" |
 | `api.cors_enabled` | `API_CORS_ENABLED` | boolean \| string | true | Yes | Enable CORS (Cross-Origin Resource Sharing) for the HTTP API. Example: "yes" or "no". Default: "yes" |
 | `api.enabled` | `API_ENABLED` | boolean \| string | true | No | Enable the HTTP API. Example: "yes" or "no". Default: "yes" |
+| `api.log_streaming_enabled` | `API_LOG_STREAMING_ENABLED` | boolean \| string | false | Yes | Enable log streaming via GraphQL subscription. Example: "yes" or "no". Default: "no" |
 | `api.port` | `API_PORT` | number \| string | 8080 | Yes | Port the HTTP server should be listining on. Example: "8080". Default: "8080" |
 | `api.public_base_url` | `PUBLIC_BASE_URL` | string | - | No | - |
 | `database.connection_url` | `DATABASE_CONNECTION_URL` | string | "file:local.db" | Yes | Required if database is enabled. Connection URL to database. Default: "file:local.db" |

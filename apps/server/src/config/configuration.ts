@@ -67,6 +67,11 @@ export const configurationSchema = z.object({
       .describe(
         'Enable CORS (Cross-Origin Resource Sharing) for the HTTP API. Example: "yes" or "no". Default: "yes"'
       ),
+    log_streaming_enabled: stringBoolSchema
+      .default(false)
+      .describe(
+        'Enable log streaming via GraphQL subscription. Example: "yes" or "no". Default: "no"'
+      ),
   }),
   frontend: z.object({
     enabled: stringBoolSchema
@@ -109,6 +114,7 @@ export const defaultConfigOptions: ConfigurationCompositionOptions<typeof config
       base_path: env('API_BASE_PATH'),
       cors_enabled: env('API_CORS_ENABLED'),
       public_base_url: env('PUBLIC_BASE_URL'),
+      log_streaming_enabled: env('API_LOG_STREAMING_ENABLED'),
     },
     database: {
       enabled: env('DATABASE_ENABLED'),

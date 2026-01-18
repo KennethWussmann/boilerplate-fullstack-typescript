@@ -1,0 +1,19 @@
+type Subscription {
+  logStream: LogEntry!
+}
+
+type LogEntry {
+  timestamp: DateTime!
+  level: LogLevel!
+  message: String!
+  metadata: String
+}
+
+enum LogLevel {
+  FATAL
+  ERROR
+  WARN
+  NOTICE
+  INFO
+  DEBUG
+}

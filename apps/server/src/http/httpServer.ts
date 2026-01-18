@@ -11,6 +11,7 @@ import {
   GraphQLRouter,
   HealthBroadcastService,
   HealthRouter,
+  LogStreamingModule,
   StaticFrontendRouter,
 } from './routers/index.js';
 
@@ -40,6 +41,11 @@ export class HTTPServer {
 
   private async setupRouters(server: Server) {
     const basePath = this.config.api.base_path || '/';
+    const graphqlModules = [HealthModule];
+    if (this.config.api.log_streaming_enabled) {
+      graphqlModules.push(LogStreamingModule);
+    }
+
     await Promise.all(
       [
         new GraphQLRouter(
@@ -50,7 +56,7 @@ export class HTTPServer {
             logger: this.logger.child({ name: 'graphql-resolver' }),
             pubSub: this.applicationContext.pubSub,
           },
-          [HealthModule]
+          graphqlModules
         ),
         new HealthRouter(this.healthBroadcastService),
         ...(this.config.frontend.enabled ? [] : []),

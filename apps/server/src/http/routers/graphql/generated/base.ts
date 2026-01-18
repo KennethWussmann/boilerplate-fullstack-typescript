@@ -18,6 +18,22 @@ export type Scalars = {
   Void: { input: String; output: String; }
 };
 
+export type LogEntryGQL = {
+  __typename?: 'LogEntry';
+  level: LogLevelGQL;
+  message: Scalars['String']['output'];
+  metadata?: Maybe<Scalars['String']['output']>;
+  timestamp: Scalars['DateTime']['output'];
+};
+
+export type LogLevelGQL =
+  | 'DEBUG'
+  | 'ERROR'
+  | 'FATAL'
+  | 'INFO'
+  | 'NOTICE'
+  | 'WARN';
+
 export type QueryGQL = {
   __typename?: 'Query';
   health: ServerHealthGQL;
@@ -37,6 +53,7 @@ export type ServerStatusGQL =
 export type SubscriptionGQL = {
   __typename?: 'Subscription';
   health: ServerHealthGQL;
+  logStream: LogEntryGQL;
 };
 
 
@@ -114,6 +131,8 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 export type ResolversTypesGQL = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
+  LogEntry: ResolverTypeWrapper<LogEntryGQL>;
+  LogLevel: LogLevelGQL;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   ServerHealth: ResolverTypeWrapper<ServerHealthGQL>;
   ServerStatus: ServerStatusGQL;
@@ -126,6 +145,7 @@ export type ResolversTypesGQL = {
 export type ResolversParentTypesGQL = {
   Boolean: Scalars['Boolean']['output'];
   DateTime: Scalars['DateTime']['output'];
+  LogEntry: LogEntryGQL;
   Query: Record<PropertyKey, never>;
   ServerHealth: ServerHealthGQL;
   String: Scalars['String']['output'];
@@ -136,6 +156,13 @@ export type ResolversParentTypesGQL = {
 export interface DateTimeScalarConfigGQL extends GraphQLScalarTypeConfig<ResolversTypesGQL['DateTime'], any> {
   name: 'DateTime';
 }
+
+export type LogEntryResolversGQL<ContextType = GraphQLContext, ParentType extends ResolversParentTypesGQL['LogEntry'] = ResolversParentTypesGQL['LogEntry']> = {
+  level?: Resolver<ResolversTypesGQL['LogLevel'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypesGQL['String'], ParentType, ContextType>;
+  metadata?: Resolver<Maybe<ResolversTypesGQL['String']>, ParentType, ContextType>;
+  timestamp?: Resolver<ResolversTypesGQL['DateTime'], ParentType, ContextType>;
+};
 
 export type QueryResolversGQL<ContextType = GraphQLContext, ParentType extends ResolversParentTypesGQL['Query'] = ResolversParentTypesGQL['Query']> = {
   health?: Resolver<ResolversTypesGQL['ServerHealth'], ParentType, ContextType>;
@@ -148,6 +175,7 @@ export type ServerHealthResolversGQL<ContextType = GraphQLContext, ParentType ex
 
 export type SubscriptionResolversGQL<ContextType = GraphQLContext, ParentType extends ResolversParentTypesGQL['Subscription'] = ResolversParentTypesGQL['Subscription']> = {
   health?: SubscriptionResolver<ResolversTypesGQL['ServerHealth'], "health", ParentType, ContextType>;
+  logStream?: SubscriptionResolver<ResolversTypesGQL['LogEntry'], "logStream", ParentType, ContextType>;
 };
 
 export interface VoidScalarConfigGQL extends GraphQLScalarTypeConfig<ResolversTypesGQL['Void'], any> {
@@ -156,6 +184,7 @@ export interface VoidScalarConfigGQL extends GraphQLScalarTypeConfig<ResolversTy
 
 export type ResolversGQL<ContextType = GraphQLContext> = {
   DateTime?: GraphQLScalarType;
+  LogEntry?: LogEntryResolversGQL<ContextType>;
   Query?: QueryResolversGQL<ContextType>;
   ServerHealth?: ServerHealthResolversGQL<ContextType>;
   Subscription?: SubscriptionResolversGQL<ContextType>;
