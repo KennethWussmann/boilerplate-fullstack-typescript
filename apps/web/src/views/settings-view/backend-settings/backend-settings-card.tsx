@@ -23,7 +23,7 @@ export const BackendSettingsCard = () => {
 
   const onChangeEnabled = (enabled: boolean) => {
     setEnabled(enabled);
-    docuwindow.location.reload();
+    window.location.reload();
   };
 
   return (
