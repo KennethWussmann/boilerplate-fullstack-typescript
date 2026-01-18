@@ -39,7 +39,7 @@ importers:
     dependencies:
       '@envelop/graphql-modules':
         specifier: ^9.0.0
-        version: 9.0.0(@envelop/core@5.4.0)(graphql-modules@3.1.1(patch_hash=bf0dc5dc5ecf92262c62c0881d513b85ce7fca48b711722f203616cbd6464c64)(graphql@16.12.0))(graphql@16.12.0)
+        version: 9.0.0(@envelop/core@5.4.0)(graphql-modules@3.0.0(patch_hash=bf0dc5dc5ecf92262c62c0881d513b85ce7fca48b711722f203616cbd6464c64)(graphql@16.12.0))(graphql@16.12.0)
       '@graphql-tools/load-files':
         specifier: ^7.0.1
         version: 7.0.1(graphql@16.12.0)
@@ -68,8 +68,8 @@ importers:
         specifier: ^16.12.0
         version: 16.12.0
       graphql-modules:
-        specifier: ^3.0.0
-        version: 3.1.1(patch_hash=bf0dc5dc5ecf92262c62c0881d513b85ce7fca48b711722f203616cbd6464c64)(graphql@16.12.0)
+        specifier: 3.0.0
+        version: 3.0.0(patch_hash=bf0dc5dc5ecf92262c62c0881d513b85ce7fca48b711722f203616cbd6464c64)(graphql@16.12.0)
       graphql-scalars:
         specifier: ^1.25.0
         version: 1.25.0(graphql@16.12.0)
@@ -4066,8 +4066,9 @@ packages:
       cosmiconfig-toml-loader:
         optional: true
 
-  graphql-modules@3.1.1:
-    resolution: {integrity: sha512-T87Z7V99LG5KU+w15VJ+M8KwRAXMCMB6n7mv+iEBuJMiH6fC6snXr83yAPrcKCzSbiHstildq5SqUcvFfj7ymw==}
+  graphql-modules@3.0.0:
+    resolution: {integrity: sha512-ADQRySHp7SMqLHsv/NMkEBqOcyAC5bT6bTYuQemjmvSsF+gj1iQbzNF1pjy1lsE6UWxvRRzZN+sovp85Z6c3Vw==}
+    deprecated: This version contains a context race condition that can lead to unauthorized data leaking. Please upgrade to >=3.3.1.
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
 
@@ -7166,11 +7167,11 @@ snapshots:
       '@whatwg-node/promise-helpers': 1.3.2
       tslib: 2.8.1
 
-  '@envelop/graphql-modules@9.0.0(@envelop/core@5.4.0)(graphql-modules@3.1.1(patch_hash=bf0dc5dc5ecf92262c62c0881d513b85ce7fca48b711722f203616cbd6464c64)(graphql@16.12.0))(graphql@16.12.0)':
+  '@envelop/graphql-modules@9.0.0(@envelop/core@5.4.0)(graphql-modules@3.0.0(patch_hash=bf0dc5dc5ecf92262c62c0881d513b85ce7fca48b711722f203616cbd6464c64)(graphql@16.12.0))(graphql@16.12.0)':
     dependencies:
       '@envelop/core': 5.4.0
       graphql: 16.12.0
-      graphql-modules: 3.1.1(patch_hash=bf0dc5dc5ecf92262c62c0881d513b85ce7fca48b711722f203616cbd6464c64)(graphql@16.12.0)
+      graphql-modules: 3.0.0(patch_hash=bf0dc5dc5ecf92262c62c0881d513b85ce7fca48b711722f203616cbd6464c64)(graphql@16.12.0)
       tslib: 2.8.1
 
   '@envelop/instrumentation@1.0.0':
@@ -10450,7 +10451,7 @@ snapshots:
       - uWebSockets.js
       - utf-8-validate
 
-  graphql-modules@3.1.1(patch_hash=bf0dc5dc5ecf92262c62c0881d513b85ce7fca48b711722f203616cbd6464c64)(graphql@16.12.0):
+  graphql-modules@3.0.0(patch_hash=bf0dc5dc5ecf92262c62c0881d513b85ce7fca48b711722f203616cbd6464c64)(graphql@16.12.0):
     dependencies:
       '@graphql-tools/schema': 10.0.31(graphql@16.12.0)
       '@graphql-tools/wrap': 10.1.4(graphql@16.12.0)
