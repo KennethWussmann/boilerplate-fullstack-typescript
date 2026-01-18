@@ -13,6 +13,7 @@ export type NavigationItem = {
   description?: string;
   shortcut?: Shortcut;
   devOnly?: boolean;
+  apiEnabledOnly?: boolean;
   external?: boolean;
   trees: NavigationTree[];
 };

@@ -27,7 +27,6 @@ const items: Record<string, NavigationItem> = {
     icon: shortcutRegistry.openDocs.icon,
     description: 'Read the application documentation',
     shortcut: 'openDocs',
-    devOnly: true,
     trees: ['public', 'dashboard'],
   },
   devTools: {
@@ -47,6 +46,7 @@ const items: Record<string, NavigationItem> = {
     icon: Telescope,
     description: 'Open then GraphiQL Playground',
     devOnly: true,
+    apiEnabledOnly: true,
     trees: ['dashboard'],
   },
 };

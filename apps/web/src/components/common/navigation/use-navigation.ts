@@ -1,6 +1,8 @@
+import { useAtom } from 'jotai';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router';
 import { useDevMode } from '@/components/common/dev-tools';
+import { settings } from '@/lib';
 import { getNavigationItem, navigationConfig } from './navigation-registry';
 import type { NavigationItem, NavigationTree } from './types';
 
@@ -18,6 +20,7 @@ export type UseNavigationResult = {
 
 export const useNavigation = (tree: NavigationTree): UseNavigationResult => {
   const { isDev } = useDevMode();
+  const [isApiEnabled] = useAtom(settings.backend.enabled);
   const location = useLocation();
 
   return useMemo(() => {
@@ -31,6 +34,7 @@ export const useNavigation = (tree: NavigationTree): UseNavigationResult => {
             if (!item) return false;
             if (!item.trees.includes(tree)) return false;
             if (item.devOnly && !isDev) return false;
+            if (item.apiEnabledOnly && !isApiEnabled) return false;
             return true;
           });
 
@@ -48,5 +52,5 @@ export const useNavigation = (tree: NavigationTree): UseNavigationResult => {
     const active = items.find((item) => location.pathname === item.href);
 
     return { groups, items, active };
-  }, [tree, isDev, location.pathname]);
+  }, [tree, isDev, location.pathname, isApiEnabled]);
 };

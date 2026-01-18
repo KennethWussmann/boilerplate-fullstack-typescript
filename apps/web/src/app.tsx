@@ -63,7 +63,7 @@ const routes: RouteObject[] = [
       {
         path: '/dev-tools/graphql',
         element: <GraphiQLPage />,
-        handle: { title: 'Developer' },
+        handle: { title: 'GraphiQL' },
       },
     ],
   },
