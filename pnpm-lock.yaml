@@ -68,7 +68,7 @@ importers:
         specifier: ^16.12.0
         version: 16.12.0
       graphql-modules:
-        specifier: ^3.1.1
+        specifier: ^3.0.0
         version: 3.1.1(patch_hash=bf0dc5dc5ecf92262c62c0881d513b85ce7fca48b711722f203616cbd6464c64)(graphql@16.12.0)
       graphql-scalars:
         specifier: ^1.25.0
