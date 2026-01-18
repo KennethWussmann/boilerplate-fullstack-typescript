@@ -8,7 +8,7 @@ import { DevToolsPage } from '@/pages/dev-tools-page';
 import { HomePage } from '@/pages/home-page';
 import { NotFoundPage } from '@/pages/not-found-page';
 import { SettingsPage } from '@/pages/settings-page';
-import { ErrorBoundaryProvider, PWAPrompt } from './components';
+import { ErrorBoundaryProvider, LayoutSlotsProvider, PWAPrompt } from './components';
 import { CookieBanner } from './components/common/cookie-banner';
 import { Toaster } from './components/ui/sonner';
 import { isHashBasedRouting } from './lib/constants';
@@ -47,27 +47,29 @@ const routes = [
 ];
 const router = isHashBasedRouting ? createHashRouter(routes) : createBrowserRouter(routes);
 
-function AppWithoutGraphQL() {
+const AppWithoutGraphQL = () => {
   return (
     <>
       <AnalyticsProvider />
       <PWAPrompt />
       <Toaster />
       <CookieBanner />
-      <RouterProvider router={router} />
+      <LayoutSlotsProvider>
+        <RouterProvider router={router} />
+      </LayoutSlotsProvider>
     </>
   );
-}
+};
 
-function AppWithGraphQL({ client }: { client: ApolloClient }) {
+const AppWithGraphQL = ({ client }: { client: ApolloClient }) => {
   return (
     <ApolloProvider client={client}>
       <AppWithoutGraphQL />
     </ApolloProvider>
   );
-}
+};
 
-function App() {
+const App = () => {
   return (
     <ThemeProvider>
       <ErrorBoundaryProvider>
@@ -75,6 +77,6 @@ function App() {
       </ErrorBoundaryProvider>
     </ThemeProvider>
   );
-}
+};
 
 export default App;

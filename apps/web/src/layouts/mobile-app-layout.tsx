@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from 'react-router';
-import { ErrorBoundary } from '@/components';
+import { ErrorBoundary, SlotTarget } from '@/components';
 import { useNavigation } from '@/components/common/navigation';
 import { ThemeDropdownMenu, track } from '@/lib';
 import { useGlobalShortcuts } from '@/lib/shortcuts';
@@ -14,8 +14,10 @@ export const MobileAppLayout = () => {
     <ErrorBoundary>
       <div className="flex h-screen flex-col overflow-hidden">
         <header className="flex h-14 shrink-0 items-center justify-between border-b px-4">
-          <h1 className="text-lg font-semibold">{active?.name || 'Dashboard'}</h1>
-          <ThemeDropdownMenu />
+          <h1 className="text-lg font-semibold">
+            <SlotTarget name="title" fallback={active?.name || 'Dashboard'} />
+          </h1>
+          <SlotTarget name="toolbar" fallback={<ThemeDropdownMenu />} />
         </header>
         <main className="flex min-h-0 flex-1 flex-col overflow-auto">
           <div className="flex-1 p-4">

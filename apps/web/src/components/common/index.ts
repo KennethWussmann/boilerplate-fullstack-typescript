@@ -1,5 +1,6 @@
 export * from './empty-state';
 export * from './error-boundary';
+export * from './layout';
 export * from './loading-state';
 export * from './metric-card';
 export * from './navigation';

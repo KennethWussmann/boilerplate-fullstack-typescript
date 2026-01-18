@@ -1,4 +1,5 @@
 import { Link, Outlet } from 'react-router';
+import { SlotTarget } from '@/components';
 import { useNavigation } from '@/components/common/navigation';
 import { Button } from '@/components/ui';
 import { ThemeDropdownMenu, track } from '@/lib';
@@ -28,7 +29,7 @@ export const PublicLayout = () => {
                 </Link>
               </Button>
             ))}
-            <ThemeDropdownMenu />
+            <SlotTarget name="toolbar" fallback={<ThemeDropdownMenu />} />
           </nav>
         </div>
       </header>

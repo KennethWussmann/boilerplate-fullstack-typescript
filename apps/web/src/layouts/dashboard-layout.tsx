@@ -1,7 +1,7 @@
 import { Activity, Menu } from 'lucide-react';
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
-import { ErrorBoundary, ShortcutKeys } from '@/components';
+import { ErrorBoundary, ShortcutKeys, SlotTarget } from '@/components';
 import { useNavigation } from '@/components/common/navigation';
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui';
 import { ThemeDropdownMenu, track } from '@/lib';
@@ -124,9 +124,11 @@ export const DashboardLayout = () => {
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Open menu</span>
               </Button>
-              <h1 className="text-lg font-semibold">{active?.name || 'Dashboard'}</h1>
+              <h1 className="text-lg font-semibold">
+                <SlotTarget name="title" fallback={active?.name || 'Dashboard'} />
+              </h1>
             </div>
-            <ThemeDropdownMenu />
+            <SlotTarget name="toolbar" fallback={<ThemeDropdownMenu />} />
           </header>
           <main className="flex min-h-0 flex-1 flex-col overflow-hidden">
             <div className="flex min-h-0 flex-1 flex-col p-4">
