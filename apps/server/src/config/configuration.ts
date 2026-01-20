@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { authProviderTypeSchema } from '@/http/index.js';
 import { LocalFileSystem } from '../file-system/index.js';
 import type { ConfigurationCompositionOptions } from './configurationLoader.js';
 
@@ -72,6 +73,42 @@ export const configurationSchema = z.object({
       .describe(
         'Enable log streaming via GraphQL subscription. Example: "yes" or "no". Default: "no"'
       ),
+    auth: z.object({
+      enabled: stringBoolSchema
+        .default(false)
+        .describe(
+          'Enables authentication and authorization on the API. Example: "yes" or "no". Default: "no"'
+        ),
+      provider: authProviderTypeSchema
+        .default('supertokens')
+        .describe(
+          'The provider to use for authentication and authorization. Only "supertokens" is supported. Default: "supertokens"'
+        ),
+      supertokens: z
+        .object({
+          connection_url: z
+            .string()
+            .default('http://localhost:3567')
+            .describe(
+              'The URL where the SuperTokens instance is reachable. Example: "http://localhost:3567". Default: "http://localhost:3567"'
+            ),
+          api_key: z
+            .string()
+            .describe(
+              'The API key for the SuperTokens instance. Example: "abc123". Default: "none, required if auth is enabled"'
+            ),
+          app_name: z
+            .string()
+            .describe('Example: "Application". Default: "none, required if auth is enabled"'),
+          api_domain: z
+            .string()
+            .describe('Example: "Application". Default: "none, required if auth is enabled"'),
+          website_domain: z
+            .string()
+            .describe('Example: "Application". Default: "none, required if auth is enabled"'),
+        })
+        .optional(),
+    }),
   }),
   frontend: z.object({
     enabled: stringBoolSchema
@@ -115,6 +152,17 @@ export const defaultConfigOptions: ConfigurationCompositionOptions<typeof config
       cors_enabled: env('API_CORS_ENABLED'),
       public_base_url: env('PUBLIC_BASE_URL'),
       log_streaming_enabled: env('API_LOG_STREAMING_ENABLED'),
+      auth: {
+        enabled: env('API_AUTH_ENABLED'),
+        provider: env('API_AUTH_PROVIDER'),
+        supertokens: {
+          api_key: env('API_AUTH_SUPERTOKENS_API_KEY'),
+          api_domain: env('API_AUTH_SUPERTOKENS_API_DOMAIN'),
+          app_name: env('API_AUTH_SUPERTOKENS_APP_NAME'),
+          connection_url: env('API_AUTH_SUPERTOKENS_CONNECTION_URL'),
+          website_domain: env('API_AUTH_SUPERTOKENS_WEBSITE_DOMAIN'),
+        },
+      },
     },
     database: {
       enabled: env('DATABASE_ENABLED'),

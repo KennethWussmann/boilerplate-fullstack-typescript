@@ -6,9 +6,10 @@ import type { Logger } from 'winston';
 import type { ApplicationContext } from '../applicationContext.js';
 import type { Configuration } from '../config/index.js';
 import { toError } from '../utils/error.js';
+import type { AuthProvider } from './auth/authProvider.js';
+import { SuperTokensService } from './auth/superTokensService.js';
 import { HealthModule } from './routers/health/healthModule.js';
 import {
-  GraphQLRouter,
   HealthBroadcastService,
   HealthRouter,
   LogStreamingModule,
@@ -19,14 +20,23 @@ export class HTTPServer {
   private app: Application;
   private server: Server | null = null;
   private healthBroadcastService: HealthBroadcastService;
+  private authProvider: AuthProvider | null = null;
 
   constructor(
     private readonly logger: Logger,
     private readonly config: Configuration,
-    private readonly applicationContext: ApplicationContext
+    readonly applicationContext: ApplicationContext
   ) {
     this.app = express();
     this.healthBroadcastService = new HealthBroadcastService(applicationContext.pubSub);
+
+    if (config.api.auth.enabled) {
+      this.authProvider = new SuperTokensService(
+        logger.child({ name: 'superTokensService' }),
+        config
+      );
+    }
+
     this.setupMiddleware();
   }
 
@@ -39,7 +49,7 @@ export class HTTPServer {
     this.app.use(express.urlencoded({ extended: true }));
   }
 
-  private async setupRouters(server: Server) {
+  private async setupRouters() {
     const basePath = this.config.api.base_path || '/';
     const graphqlModules = [HealthModule];
     if (this.config.api.log_streaming_enabled) {
@@ -48,16 +58,16 @@ export class HTTPServer {
 
     await Promise.all(
       [
-        new GraphQLRouter(
-          this.logger.child({ name: 'graphql' }),
-          server,
-          {
-            applicationContext: this.applicationContext,
-            logger: this.logger.child({ name: 'graphql-resolver' }),
-            pubSub: this.applicationContext.pubSub,
-          },
-          graphqlModules
-        ),
+        // new GraphQLRouter(
+        //   this.logger.child({ name: 'graphql' }),
+        //   server,
+        //   {
+        //     applicationContext: this.applicationContext,
+        //     logger: this.logger.child({ name: 'graphql-resolver' }),
+        //     pubSub: this.applicationContext.pubSub,
+        //   },
+        //   graphqlModules
+        // ),
         new HealthRouter(this.healthBroadcastService),
         ...(this.config.frontend.enabled ? [] : []),
       ].map(async (router) => {
@@ -79,6 +89,24 @@ export class HTTPServer {
 
   public initialize = async (): Promise<void> => {
     await this.healthBroadcastService.initialize();
+
+    try {
+      if (this.authProvider) {
+        await this.authProvider.initialize(this.app);
+      }
+
+      await this.setupRouters();
+      this.logger.debug(`Loaded routers`);
+
+      if (this.authProvider) {
+        await this.authProvider.onPostInitialize(this.app);
+      }
+    } catch (e: unknown) {
+      this.logger.error('Failed to load routers', { error: toError(e) });
+      void this.shutdown();
+      return;
+    }
+
     return new Promise((resolve, reject) => {
       if (!this.config.api.enabled) {
         this.logger.debug('API is disabled, skipping HTTP server initialization');
@@ -95,17 +123,6 @@ export class HTTPServer {
 
       this.server = this.app.listen(port, async () => {
         const basePath = this.config.api.base_path || '/';
-        if (this.server) {
-          try {
-            await this.setupRouters(this.server);
-            this.logger.debug(`Loaded routers`);
-          } catch (e: unknown) {
-            this.logger.error('Failed to load routers', { error: toError(e) });
-            void this.shutdown();
-            resolve();
-            return;
-          }
-        }
         resolve();
         this.logger.info(`HTTP server started on port ${port} with base path ${basePath}`);
       });
@@ -118,6 +135,7 @@ export class HTTPServer {
   };
 
   public shutdown = async (): Promise<void> => {
+    await this.authProvider?.shutdown();
     await this.healthBroadcastService.shutdown();
     return new Promise((resolve) => {
       if (!this.server) {

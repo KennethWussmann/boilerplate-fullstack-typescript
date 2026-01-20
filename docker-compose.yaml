@@ -8,3 +8,5 @@ services:
       - FRONTEND_ENABLED=true
     volumes:
       - ./data:/data
+  supertokens:
+    

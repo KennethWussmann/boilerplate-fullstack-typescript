@@ -8,6 +8,13 @@ The server can be configured with JSON, YAML or Environment Variables.
 
 | Config Path | Environment Variable | Type | Default | Required | Description |
 |-------------|---------------------|------|---------|----------|-------------|
+| `api.auth.enabled` | `API_AUTH_ENABLED` | boolean \| string | false | Yes | Enables authentication and authorization on the API. Example: "yes" or "no". Default: "no" |
+| `api.auth.provider` | `API_AUTH_PROVIDER` | unknown | "supertokens" | Yes | The provider to use for authentication and authorization. Only "supertokens" is supported. Default: "supertokens" |
+| `api.auth.supertokens.api_domain` | `API_AUTH_SUPERTOKENS_API_DOMAIN` | string | - | Yes | Example: "Application". Default: "none, required if auth is enabled" |
+| `api.auth.supertokens.api_key` | `API_AUTH_SUPERTOKENS_API_KEY` | string | - | Yes | The API key for the SuperTokens instance. Example: "abc123". Default: "none, required if auth is enabled" |
+| `api.auth.supertokens.app_name` | `API_AUTH_SUPERTOKENS_APP_NAME` | string | - | Yes | Example: "Application". Default: "none, required if auth is enabled" |
+| `api.auth.supertokens.connection_url` | `API_AUTH_SUPERTOKENS_CONNECTION_URL` | string | "http://localhost:3567" | Yes | The URL where the SuperTokens instance is reachable. Example: "http://localhost:3567". Default: "http://localhost:3567" |
+| `api.auth.supertokens.website_domain` | `API_AUTH_SUPERTOKENS_WEBSITE_DOMAIN` | string | - | Yes | Example: "Application". Default: "none, required if auth is enabled" |
 | `api.base_path` | `API_BASE_PATH` | string | "/" | Yes | Serve the HTTP API on a different base path. Example: "/api". Default: "/" |
 | `api.bind_address` | `API_BIND_ADDRESS` | string | "0.0.0.0" | Yes | Bind address of the HTTP server. Example: "127.0.0.1". Default: "0.0.0.0" |
 | `api.cors_enabled` | `API_CORS_ENABLED` | boolean \| string | true | Yes | Enable CORS (Cross-Origin Resource Sharing) for the HTTP API. Example: "yes" or "no". Default: "yes" |

@@ -1,5 +1,6 @@
 import type { Router as ExpressRouter, Request, Response } from 'express';
 import { Router } from 'express';
+import { verifySession } from 'supertokens-node/recipe/session/framework/express';
 import type { HealthBroadcastService } from './healthBroadcastService.js';
 
 export class HealthRouter {
@@ -12,7 +13,7 @@ export class HealthRouter {
   public initialize = async () => {};
 
   private setupRoutes(): void {
-    this.router.get('/health', this.getHealth.bind(this));
+    this.router.get('/health', verifySession(), this.getHealth.bind(this));
   }
 
   private async getHealth(_req: Request, res: Response): Promise<void> {
