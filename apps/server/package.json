@@ -40,9 +40,11 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@bull-board/api": "^6.16.2",
+    "@bull-board/express": "^6.16.2",
     "@envelop/graphql-modules": "^9.0.0",
     "@graphql-tools/load-files": "^7.0.1",
-    "@libsql/client": "^0.17.0",
+    "bullmq": "^5.66.4",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
@@ -55,13 +57,11 @@
     "graphql-ws": "^6.0.6",
     "graphql-yoga": "^5.18.0",
     "parse-duration": "^2.1.5",
+    "postgres": "^3.4.8",
     "winston": "^3.19.0",
     "winston-daily-rotate-file": "^5.0.0",
     "winston-transport": "^4.9.0",
     "ws": "^8.19.0",
-    "@bull-board/api": "^6.16.2",
-    "@bull-board/express": "^6.16.2",
-    "bullmq": "^5.66.4",
     "yaml": "^2.8.2",
     "zod": "^4.3.5"
   }

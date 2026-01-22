@@ -72,9 +72,9 @@ export const configurationSchema = z.object({
       .describe('Enable the HTTP API. Example: "yes" or "no". Default: "yes"'),
     connection_url: z
       .string()
-      .default('file:local.db')
+      .default('postgres://localhost:5432/server')
       .describe(
-        'Required if database is enabled. Connection URL to database. Default: "file:local.db"'
+        'Required if database is enabled. Connection URL to database. Default: "postgres://localhost:5432/server"'
       ),
   }),
   api: z.object({

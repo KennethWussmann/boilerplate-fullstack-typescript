@@ -1,10 +1,12 @@
-import { drizzle } from 'drizzle-orm/libsql';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
 import type { Logger } from 'winston';
 import type { Configuration } from '../config/index.js';
 import { DatabaseUninitializedError } from '../error/error.js';
 
 export class DatabaseService {
   private database: ReturnType<typeof drizzle> | null = null;
+  private client: ReturnType<typeof postgres> | null = null;
 
   constructor(
     private readonly logger: Logger,
@@ -16,11 +18,16 @@ export class DatabaseService {
       this.logger.info('The database is disabled');
       return;
     }
-    this.database = drizzle(this.config.connection_url);
+    this.client = postgres(this.config.connection_url);
+    this.database = drizzle(this.client);
     this.logger.info('Connected to database');
   };
 
-  public shutdown = async () => {};
+  public shutdown = async () => {
+    if (this.client) {
+      await this.client.end();
+    }
+  };
 
   public getDatabase = async () => {
     if (!this.config.enabled) {

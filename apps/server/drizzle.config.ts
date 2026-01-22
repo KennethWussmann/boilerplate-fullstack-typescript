@@ -16,7 +16,7 @@ if (!config.database.enabled) {
 export default defineConfig({
   out: './drizzle',
   schema: './src/database/schema.ts',
-  dialect: 'sqlite',
+  dialect: 'postgresql',
   dbCredentials: {
     url: config.database.connection_url,
   },

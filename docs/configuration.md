@@ -16,7 +16,7 @@ The server can be configured with JSON, YAML or Environment Variables.
 | `api.port` | `API_PORT` | number \| string | 8080 | Yes | Port the HTTP server should be listining on. Example: "8080". Default: "8080" |
 | `api.public_base_url` | `PUBLIC_BASE_URL` | string | - | No | - |
 | `applicationName` | `APPLICATION_NAME` | string | "Application" | Yes | Name of the application. Useful for display. Default: "Application" |
-| `database.connection_url` | `DATABASE_CONNECTION_URL` | string | "file:local.db" | Yes | Required if database is enabled. Connection URL to database. Default: "file:local.db" |
+| `database.connection_url` | `DATABASE_CONNECTION_URL` | string | "postgres://localhost:5432/server" | Yes | Required if database is enabled. Connection URL to database. Default: "postgres://localhost:5432/server" |
 | `database.enabled` | `DATABASE_ENABLED` | boolean \| string | true | No | Enable the HTTP API. Example: "yes" or "no". Default: "yes" |
 | `frontend.base_path` | `FRONTEND_BASE_PATH` | string | "/" | Yes | Serve the frontend on a different base path. Example: "/app". Default: "/" |
 | `frontend.enabled` | `FRONTEND_ENABLED` | boolean \| string | false | Yes | Enable serving frontend static files. Example: "yes" or "no". Default: "no" |
