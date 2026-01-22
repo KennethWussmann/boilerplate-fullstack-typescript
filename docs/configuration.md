@@ -15,6 +15,7 @@ The server can be configured with JSON, YAML or Environment Variables.
 | `api.log_streaming_enabled` | `API_LOG_STREAMING_ENABLED` | boolean \| string | false | Yes | Enable log streaming via GraphQL subscription. Example: "yes" or "no". Default: "no" |
 | `api.port` | `API_PORT` | number \| string | 8080 | Yes | Port the HTTP server should be listining on. Example: "8080". Default: "8080" |
 | `api.public_base_url` | `PUBLIC_BASE_URL` | string | - | No | - |
+| `applicationName` | `APPLICATION_NAME` | string | "Application" | Yes | Name of the application. Useful for display. Default: "Application" |
 | `database.connection_url` | `DATABASE_CONNECTION_URL` | string | "file:local.db" | Yes | Required if database is enabled. Connection URL to database. Default: "file:local.db" |
 | `database.enabled` | `DATABASE_ENABLED` | boolean \| string | true | No | Enable the HTTP API. Example: "yes" or "no". Default: "yes" |
 | `frontend.base_path` | `FRONTEND_BASE_PATH` | string | "/" | Yes | Serve the frontend on a different base path. Example: "/app". Default: "/" |
@@ -23,6 +24,12 @@ The server can be configured with JSON, YAML or Environment Variables.
 | `log.destination` | `LOG_DESTINATION` | string | - | No | Optional log file destination. If not specified, logs to console. Example: "./logs/app.log". Default: console output |
 | `log.format` | `LOG_FORMAT` | "json" \| "text" | "json" | Yes | Output format for log messages. Default: "json" |
 | `log.level` | `LOG_LEVEL` | "debug" \| "info" \| "warn" \| "error" \| "fatal" \| "notice" | "info" | Yes | Logging level for the application. Example: "info". Default: "info" |
+| `redis.dashboard_enabled` | `REDIS_DASHBOARD_ENABLED` | boolean \| string | - | No | Enable the BullBoard Webinterface to look at the state of BullMQ. Default: "no" |
+| `redis.enabled` | `REDIS_ENABLED` | boolean \| string | true | No | Enable Redis. Example: "yes" or "no". Default: "yes" |
+| `redis.host` | `REDIS_HOST` | string | "127.0.0.1" | Yes | Redis server host for caching. Default: 127.0.0.1 |
+| `redis.password` | `REDIS_PASSWORD` | string | - | Yes | Redis server password. Required if redis is enabled. |
+| `redis.port` | `REDIS_PORT` | number \| string | 6379 | Yes | Redis server port for caching. Default: 6379 |
+| `redis.workers` | `REDIS_WORKERS` | unknown | unknown | No | Register workers that this instance is running. Default: "[]" |
 | `serverName` | `SERVER_NAME` | string | - | No | Arbitrary string that identifies this server. Useful for logs and metrics. Default: none |
 | `version` | `VERSION` | string | "develop" | Yes | - |
 

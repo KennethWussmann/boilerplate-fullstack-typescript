@@ -1,0 +1,10 @@
+services:
+  valkey:
+    image: valkey/valkey:latest
+    command: valkey-server --port 6379 --requirepass t0lPYFkPhOJ2CfCFYj71y3 
+    volumes:
+      - valkey_data:/data
+    ports:
+      - 6379:6379
+volumes:
+  valkey_data:

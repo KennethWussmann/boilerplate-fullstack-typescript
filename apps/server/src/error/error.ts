@@ -6,3 +6,4 @@ export class ApplicationError extends Error {
 
 export class ApplicationUninitializedError extends ApplicationError {}
 export class DatabaseUninitializedError extends ApplicationError {}
+export class RedisUninitializedError extends ApplicationError {}

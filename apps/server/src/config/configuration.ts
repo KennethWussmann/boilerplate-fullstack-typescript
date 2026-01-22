@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { LocalFileSystem } from '../file-system/index.js';
+import { workerConfigurationSchema } from '../redis/index.js';
 import type { ConfigurationCompositionOptions } from './configurationLoader.js';
 
 const stringBoolSchema = z.union([z.boolean(), z.stringbool()]);
@@ -16,6 +17,10 @@ export const configurationSchema = z.object({
     .describe(
       'Arbitrary string that identifies this server. Useful for logs and metrics. Default: none'
     ),
+  applicationName: z
+    .string()
+    .default('Application')
+    .describe('Name of the application. Useful for display. Default: "Application"'),
   log: z.object({
     level: z
       .enum(['debug', 'info', 'warn', 'error', 'fatal', 'notice'])
@@ -31,6 +36,29 @@ export const configurationSchema = z.object({
       .describe(
         'Optional log file destination. If not specified, logs to console. Example: "./logs/app.log". Default: console output'
       ),
+  }),
+  redis: z.object({
+    enabled: stringBoolSchema
+      .optional()
+      .default(true)
+      .describe('Enable Redis. Example: "yes" or "no". Default: "yes"'),
+    host: z
+      .string()
+      .default('127.0.0.1')
+      .describe('Redis server host for caching. Default: 127.0.0.1'),
+    port: numberFromString
+      .default(6379)
+      .pipe(z.number().min(1).max(65535))
+      .describe('Redis server port for caching. Default: 6379'),
+    password: z.string().describe('Redis server password. Required if redis is enabled.'),
+    dashboard_enabled: stringBoolSchema
+      .optional()
+      .describe('Enable the BullBoard Webinterface to look at the state of BullMQ. Default: "no"'),
+    workers: z
+      .array(workerConfigurationSchema)
+      .optional()
+      .default([])
+      .describe('Register workers that this instance is running. Default: "[]"'),
   }),
   database: z.object({
     enabled: stringBoolSchema
@@ -101,6 +129,7 @@ export const defaultConfigOptions: ConfigurationCompositionOptions<typeof config
   mapper: (env) => ({
     serverName: env('SERVER_NAME'),
     version: env('VERSION'),
+    applicationName: env('APPLICATION_NAME'),
     log: {
       level: env('LOG_LEVEL'),
       format: env('LOG_FORMAT'),
@@ -124,6 +153,14 @@ export const defaultConfigOptions: ConfigurationCompositionOptions<typeof config
       enabled: env('FRONTEND_ENABLED'),
       base_path: env('FRONTEND_BASE_PATH'),
       local_path: env('FRONTEND_LOCAL_PATH'),
+    },
+    redis: {
+      enabled: env('REDIS_ENABLED'),
+      host: env('REDIS_HOST'),
+      port: env('REDIS_PORT'),
+      password: env('REDIS_PASSWORD'),
+      dashboard_enabled: env('REDIS_DASHBOARD_ENABLED'),
+      workers: env('REDIS_WORKERS'),
     },
   }),
   fileSystem: new LocalFileSystem(),

@@ -2,10 +2,10 @@ import { createPubSub } from 'graphql-yoga';
 import type { Logger } from 'winston';
 import type { Configuration } from './config/index.js';
 import { DatabaseService } from './database/index.js';
-import type { AbstractFileSystem } from './file-system/abstractFileSystem.js';
-import { LocalFileSystem } from './file-system/localFileSystem.js';
+import { type AbstractFileSystem, LocalFileSystem } from './file-system/index.js';
 import { type GraphQLPubSub, HTTPServer } from './http/index.js';
 import { LogStreamingService } from './log-streaming/index.js';
+import { RedisService } from './redis/redisService.js';
 
 export class ApplicationContext {
   public readonly configuration: Configuration;
@@ -15,6 +15,7 @@ export class ApplicationContext {
   public httpServer: HTTPServer | null = null;
   public databaseService: DatabaseService | null = null;
   public logStreamingService: LogStreamingService | null = null;
+  public redisService: RedisService | null = null;
 
   constructor(
     configuration: Configuration,
@@ -42,8 +43,16 @@ export class ApplicationContext {
       this.configuration.database
     );
 
+    if (this.configuration.redis.enabled) {
+      this.redisService = new RedisService(
+        this.logger.child({ name: 'redisService' }),
+        this.configuration.redis
+      );
+    }
+
     await this.httpServer.initialize();
     await this.databaseService.initialize();
+    await this.redisService?.initialize();
 
     this.logger.info('Application context initialized successfully');
   }
@@ -53,6 +62,7 @@ export class ApplicationContext {
 
     void this.httpServer?.shutdown();
     void this.databaseService?.shutdown();
+    await this.redisService?.shutdown();
 
     this.logger.info('Application context shutdown complete');
   }

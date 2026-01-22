@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import cors from 'cors';
 import express, { type Application } from 'express';
 import type { Logger } from 'winston';
+import { BullBoardRouter } from '@/redis/bullBoardRouter.js';
 import type { ApplicationContext } from '../applicationContext.js';
 import type { Configuration } from '../config/index.js';
 import { toError } from '../utils/error.js';
@@ -59,7 +60,15 @@ export class HTTPServer {
           graphqlModules
         ),
         new HealthRouter(this.healthBroadcastService),
-        ...(this.config.frontend.enabled ? [] : []),
+        ...(this.config.redis.dashboard_enabled && this.applicationContext.redisService
+          ? [
+              new BullBoardRouter(
+                this.logger.child({ name: 'bullBoardRouter' }),
+                '/queues',
+                this.applicationContext.redisService?.getBullBoardAdapters()
+              ),
+            ]
+          : []),
       ].map(async (router) => {
         await router.initialize();
         this.app.use(basePath, router.router);
