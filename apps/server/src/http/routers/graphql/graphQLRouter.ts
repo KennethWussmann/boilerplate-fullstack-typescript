@@ -3,17 +3,20 @@ import { useGraphQLModules } from '@envelop/graphql-modules';
 import { type Router as ExpressRouter, Router } from 'express';
 import { createApplication, type Module } from 'graphql-modules';
 import { useServer } from 'graphql-ws/use/ws';
-import { createYoga } from 'graphql-yoga';
+import { createYoga, type YogaInitialContext } from 'graphql-yoga';
 import type { Logger } from 'winston';
 import { WebSocketServer } from 'ws';
+import type { UserContext } from '../../authMiddleware.js';
 import type { GraphQLContext } from './graphQLContext.js';
+
+type BaseGraphQLContext = Omit<GraphQLContext, 'user'>;
 
 export class GraphQLRouter {
   public readonly router: ExpressRouter = Router();
   constructor(
     private readonly logger: Logger,
     private readonly server: Server,
-    private readonly graphqlContext: GraphQLContext,
+    private readonly baseContext: BaseGraphQLContext,
     private readonly modules: (() => Promise<Module>)[]
   ) {}
 
@@ -25,7 +28,14 @@ export class GraphQLRouter {
     });
     const yoga = createYoga({
       plugins: [useGraphQLModules(application)],
-      context: this.graphqlContext,
+      context: (initialContext: YogaInitialContext): GraphQLContext => {
+        const req = initialContext.request as Request & { raw?: { user?: UserContext } };
+        const user = (req.raw as { user?: UserContext } | undefined)?.user;
+        return {
+          ...this.baseContext,
+          user,
+        };
+      },
     });
     this.router.use(yoga.graphqlEndpoint, yoga);
     const wsServer = new WebSocketServer({

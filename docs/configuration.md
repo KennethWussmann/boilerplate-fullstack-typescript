@@ -16,6 +16,12 @@ The server can be configured with JSON, YAML or Environment Variables.
 | `api.port` | `API_PORT` | number \| string | 8080 | Yes | Port the HTTP server should be listining on. Example: "8080". Default: "8080" |
 | `api.public_base_url` | `PUBLIC_BASE_URL` | string | - | No | - |
 | `applicationName` | `APPLICATION_NAME` | string | "Application" | Yes | Name of the application. Useful for display. Default: "Application" |
+| `auth.enabled` | `AUTH_ENABLED` | boolean \| string | false | Yes | Enable header-based authentication. Example: "yes" or "no". Default: "no" |
+| `auth.headers.email` | `AUTH_HEADER_EMAIL` | string | "Remote-Email" | Yes | Header name for email. Default: "Remote-Email" |
+| `auth.headers.groups` | `AUTH_HEADER_GROUPS` | string | "Remote-Groups" | Yes | Header name for groups. Default: "Remote-Groups" |
+| `auth.headers.name` | `AUTH_HEADER_NAME` | string | "Remote-Name" | Yes | Header name for display name. Default: "Remote-Name" |
+| `auth.headers.user` | `AUTH_HEADER_USER` | string | "Remote-User" | Yes | Header name for username. Default: "Remote-User" |
+| `auth.protected_routes` | `AUTH_PROTECTED_ROUTES` | unknown | unknown | Yes | Route prefixes that require authentication. If empty, all routes require auth. Example: ["/api", "/graphql"]. Default: [] |
 | `database.connection_url` | `DATABASE_CONNECTION_URL` | string | "postgres://localhost:5432/server" | Yes | Required if database is enabled. Connection URL to database. Default: "postgres://localhost:5432/server" |
 | `database.enabled` | `DATABASE_ENABLED` | boolean \| string | true | No | Enable the HTTP API. Example: "yes" or "no". Default: "yes" |
 | `frontend.base_path` | `FRONTEND_BASE_PATH` | string | "/" | Yes | Serve the frontend on a different base path. Example: "/app". Default: "/" |

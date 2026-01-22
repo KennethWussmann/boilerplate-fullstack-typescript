@@ -7,6 +7,7 @@ import { BullBoardRouter } from '@/redis/bullBoardRouter.js';
 import type { ApplicationContext } from '../applicationContext.js';
 import type { Configuration } from '../config/index.js';
 import { toError } from '../utils/error.js';
+import { createAuthMiddleware } from './authMiddleware.js';
 import { HealthModule } from './routers/health/healthModule.js';
 import {
   GraphQLRouter,
@@ -38,6 +39,11 @@ export class HTTPServer {
 
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
+
+    if (this.config.auth.enabled) {
+      this.app.use(createAuthMiddleware(this.config));
+      this.logger.info('Enabled authentication');
+    }
   }
 
   private async setupRouters(server: Server) {

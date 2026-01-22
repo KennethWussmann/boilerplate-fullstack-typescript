@@ -121,6 +121,35 @@ export const configurationSchema = z.object({
         'Path to the frontend build directory. Example: "/app/apps/web/dist". Default: "./www"'
       ),
   }),
+  auth: z.object({
+    enabled: stringBoolSchema
+      .default(false)
+      .describe('Enable header-based authentication. Example: "yes" or "no". Default: "no"'),
+    protected_routes: z
+      .array(z.string())
+      .default([])
+      .describe(
+        'Route prefixes that require authentication. If empty, all routes require auth. Example: ["/api", "/graphql"]. Default: []'
+      ),
+    headers: z.object({
+      user: z
+        .string()
+        .default('Remote-User')
+        .describe('Header name for username. Default: "Remote-User"'),
+      email: z
+        .string()
+        .default('Remote-Email')
+        .describe('Header name for email. Default: "Remote-Email"'),
+      name: z
+        .string()
+        .default('Remote-Name')
+        .describe('Header name for display name. Default: "Remote-Name"'),
+      groups: z
+        .string()
+        .default('Remote-Groups')
+        .describe('Header name for groups. Default: "Remote-Groups"'),
+    }),
+  }),
 });
 
 export type Configuration = z.infer<typeof configurationSchema>;
@@ -158,6 +187,16 @@ export const defaultConfigOptions: ConfigurationCompositionOptions<typeof config
       enabled: env('FRONTEND_ENABLED'),
       base_path: env('FRONTEND_BASE_PATH'),
       local_path: env('FRONTEND_LOCAL_PATH'),
+    },
+    auth: {
+      enabled: env('AUTH_ENABLED'),
+      protected_routes: env('AUTH_PROTECTED_ROUTES'),
+      headers: {
+        user: env('AUTH_HEADER_USER'),
+        email: env('AUTH_HEADER_EMAIL'),
+        name: env('AUTH_HEADER_NAME'),
+        groups: env('AUTH_HEADER_GROUPS'),
+      },
     },
     redis: {
       enabled: env('REDIS_ENABLED'),
