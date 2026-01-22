@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { LocalFileSystem } from '../file-system/index.js';
-import { workerConfigurationSchema } from '../redis/index.js';
+import { queueConfigurationSchema, workerConfigurationSchema } from '../redis/index.js';
 import type { ConfigurationCompositionOptions } from './configurationLoader.js';
 
 const stringBoolSchema = z.union([z.boolean(), z.stringbool()]);
@@ -59,6 +59,11 @@ export const configurationSchema = z.object({
       .optional()
       .default([])
       .describe('Register workers that this instance is running. Default: "[]"'),
+    queues: z
+      .array(queueConfigurationSchema)
+      .optional()
+      .default([])
+      .describe('Register queues that this instance is running. Default: "[]"'),
   }),
   database: z.object({
     enabled: stringBoolSchema
@@ -161,6 +166,7 @@ export const defaultConfigOptions: ConfigurationCompositionOptions<typeof config
       password: env('REDIS_PASSWORD'),
       dashboard_enabled: env('REDIS_DASHBOARD_ENABLED'),
       workers: env('REDIS_WORKERS'),
+      queues: env('REDIS_QUEUES'),
     },
   }),
   fileSystem: new LocalFileSystem(),

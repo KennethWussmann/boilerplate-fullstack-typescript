@@ -29,6 +29,7 @@ The server can be configured with JSON, YAML or Environment Variables.
 | `redis.host` | `REDIS_HOST` | string | "127.0.0.1" | Yes | Redis server host for caching. Default: 127.0.0.1 |
 | `redis.password` | `REDIS_PASSWORD` | string | - | Yes | Redis server password. Required if redis is enabled. |
 | `redis.port` | `REDIS_PORT` | number \| string | 6379 | Yes | Redis server port for caching. Default: 6379 |
+| `redis.queues` | `REDIS_QUEUES` | unknown | unknown | No | Register queues that this instance is running. Default: "[]" |
 | `redis.workers` | `REDIS_WORKERS` | unknown | unknown | No | Register workers that this instance is running. Default: "[]" |
 | `serverName` | `SERVER_NAME` | string | - | No | Arbitrary string that identifies this server. Useful for logs and metrics. Default: none |
 | `version` | `VERSION` | string | "develop" | Yes | - |
