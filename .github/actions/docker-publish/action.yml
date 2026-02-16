@@ -49,3 +49,4 @@ runs:
         build-args: ${{ inputs.build-args }}
         context: ${{ inputs.context }}
         file: ${{ inputs.dockerfile }}
+        provenance: false

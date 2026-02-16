@@ -15,7 +15,11 @@
     "drizzle-kit": "CONFIG_JSON=$(tsx --no-warnings './scripts/print-config.ts') drizzle-kit",
     "db:migrate": "pnpm drizzle-kit migrate --config=drizzle.config.ts",
     "db:push": "pnpm drizzle-kit push --config=drizzle.config.ts",
-    "db:generate": "pnpm drizzle-kit generate --config=drizzle.config.ts"
+    "db:generate": "pnpm drizzle-kit generate --config=drizzle.config.ts",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:reset": "tsx scripts/reset-db.ts && pnpm db:migrate && pnpm db:seed",
+    "db:clear": "tsx scripts/reset-db.ts && pnpm db:migrate",
+    "gql": "tsx scripts/gql.ts"
   },
   "files": [
     "dist/",
