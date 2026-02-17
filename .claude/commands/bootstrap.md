@@ -80,7 +80,7 @@ Create a new minimalistic README with the following structure:
 8. **Project Structure**:
    - Simple tree showing apps/ and libs/ directories
 
-9. **License**: Keep as-is
+9. **License**: Keep as-is otherwise MIT. Update date in LICENSE file.
 
 **Important**:
 - Remove all boilerplate-specific documentation
