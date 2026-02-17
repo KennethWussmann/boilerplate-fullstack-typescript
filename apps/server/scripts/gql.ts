@@ -29,7 +29,7 @@ while (i < args.length) {
 if (!query && !process.stdin.isTTY) {
   try {
     query = readFileSync(0, 'utf-8').trim();
-  } catch { }
+  } catch {}
 }
 
 if (!query) {
@@ -44,7 +44,7 @@ const response = await fetch(url, {
 });
 
 const result = await response.json();
-process.stdout.write(JSON.stringify(result, null, 2) + '\n');
+process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 
 if ((result as { errors?: unknown[] }).errors) {
   process.exit(1);

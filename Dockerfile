@@ -15,6 +15,7 @@ RUN pnpm build
 
 # Production stage
 FROM node:24-alpine AS runner
+RUN corepack enable
 ARG VERSION
 
 ENV NODE_ENV=production
