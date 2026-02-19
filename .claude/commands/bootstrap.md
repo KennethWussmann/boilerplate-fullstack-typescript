@@ -21,14 +21,17 @@ Update the following files with the user's application name and description:
 ### Root package.json
 - `name`: Change from "boilerplate" to kebab-case version of user's app name
 - `description`: Add user's short description
+- `license`: Add user's license, if not known MIT
 
 ### apps/server/package.json
-- `name`: Change from "server" to "{app-name}-server"
+- `name`: Leave unchanged.
 - `description`: Add description like "{App Name} API server for {purpose}"
+- `license`: Add user's license, if not known MIT
 
 ### apps/web/package.json
-- `name`: Change from "web" to "{app-name}-web"
+- `name`: Leave unchanged.
 - `version`: Update to "1.0.0" (fresh start)
+- `license`: Add user's license, if not known MIT
 
 ## Step 4: Update Web Application Metadata
 
@@ -41,6 +44,9 @@ In the PWA manifest configuration:
 - `manifest.name`: Change from "Application" to user's app name
 - `manifest.short_name`: Change from "App" to shortened version (max 12 chars)
 - `manifest.description`: Change from "Example application" to user's short description
+
+### apps/web/src/lib/constants.ts
+- Change all constants based on user preference
 
 ## Step 5: Rewrite README.md
 
@@ -106,6 +112,16 @@ Keep these important elements:
 - CI/CD workflows
 - All technical infrastructure
 
+
+## Step 8: Update project
+
+Ensure that the project is in a good healthy state to start working immediately.
+
+Run:
+- pnpm update -r = Update all dependencies to latest versions. Watch out for biome.json schema changes. Ensure all package.json are properly updated.
+- pnpm check:fix = Ensure there are no lint error, fix all linting errors and warnings.
+- pnpm build = Ensure the entire project correctly builds.
+
 ## Summary
 
 After completion, provide the user with:
@@ -113,3 +129,4 @@ After completion, provide the user with:
 2. Brief description of what the app is now configured as
 3. Next steps to start development (install, start backend, start frontend)
 4. Note that example endpoints are still available as references
+5. A summary of the project update. What has changed, or fixed.
