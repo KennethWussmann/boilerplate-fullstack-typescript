@@ -12,22 +12,12 @@ env:
   DO_NOT_TRACK: 1
 
 jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    outputs:
-      tag: ${{ steps.vars.outputs.tag }}
-    steps:
-      - name: Get version
-        id: vars
-        run: echo "tag=${GITHUB_REF#refs/*/}" >> "$GITHUB_OUTPUT"
-
   build:
-    needs: prepare
     permissions:
       packages: write
       contents: read
     uses: ./.github/workflows/_docker-publish-multiarch.yml
     with:
-      version_tag: ${{ needs.prepare.outputs.tag }}
+      version_tag: ${{ github.ref_name }}
       additional_tags: '["latest"]'
     secrets: inherit

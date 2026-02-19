@@ -12,22 +12,29 @@ env:
   DO_NOT_TRACK: 1
 
 jobs:
-  prepare:
+  build:
     runs-on: ubuntu-latest
-    outputs:
-      short_sha: ${{ steps.git-commit.outputs.SHORT_SHA }}
+    permissions:
+      packages: write
+      contents: read
     steps:
+      - uses: actions/checkout@v6
+
       - name: Get git commit
         id: git-commit
         run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> "$GITHUB_OUTPUT"
 
-  build:
-    needs: prepare
-    permissions:
-      packages: write
-      contents: read
-    uses: ./.github/workflows/_docker-publish-multiarch.yml
-    with:
-      version_tag: ${{ needs.prepare.outputs.short_sha }}
-      additional_tags: '["develop"]'
-    secrets: inherit
+      - name: Lowercase repository name
+        id: repository-lowercase
+        run: echo "repository=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
+      - uses: ./.github/actions/docker-publish
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          tags: |
+            ghcr.io/${{ steps.repository-lowercase.outputs.repository }}:${{ steps.git-commit.outputs.SHORT_SHA }}
+            ghcr.io/${{ steps.repository-lowercase.outputs.repository }}:develop
+          build-args: |
+            VERSION=${{ steps.git-commit.outputs.SHORT_SHA }}
+          dockerUser: ${{ secrets.DOCKER_USER }}
+          dockerPassword: ${{ secrets.DOCKER_PAT }}
