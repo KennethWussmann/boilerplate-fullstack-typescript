@@ -1,4 +1,4 @@
-import { Activity, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
 import {
@@ -8,10 +8,12 @@ import {
   ShortcutKeys,
   SlotTarget,
 } from '@/components';
+import { Logo } from '@/components/common/logo';
 import { useNavigation } from '@/components/common/navigation';
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui';
 import { track } from '@/lib';
 import {
+  footerEnabled,
   githubUrl,
   legalUrl,
   privacyPolicyUrl,
@@ -74,8 +76,23 @@ export const DashboardLayout = () => {
 
   const FooterLinks = () => (
     <>
+      {productVersion && (
+        <div className="text-center text-[8pt] text-muted-foreground">
+          {githubUrl && isVersionHash ? (
+            <Link
+              to={`${githubUrl}/commit/${productVersion}`}
+              target="_blank"
+              className="hover:underline"
+            >
+              {productVersion}
+            </Link>
+          ) : (
+            productVersion
+          )}
+        </div>
+      )}
       {(legalUrl || privacyPolicyUrl) && (
-        <div className="flex flex-row justify-center gap-2 text-xs text-muted-foreground">
+        <div className="flex flex-row justify-center gap-2 text-[9pt] text-muted-foreground mb-2">
           {legalUrl && (
             <Link
               to={legalUrl}
@@ -102,21 +119,6 @@ export const DashboardLayout = () => {
           )}
         </div>
       )}
-      {productVersion && (
-        <div className="text-center text-xs text-muted-foreground">
-          {githubUrl && isVersionHash ? (
-            <Link
-              to={`${githubUrl}/commit/${productVersion}`}
-              target="_blank"
-              className="hover:underline"
-            >
-              {productVersion}
-            </Link>
-          ) : (
-            productVersion
-          )}
-        </div>
-      )}
       <Button variant="outline" className="w-full" asChild>
         <Link to="/">Back to Home</Link>
       </Button>
@@ -126,7 +128,7 @@ export const DashboardLayout = () => {
   const NavBarHeader = () => {
     return (
       <Link to="/dashboard" className="flex items-center gap-2 text-xl font-bold">
-        <Activity className="h-6 w-6" />
+        <Logo className="h-6 w-6" />
         {productName}
       </Link>
     );
@@ -144,9 +146,11 @@ export const DashboardLayout = () => {
             <nav className="flex-1 space-y-4 p-4">
               <NavigationLinks />
             </nav>
-            <div className="border-t p-4 space-y-4">
-              <FooterLinks />
-            </div>
+            {footerEnabled && (
+              <div className="border-t p-4 space-y-1">
+                <FooterLinks />
+              </div>
+            )}
           </div>
         </aside>
         <div className="flex flex-1 flex-col overflow-hidden">
@@ -183,9 +187,11 @@ export const DashboardLayout = () => {
             <nav className="flex-1 space-y-4 p-4">
               <NavigationLinks onNavigate={() => setMobileMenuOpen(false)} />
             </nav>
-            <div className="border-t p-4 space-y-4">
-              <FooterLinks />
-            </div>
+            {footerEnabled && (
+              <div className="border-t p-4 space-y-2">
+                <FooterLinks />
+              </div>
+            )}
           </SheetContent>
         </Sheet>
       </div>

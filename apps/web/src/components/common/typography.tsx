@@ -226,7 +226,7 @@ export function Text({
     muted: 'p',
   };
 
-  const Component = (as || elementMap[variant]) as any;
+  const Component = (as || elementMap[variant]) as React.ElementType;
   const variantClassName = variantMap[variant];
 
   return (

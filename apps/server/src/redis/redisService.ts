@@ -8,12 +8,13 @@ import type { AbstractRedisWorker } from './abstractRedisWorker.js';
 import { ExampleQueue } from './exampleQueue.js';
 import { ExampleWorker } from './exampleWorker.js';
 import type { QueueConfiguration, WorkerConfiguration } from './schema.js';
+import type { RedisJob } from './types.js';
 
 export class RedisService {
   private workerConfigurations: Map<string, WorkerConfiguration> = new Map();
   private queueConfigurations: Map<string, QueueConfiguration> = new Map();
-  private workers: AbstractRedisWorker<any, unknown>[] = [];
-  private queues: AbstractRedisQueue<any>[] = [];
+  private workers: AbstractRedisWorker<RedisJob<unknown>, unknown>[] = [];
+  private queues: AbstractRedisQueue<RedisJob<unknown>>[] = [];
 
   constructor(
     private readonly logger: Logger,
@@ -113,6 +114,7 @@ export class RedisService {
   public getBullBoardAdapters = (): BaseAdapter[] =>
     this.queues.map((queue) => new BullMQAdapter(queue.queue));
 
-  public getQueue = <T extends AbstractRedisQueue<any>>(name: string): T | undefined =>
-    this.queues.find((queue) => queue.config.name === name) as T | undefined;
+  public getQueue = <T extends AbstractRedisQueue<RedisJob<unknown>>>(
+    name: string
+  ): T | undefined => this.queues.find((queue) => queue.config.name === name) as T | undefined;
 }

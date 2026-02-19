@@ -5,7 +5,7 @@ import type { AbstractFileSystem, FileSystemFile } from '../file-system/index.js
 
 export type ConfigurationCompositionOptions<S extends z.ZodTypeAny> = {
   schema: S;
-  mapper: (env: (key: string) => any) => z.output<S>;
+  mapper: (env: (key: string) => string | undefined) => z.output<S>;
   cwd?: string;
   fileSystem: AbstractFileSystem;
 };
@@ -57,7 +57,7 @@ const pruneUndefinedKeepObjects = <T>(obj: T): T => {
   for (const [k, v] of Object.entries(obj)) {
     if (v === undefined) continue;
     if (isPlainObject(v) || Array.isArray(v)) {
-      out[k] = pruneUndefinedKeepObjects(v as any);
+      out[k] = pruneUndefinedKeepObjects(v as Record<string, unknown>);
     } else {
       out[k] = v;
     }
@@ -134,7 +134,7 @@ export class ConfigurationLoader<S extends z.ZodTypeAny> {
   };
 
   private loadAndComposeConfig = async (): Promise<z.output<S>> => {
-    const envConfig = this.options.mapper((key) => process.env[key]!);
+    const envConfig = this.options.mapper((key) => process.env[key]);
     return this.loadFileConfig(envConfig);
   };
 }

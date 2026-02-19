@@ -45,11 +45,28 @@ export class GraphQLRouter {
       path: join(this.basePath, yoga.graphqlEndpoint),
     });
 
+    type EnvelopedArgs = {
+      rootValue: {
+        execute: (args: EnvelopedArgs) => unknown;
+        subscribe: (args: EnvelopedArgs) => unknown;
+      };
+      [key: string]: unknown;
+    };
+    type WsContext = {
+      extra: { request: unknown; socket: unknown };
+      [key: string]: unknown;
+    };
+    type SubscriptionParams = {
+      operationName?: string;
+      query: string;
+      variables?: Record<string, unknown>;
+    };
+
     useServer(
       {
-        execute: (args: any) => args.rootValue.execute(args),
-        subscribe: (args: any) => args.rootValue.subscribe(args),
-        onSubscribe: async (ctx: any, _id: string, params: any) => {
+        execute: (args: EnvelopedArgs) => args.rootValue.execute(args),
+        subscribe: (args: EnvelopedArgs) => args.rootValue.subscribe(args),
+        onSubscribe: async (ctx: WsContext, _id: string, params: SubscriptionParams) => {
           const { schema, execute, subscribe, contextFactory, parse, validate } = yoga.getEnveloped(
             {
               ...ctx,

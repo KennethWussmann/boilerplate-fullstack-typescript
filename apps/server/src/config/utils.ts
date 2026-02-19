@@ -25,35 +25,29 @@ const isSecretField = (fieldName: string): boolean => {
 /**
  * Recursively masks sensitive fields in an object
  */
-const maskObject = (obj: any): any => {
+const maskObject = (obj: unknown): unknown => {
   if (obj === null || obj === undefined) {
     return obj;
   }
 
-  // Handle arrays
   if (Array.isArray(obj)) {
     return obj.map((item) => maskObject(item));
   }
 
-  // Handle objects
   if (typeof obj === 'object') {
-    const masked: any = {};
+    const masked: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(obj)) {
       if (isSecretField(key) && typeof value === 'string' && value.length > 0) {
-        // Mask the secret field
         masked[key] = MASK;
       } else if (typeof value === 'object') {
-        // Recursively process nested objects/arrays
         masked[key] = maskObject(value);
       } else {
-        // Keep non-secret primitives as-is
         masked[key] = value;
       }
     }
     return masked;
   }
 
-  // Return primitives as-is
   return obj;
 };
 

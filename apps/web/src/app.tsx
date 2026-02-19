@@ -3,6 +3,7 @@ import { ApolloProvider } from '@apollo/client/react';
 import {
   createBrowserRouter,
   createHashRouter,
+  Navigate,
   type RouteObject,
   RouterProvider,
 } from 'react-router';
@@ -20,23 +21,32 @@ import {
 import { ErrorBoundaryProvider, LayoutSlotsProvider, PWAPrompt } from './components';
 import { CookieBanner } from './components/common/cookie-banner';
 import { Toaster } from './components/ui/sonner';
-import { isHashBasedRouting } from './lib/constants';
+import { isHashBasedRouting, landingPageEnabled } from './lib/constants';
 
 const routes: RouteObject[] = [
-  {
-    element: <PublicLayout />,
-    children: [
-      {
-        path: '/',
-        element: <HomePage />,
-      },
-      {
-        path: '*',
-        element: <NotFoundPage />,
-        handle: { title: 'Not Found' },
-      },
-    ],
-  },
+  ...(landingPageEnabled
+    ? [
+        {
+          element: <PublicLayout />,
+          children: [
+            {
+              path: '/',
+              element: <HomePage />,
+            },
+            {
+              path: '*',
+              element: <NotFoundPage />,
+              handle: { title: 'Not Found' },
+            },
+          ],
+        },
+      ]
+    : [
+        {
+          path: '/',
+          element: <Navigate to="/dashboard" replace />,
+        },
+      ]),
   {
     element: <ResponsiveDashboardLayout />,
     children: [

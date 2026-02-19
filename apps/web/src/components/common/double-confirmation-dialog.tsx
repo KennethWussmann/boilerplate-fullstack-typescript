@@ -1,3 +1,4 @@
+import type React from 'react';
 import { cloneElement, useState } from 'react';
 import {
   Button,
@@ -13,7 +14,7 @@ import {
 type DoubleConfirmationDialogProps = {
   title?: string;
   message?: string;
-  children: any;
+  children: React.ReactElement<{ onClick?: (event: React.MouseEvent) => void }>;
 };
 
 export const DoubleConfirmationDialog = ({
