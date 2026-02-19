@@ -2,6 +2,7 @@
 FROM node:24-alpine AS builder
 
 RUN corepack enable
+ARG VERSION
 
 WORKDIR /app
 
@@ -11,6 +12,7 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 
 ENV VITE_HTTP_API_URL=/api/graphql
 ENV VITE_API_ENABLED=true
+ENV VITE_VERSION=${VERSION}
 RUN pnpm build
 
 # Production stage

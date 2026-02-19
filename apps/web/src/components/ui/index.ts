@@ -16,3 +16,5 @@ export * from './sheet';
 export * from './sonner';
 export * from './switch';
 export * from './textarea';
+export * from './popover';
+export * from './table';

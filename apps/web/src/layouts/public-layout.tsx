@@ -44,29 +44,35 @@ export const PublicLayout = () => {
             <div>
               {productName} {new Date().getFullYear()}
             </div>
-            <div className="mt-2 flex items-center justify-center gap-4">
-              <Link
-                to={legalUrl}
-                target="_blank"
-                className="hover:underline"
-                onClick={() => {
-                  track('public_layout_legal_click');
-                }}
-              >
-                Legal
-              </Link>
-              <span>•</span>
-              <Link
-                to={privacyPolicyUrl}
-                target="_blank"
-                className="hover:underline"
-                onClick={() => {
-                  track('public_layout_privacy_click');
-                }}
-              >
-                Privacy Policy
-              </Link>
-            </div>
+            {(legalUrl || privacyPolicyUrl) && (
+              <div className="mt-2 flex items-center justify-center gap-4">
+                {legalUrl && (
+                  <Link
+                    to={legalUrl}
+                    target="_blank"
+                    className="hover:underline"
+                    onClick={() => {
+                      track('public_layout_legal_click');
+                    }}
+                  >
+                    Legal
+                  </Link>
+                )}
+                {legalUrl && privacyPolicyUrl && <span>•</span>}
+                {privacyPolicyUrl && (
+                  <Link
+                    to={privacyPolicyUrl}
+                    target="_blank"
+                    className="hover:underline"
+                    onClick={() => {
+                      track('public_layout_privacy_click');
+                    }}
+                  >
+                    Privacy Policy
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
         </footer>
       </div>

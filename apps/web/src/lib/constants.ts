@@ -11,9 +11,9 @@ export const settingsMetaLocalStorageBaseKey = `${productNameSlug}._meta`;
 export const allowPublicDeveloperMode =
   import.meta.env.VITE_ALLOW_PUBLIC_DEVELOPER_MODE === 'true' || isDev;
 
-export const githubUrl = `https://github.com/KennethWussmann/${productNameSlug}`;
-export const legalUrl = 'https://kenneth.wussmann.net/imprint/';
-export const privacyPolicyUrl = 'https://kenneth.wussmann.net/privacy/';
+export const githubUrl: string | null = `https://github.com/KennethWussmann/${productNameSlug}`;
+export const legalUrl: string | null = 'https://kenneth.wussmann.net/imprint/';
+export const privacyPolicyUrl: string | null = 'https://kenneth.wussmann.net/privacy/';
 
 export const plausibleDomain = import.meta.env.VITE_PLAUSIBLE_DOMAIN ?? null;
 export const plausibleEndpoint = import.meta.env.VITE_PLAUSIBLE_ENDPOINT ?? null;

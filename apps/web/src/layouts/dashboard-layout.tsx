@@ -11,7 +11,13 @@ import {
 import { useNavigation } from '@/components/common/navigation';
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui';
 import { track } from '@/lib';
-import { legalUrl, privacyPolicyUrl, productName } from '@/lib/constants';
+import {
+  githubUrl,
+  legalUrl,
+  privacyPolicyUrl,
+  productName,
+  productVersion,
+} from '@/lib/constants';
 import { useGlobalShortcuts } from '@/lib/shortcuts';
 import { cn } from '@/lib/utils';
 
@@ -64,30 +70,53 @@ export const DashboardLayout = () => {
     </>
   );
 
+  const isVersionHash = productVersion ? /^[0-9a-f]{7,40}$/i.test(productVersion) : false;
+
   const FooterLinks = () => (
     <>
-      <div className="flex flex-row justify-center gap-2 text-xs text-muted-foreground">
-        <Link
-          to={legalUrl}
-          target="_blank"
-          className="hover:underline"
-          onClick={() => {
-            track('dashboard_layout_legal_click');
-          }}
-        >
-          Legal
-        </Link>
-        <Link
-          to={privacyPolicyUrl}
-          target="_blank"
-          className="hover:underline"
-          onClick={() => {
-            track('dashboard_layout_privacy_click');
-          }}
-        >
-          Privacy Policy
-        </Link>
-      </div>
+      {(legalUrl || privacyPolicyUrl) && (
+        <div className="flex flex-row justify-center gap-2 text-xs text-muted-foreground">
+          {legalUrl && (
+            <Link
+              to={legalUrl}
+              target="_blank"
+              className="hover:underline"
+              onClick={() => {
+                track('dashboard_layout_legal_click');
+              }}
+            >
+              Legal
+            </Link>
+          )}
+          {privacyPolicyUrl && (
+            <Link
+              to={privacyPolicyUrl}
+              target="_blank"
+              className="hover:underline"
+              onClick={() => {
+                track('dashboard_layout_privacy_click');
+              }}
+            >
+              Privacy Policy
+            </Link>
+          )}
+        </div>
+      )}
+      {productVersion && (
+        <div className="text-center text-xs text-muted-foreground">
+          {githubUrl && isVersionHash ? (
+            <Link
+              to={`${githubUrl}/commit/${productVersion}`}
+              target="_blank"
+              className="hover:underline"
+            >
+              {productVersion}
+            </Link>
+          ) : (
+            productVersion
+          )}
+        </div>
+      )}
       <Button variant="outline" className="w-full" asChild>
         <Link to="/">Back to Home</Link>
       </Button>
