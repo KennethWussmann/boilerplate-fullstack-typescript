@@ -24,7 +24,7 @@ export const HomePage = () => {
             asChild
             onClick={() => track('home_hero_github_click')}
           >
-            <a href={githubUrl} target="_blank" rel="noopener noreferrer">
+            <a href={githubUrl ?? undefined} target="_blank" rel="noopener noreferrer">
               View on GitHub
             </a>
           </Button>

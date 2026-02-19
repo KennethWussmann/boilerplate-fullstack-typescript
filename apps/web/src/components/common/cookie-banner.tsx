@@ -53,7 +53,7 @@ export const CookieBanner = () => {
           We use cookies to improve your experience and analyze site usage. By accepting, you agree
           to our use of cookies.
         </p>
-        <a href={privacyPolicyUrl} className="text-xs text-muted-foreground">
+        <a href={privacyPolicyUrl ?? undefined} className="text-xs text-muted-foreground">
           Privacy Policy
         </a>
       </CardContent>

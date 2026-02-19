@@ -5,7 +5,8 @@ import type { AbstractFileSystem, FileSystemFile } from '../file-system/index.js
 
 export type ConfigurationCompositionOptions<S extends z.ZodTypeAny> = {
   schema: S;
-  mapper: (env: (key: string) => string | undefined) => z.output<S>;
+  // biome-ignore lint/suspicious/noExplicitAny: env values are raw strings coerced by Zod during parsing
+  mapper: (env: (key: string) => any) => z.output<S>;
   cwd?: string;
   fileSystem: AbstractFileSystem;
 };

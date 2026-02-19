@@ -2,7 +2,9 @@ import type { Server } from 'node:http';
 import { join } from 'node:path';
 import { useGraphQLModules } from '@envelop/graphql-modules';
 import { type Router as ExpressRouter, Router } from 'express';
+import type { ExecutionArgs } from 'graphql';
 import { createApplication, type Module } from 'graphql-modules';
+import type { OperationResult } from 'graphql-ws';
 import { useServer } from 'graphql-ws/use/ws';
 import { createYoga, type YogaInitialContext } from 'graphql-yoga';
 import type { Logger } from 'winston';
@@ -45,28 +47,16 @@ export class GraphQLRouter {
       path: join(this.basePath, yoga.graphqlEndpoint),
     });
 
-    type EnvelopedArgs = {
-      rootValue: {
-        execute: (args: EnvelopedArgs) => unknown;
-        subscribe: (args: EnvelopedArgs) => unknown;
-      };
-      [key: string]: unknown;
-    };
-    type WsContext = {
-      extra: { request: unknown; socket: unknown };
-      [key: string]: unknown;
-    };
-    type SubscriptionParams = {
-      operationName?: string;
-      query: string;
-      variables?: Record<string, unknown>;
+    type YogaRootValue = {
+      execute: (args: ExecutionArgs) => OperationResult;
+      subscribe: (args: ExecutionArgs) => OperationResult;
     };
 
     useServer(
       {
-        execute: (args: EnvelopedArgs) => args.rootValue.execute(args),
-        subscribe: (args: EnvelopedArgs) => args.rootValue.subscribe(args),
-        onSubscribe: async (ctx: WsContext, _id: string, params: SubscriptionParams) => {
+        execute: (args: ExecutionArgs) => (args.rootValue as YogaRootValue).execute(args),
+        subscribe: (args: ExecutionArgs) => (args.rootValue as YogaRootValue).subscribe(args),
+        onSubscribe: async (ctx, _id, params) => {
           const { schema, execute, subscribe, contextFactory, parse, validate } = yoga.getEnveloped(
             {
               ...ctx,
