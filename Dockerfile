@@ -34,4 +34,4 @@ COPY --from=builder /app /app
 
 EXPOSE 8080
 
-ENTRYPOINT sh -c "cd /app/apps/server && pnpm db:migrate && node dist/run.js"
+ENTRYPOINT ["sh", "-c", "cd /app/apps/server && pnpm db:migrate && node dist/run.js"]
