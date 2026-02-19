@@ -1,6 +1,7 @@
+import { useQuery, useSubscription } from '@apollo/client/react';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
-import { apolloClient, graphql } from '@/lib/graphql';
+import { graphql } from '@/lib/graphql';
 import { settings } from '../settings';
 
 const HEALTH_QUERY = graphql(`
@@ -35,57 +36,30 @@ export const useServerStatus = (): {
   const [isApiEnabled] = useAtom(settings.backend.enabled);
   const [status, setStatus] = useState<ServerStatus>(!isApiEnabled ? 'disabled' : 'online');
 
+  const { data, error } = useQuery(HEALTH_QUERY, {
+    skip: !isApiEnabled,
+    pollInterval: 30000,
+  });
+
+  useSubscription(HEALTH_SUBSCRIPTION, {
+    skip: !isApiEnabled,
+    onData: ({ data: subData }) => {
+      const serverStatus = subData.data?.health?.status;
+      if (serverStatus) {
+        setStatus(mapServerStatus(serverStatus));
+      }
+    },
+  });
+
   useEffect(() => {
-    if (!isApiEnabled || !apolloClient) {
+    if (!isApiEnabled) {
       setStatus('disabled');
-      return;
+    } else if (error) {
+      setStatus('offline');
+    } else if (data) {
+      setStatus(mapServerStatus(data.health.status));
     }
+  }, [isApiEnabled, data, error]);
 
-    let subscription: { unsubscribe: () => void } | undefined;
-
-    const pollStatus = async () => {
-      if (!apolloClient) {
-        return;
-      }
-      try {
-        const result = await apolloClient.query({
-          query: HEALTH_QUERY,
-          fetchPolicy: 'network-only',
-        });
-        setStatus(mapServerStatus(result.data?.health.status));
-      } catch {
-        setStatus('offline');
-      }
-    };
-
-    const setupSubscription = () => {
-      if (!apolloClient) {
-        return;
-      }
-      const observable = apolloClient.subscribe({
-        query: HEALTH_SUBSCRIPTION,
-      });
-
-      subscription = observable.subscribe({
-        next: ({ data }) => {
-          setStatus(mapServerStatus(data?.health.status));
-        },
-        error: () => {
-          setStatus('offline');
-        },
-      });
-    };
-
-    pollStatus();
-    setupSubscription();
-
-    const interval = setInterval(pollStatus, 30000);
-
-    return () => {
-      subscription?.unsubscribe();
-      clearInterval(interval);
-    };
-  }, [isApiEnabled]);
-
-  return { isOnline: status === 'online', status };
+  return { status, isOnline: status === 'online' };
 };

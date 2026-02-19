@@ -1,12 +1,12 @@
 import type { ServerStatus } from '@/lib';
 import { cn } from '@/lib/utils';
 
-interface StatusIndicatorProps {
+type StatusIndicatorProps = {
   status: ServerStatus | 'warning' | 'error';
   label?: string;
   showDot?: boolean;
   animate?: boolean;
-}
+};
 
 const statusConfig: Record<
   string,
