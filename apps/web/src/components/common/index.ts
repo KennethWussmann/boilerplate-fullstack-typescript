@@ -1,3 +1,4 @@
+export * from './data-table';
 export * from './document-title';
 export * from './empty-state';
 export * from './error-boundary';
@@ -11,5 +12,4 @@ export * from './server-health-badge';
 export * from './shortcuts';
 export * from './status-indicator';
 export * from './typography';
-export * from './data-table';
 export * from './value';

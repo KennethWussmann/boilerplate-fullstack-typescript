@@ -1,2 +1,2 @@
-export * from "./date-time"
-export * from "./file-size"
+export * from './date-time';
+export * from './file-size';
