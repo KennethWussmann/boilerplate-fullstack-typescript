@@ -58,6 +58,7 @@ export class HTTPServer {
         new GraphQLRouter(
           this.logger.child({ name: 'graphql' }),
           server,
+          basePath,
           {
             applicationContext: this.applicationContext,
             logger: this.logger.child({ name: 'graphql-resolver' }),
@@ -71,6 +72,7 @@ export class HTTPServer {
               new BullBoardRouter(
                 this.logger.child({ name: 'bullBoardRouter' }),
                 '/queues',
+                join(basePath, '/queues'),
                 this.applicationContext.redisService?.getBullBoardAdapters()
               ),
             ]

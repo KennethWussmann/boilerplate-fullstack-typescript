@@ -7,16 +7,16 @@ import type { Logger } from 'winston';
 export class BullBoardRouter {
   public readonly router: Router;
 
-  constructor(logger: Logger, path: string, queues: BaseAdapter[]) {
+  constructor(logger: Logger, mountPath: string, basePath: string, queues: BaseAdapter[]) {
     const serverAdapter = new ExpressAdapter();
-    serverAdapter.setBasePath(path);
+    serverAdapter.setBasePath(basePath);
     createBullBoard({
       queues,
       serverAdapter,
     });
     this.router = Router();
-    this.router.use(path, serverAdapter.getRouter());
-    logger.info(`Enabled bull-board queue webinterface at: ${path}`);
+    this.router.use(mountPath, serverAdapter.getRouter());
+    logger.info(`Enabled bull-board queue webinterface at: ${basePath}`);
   }
 
   public initialize = async () => {};

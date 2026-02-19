@@ -1,4 +1,5 @@
 import type { Server } from 'node:http';
+import { join } from 'node:path';
 import { useGraphQLModules } from '@envelop/graphql-modules';
 import { type Router as ExpressRouter, Router } from 'express';
 import { createApplication, type Module } from 'graphql-modules';
@@ -16,6 +17,7 @@ export class GraphQLRouter {
   constructor(
     private readonly logger: Logger,
     private readonly server: Server,
+    private readonly basePath: string,
     private readonly baseContext: BaseGraphQLContext,
     private readonly modules: (() => Promise<Module>)[]
   ) {}
@@ -40,7 +42,7 @@ export class GraphQLRouter {
     this.router.use(yoga.graphqlEndpoint, yoga);
     const wsServer = new WebSocketServer({
       server: this.server,
-      path: yoga.graphqlEndpoint,
+      path: join(this.basePath, yoga.graphqlEndpoint),
     });
 
     useServer(
