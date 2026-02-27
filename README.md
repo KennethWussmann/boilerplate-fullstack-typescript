@@ -175,8 +175,8 @@ If you plan to use Docker image publishing workflows, update `.github/workflows/
 ## Getting Started
 
 ### Prerequisites
-- Node.js 22+
-- pnpm 10+ (will be automatically used via `packageManager` field)
+- Node.js 24
+- pnpm 10.26.2+ (will be automatically used via `packageManager` field)
 - PostgreSQL instance
 - Redis instance
 
