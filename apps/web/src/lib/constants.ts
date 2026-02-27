@@ -24,8 +24,8 @@ export const landingPageEnabled = z
   .default(true)
   .parse(import.meta.env.VITE_LANDING_PAGE_ENABLED);
 export const githubUrl: string | null = `https://github.com/KennethWussmann/${productNameSlug}`;
-export const legalUrl: string | null = 'https://kenneth.wussmann.net/imprint/';
-export const privacyPolicyUrl: string | null = 'https://kenneth.wussmann.net/privacy/';
+export const legalUrl: string | null = 'https://example.com/legal';
+export const privacyPolicyUrl: string | null = 'https://example.com/privacy';
 
 export const plausibleDomain = import.meta.env.VITE_PLAUSIBLE_DOMAIN ?? null;
 export const plausibleEndpoint = import.meta.env.VITE_PLAUSIBLE_ENDPOINT ?? null;
