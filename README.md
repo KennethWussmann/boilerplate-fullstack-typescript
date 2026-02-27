@@ -365,37 +365,19 @@ The server supports configuration through YAML files and environment variables. 
 
 **Environment variables:**
 
+The most important variables to configure:
+
 | Variable | Description | Default |
 |---|---|---|
-| `SERVER_NAME` | Server identifier for logs | — |
-| `APPLICATION_NAME` | Application display name | `Application` |
-| `VERSION` | Application version | `develop` |
-| `LOG_LEVEL` | Logging level (`debug`, `info`, `warn`, `error`) | `info` |
-| `LOG_FORMAT` | Log format (`json` or `text`) | `json` |
-| `LOG_DESTINATION` | Log file path (omit to log to console) | — |
-| `DATABASE_ENABLED` | Enable/disable database | `true` |
 | `DATABASE_CONNECTION_URL` | PostgreSQL connection string | `postgres://localhost:5432/server` |
-| `REDIS_ENABLED` | Enable/disable Redis | `true` |
 | `REDIS_HOST` | Redis host | `127.0.0.1` |
 | `REDIS_PORT` | Redis port | `6379` |
 | `REDIS_PASSWORD` | Redis password | — |
-| `REDIS_DASHBOARD_ENABLED` | Enable Bull Board UI | `false` |
-| `API_ENABLED` | Enable/disable API server | `true` |
-| `API_PORT` | Server port | `8080` |
-| `API_BIND_ADDRESS` | Bind address | `0.0.0.0` |
-| `API_BASE_PATH` | API base path | `/` |
-| `PUBLIC_BASE_URL` | Public-facing URL | — |
-| `API_CORS_ENABLED` | Enable CORS | `true` |
-| `API_LOG_STREAMING_ENABLED` | Enable log streaming via GraphQL subscription | `false` |
-| `FRONTEND_ENABLED` | Serve frontend static files from server | `false` |
-| `FRONTEND_BASE_PATH` | Frontend base path | `/` |
-| `FRONTEND_LOCAL_PATH` | Path to frontend build directory | `./www` |
-| `AUTH_ENABLED` | Enable header-based authentication | `false` |
-| `AUTH_PROTECTED_ROUTES` | Route prefixes requiring auth (semicolon-separated) | `[]` |
-| `AUTH_HEADER_USER` | Header name for username | `Remote-User` |
-| `AUTH_HEADER_EMAIL` | Header name for email | `Remote-Email` |
-| `AUTH_HEADER_NAME` | Header name for display name | `Remote-Name` |
-| `AUTH_HEADER_GROUPS` | Header name for groups | `Remote-Groups` |
+| `REDIS_WORKERS` | Worker configuration (JSON array) | — |
+| `REDIS_QUEUES` | Queue configuration (JSON array) | — |
+| `LOG_LEVEL` | Logging level (`debug`, `info`, `warn`, `error`, `fatal`, `notice`) | `info` |
+
+For the full environment variable reference see [`docs/configuration.md`](docs/configuration.md).
 
 ### PWA Configuration
 The web app includes PWA support. To enable PWA features in development:
