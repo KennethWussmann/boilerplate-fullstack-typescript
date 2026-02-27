@@ -38,8 +38,6 @@ export const printBanner = ({ version, serverName, api }: Configuration, configP
     return `${key} ${pad}${value ?? na}`;
   });
 
-  const totalWidth = Math.max(...infoLines.map((l) => l.length));
-
   const logoBanner = [
     '  ██████                                                     ',
     ' ███    ███                                                  ',
@@ -50,9 +48,11 @@ export const printBanner = ({ version, serverName, api }: Configuration, configP
     '   ██████     █████    ████        ███       █████    ████   ',
   ];
 
+  const logoWidth = Math.max(...logoBanner.map((l) => l.length));
+  const totalWidth = Math.max(...infoLines.map((l) => l.length), logoWidth);
+
   const versionBanner = version === 'develop' ? version : `v${version}`;
 
-  const logoWidth = Math.max(...logoBanner.map((l) => l.length));
   const logoStart = Math.floor((totalWidth - logoWidth) / 2);
 
   const logoCentered = logoBanner.map((l) => ' '.repeat(logoStart) + l);
