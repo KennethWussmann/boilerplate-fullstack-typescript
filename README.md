@@ -2,6 +2,9 @@
 
 An opinionated, production-ready boilerplate for building fullstack TypeScript applications with clear separation between backend and frontend. This template includes everything you need to start building a modern web application with best practices baked in.
 
+> [!WARNING]
+> This is intended solely for my own use. There are many problems and quirks that I'm well aware of, but I will not go into detail about them. This setup will likely not make sense to you. But feel free to fork and make it your own.
+
 ## Features
 
 ### Monorepo Architecture
@@ -23,8 +26,17 @@ An opinionated, production-ready boilerplate for building fullstack TypeScript a
 - Type-safe resolvers via GraphQL Code Generator
 - Modular GraphQL architecture with `graphql-modules`
 - Drizzle ORM for type-safe database operations
-- SQLite database with libsql driver (file-based or in-memory)
+- PostgreSQL database via `postgres` driver
 - Database migrations via Drizzle Kit
+- Header-based authentication middleware
+- Log streaming via GraphQL subscription
+- Frontend static file serving (optional)
+
+### Redis & Job Queues
+- Redis integration via BullMQ for background job processing
+- Abstract queue and worker base classes for easy extension
+- Bull Board UI for queue monitoring and management
+- Configurable queues and workers per instance
 
 ### Frontend (React + Vite + GraphQL)
 - React 19 with React Router v7
@@ -47,7 +59,7 @@ An opinionated, production-ready boilerplate for building fullstack TypeScript a
 
 ### Code Quality
 - Biome for lightning-fast linting and formatting
-- Pre-commit hooks with Husky + lint-staged
+- Pre-commit hooks with Lefthook
 - Consistent code style enforced across the monorepo
 - TypeScript strict mode enabled
 
@@ -163,8 +175,10 @@ If you plan to use Docker image publishing workflows, update `.github/workflows/
 ## Getting Started
 
 ### Prerequisites
-- Node.js 24
-- pnpm 10.18.2 (will be automatically used via `packageManager` field)
+- Node.js 22+
+- pnpm 10+ (will be automatically used via `packageManager` field)
+- PostgreSQL instance
+- Redis instance
 
 ### Installation
 
@@ -195,7 +209,6 @@ pnpm dev  # Runs on http://localhost:8080 by default
 # Database operations (in apps/server/)
 pnpm db:generate  # Generate migration from schema changes
 pnpm db:migrate   # Apply migrations to database
-pnpm db:studio    # Open Drizzle Studio GUI
 
 # Run the frontend (in apps/web/)
 cd apps/web
@@ -244,10 +257,14 @@ docker run -p 80:80 your-web:latest
 │   │   ├── src/
 │   │   │   ├── config/      # Configuration management
 │   │   │   ├── database/    # Database service and schema
+│   │   │   ├── error/       # Error types
+│   │   │   ├── file-system/ # File system abstraction
 │   │   │   ├── http/        # HTTP server and routers
+│   │   │   ├── log-streaming/ # Log streaming service
 │   │   │   ├── logger/      # Winston logger setup
+│   │   │   ├── redis/       # Redis service, queues, and workers
 │   │   │   ├── utils/       # Utility functions
-│   │   │   ├── application-context.ts  # DI container
+│   │   │   ├── applicationContext.ts  # DI container
 │   │   │   └── run.ts       # Application entry point
 │   │   ├── drizzle/         # Database migrations
 │   │   ├── drizzle.config.ts  # Drizzle Kit configuration
@@ -291,7 +308,6 @@ docker run -p 80:80 your-web:latest
 - `pnpm build:watch` - Compile in watch mode
 - `pnpm db:generate` - Generate database migration from schema changes
 - `pnpm db:migrate` - Apply pending migrations to database
-- `pnpm db:studio` - Open Drizzle Studio to browse and edit data
 
 ### Frontend (apps/web)
 - `pnpm dev` - Run Vite dev server with HMR
@@ -310,7 +326,9 @@ docker run -p 80:80 your-web:latest
 - [graphql-ws](https://github.com/enisdenjo/graphql-ws) - GraphQL subscriptions over WebSocket
 - [Drizzle ORM](https://orm.drizzle.team/) - Type-safe ORM
 - [Drizzle Kit](https://orm.drizzle.team/kit-docs/overview) - Database migrations
-- [libsql](https://github.com/tursodatabase/libsql) - SQLite-compatible database
+- [postgres](https://github.com/porsager/postgres) - PostgreSQL client
+- [BullMQ](https://bullmq.io/) - Redis-based job queue
+- [Bull Board](https://github.com/felixmosh/bull-board) - Queue monitoring UI
 - [Zod](https://zod.dev/) - Schema validation
 - [Winston](https://github.com/winstonjs/winston) - Logging
 - [date-fns](https://date-fns.org/) - Date manipulation
@@ -331,7 +349,7 @@ docker run -p 80:80 your-web:latest
 - [Turborepo](https://turbo.build/) - Monorepo build system
 - [pnpm](https://pnpm.io/) - Package manager
 - [Biome](https://biomejs.dev/) - Linter and formatter
-- [Husky](https://typicode.github.io/husky/) - Git hooks
+- [Lefthook](https://github.com/evilmartians/lefthook) - Git hooks
 - [tsx](https://github.com/privatenumber/tsx) - TypeScript execution
 
 ## Configuration
@@ -345,20 +363,39 @@ The server supports configuration through YAML files and environment variables. 
 - `config.local.yml`
 - `config.yml`
 
-**Environment variables**:
-- `SERVER_NAME` - Server identifier
-- `VERSION` - Application version
-- `LOG_LEVEL` - Logging level (debug, info, warn, error)
-- `LOG_FORMAT` - Log format (json or text)
-- `LOG_DESTINATION` - Log file path
-- `DATABASE_ENABLED` - Enable/disable database (default: true)
-- `DATABASE_CONNECTION_URL` - Database connection string (default: file:local.db)
-- `API_ENABLED` - Enable/disable API server
-- `API_PORT` - Server port (default: 8080)
-- `API_BIND_ADDRESS` - Bind address (default: 0.0.0.0)
-- `API_BASE_PATH` - API base path (default: /)
-- `API_PUBLIC_BASE_URL` - Public-facing URL
-- `API_CORS_ENABLED` - Enable CORS (default: true)
+**Environment variables:**
+
+| Variable | Description | Default |
+|---|---|---|
+| `SERVER_NAME` | Server identifier for logs | — |
+| `APPLICATION_NAME` | Application display name | `Application` |
+| `VERSION` | Application version | `develop` |
+| `LOG_LEVEL` | Logging level (`debug`, `info`, `warn`, `error`) | `info` |
+| `LOG_FORMAT` | Log format (`json` or `text`) | `json` |
+| `LOG_DESTINATION` | Log file path (omit to log to console) | — |
+| `DATABASE_ENABLED` | Enable/disable database | `true` |
+| `DATABASE_CONNECTION_URL` | PostgreSQL connection string | `postgres://localhost:5432/server` |
+| `REDIS_ENABLED` | Enable/disable Redis | `true` |
+| `REDIS_HOST` | Redis host | `127.0.0.1` |
+| `REDIS_PORT` | Redis port | `6379` |
+| `REDIS_PASSWORD` | Redis password | — |
+| `REDIS_DASHBOARD_ENABLED` | Enable Bull Board UI | `false` |
+| `API_ENABLED` | Enable/disable API server | `true` |
+| `API_PORT` | Server port | `8080` |
+| `API_BIND_ADDRESS` | Bind address | `0.0.0.0` |
+| `API_BASE_PATH` | API base path | `/` |
+| `PUBLIC_BASE_URL` | Public-facing URL | — |
+| `API_CORS_ENABLED` | Enable CORS | `true` |
+| `API_LOG_STREAMING_ENABLED` | Enable log streaming via GraphQL subscription | `false` |
+| `FRONTEND_ENABLED` | Serve frontend static files from server | `false` |
+| `FRONTEND_BASE_PATH` | Frontend base path | `/` |
+| `FRONTEND_LOCAL_PATH` | Path to frontend build directory | `./www` |
+| `AUTH_ENABLED` | Enable header-based authentication | `false` |
+| `AUTH_PROTECTED_ROUTES` | Route prefixes requiring auth (semicolon-separated) | `[]` |
+| `AUTH_HEADER_USER` | Header name for username | `Remote-User` |
+| `AUTH_HEADER_EMAIL` | Header name for email | `Remote-Email` |
+| `AUTH_HEADER_NAME` | Header name for display name | `Remote-Name` |
+| `AUTH_HEADER_GROUPS` | Header name for groups | `Remote-Groups` |
 
 ### PWA Configuration
 The web app includes PWA support. To enable PWA features in development:
