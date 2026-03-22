@@ -22,8 +22,11 @@ export const LogViewerCard = () => {
             </div>
           ) : (
             <div className="divide-y divide-border/30">
-              {logs.map((entry, index) => (
-                <LogEntry key={`${entry.timestamp}-${index}`} entry={entry} />
+              {logs.map((entry) => (
+                <LogEntry
+                  key={`${entry.timestamp}-${entry.level}-${entry.message}`}
+                  entry={entry}
+                />
               ))}
             </div>
           )}
