@@ -24,7 +24,7 @@ export const DocumentTitle = () => {
     const handle = lastWithTitle.handle as RouteHandle | undefined;
     const title =
       typeof handle?.title === 'function'
-        ? handle.title({ params: lastWithTitle.params, data: lastWithTitle.data })
+        ? handle.title({ params: lastWithTitle.params, data: lastWithTitle.loaderData })
         : handle?.title;
 
     document.title = title ? `${title} · ${productName}` : productName;
