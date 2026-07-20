@@ -527,6 +527,7 @@ function MyComponent() {
 **Environment Variables:**
 - `VITE_API_URL` - GraphQL HTTP endpoint (default: `http://localhost:8080/graphql`)
 - `VITE_WS_URL` - GraphQL WebSocket endpoint (default: `ws://localhost:8080/graphql`)
+- `VITE_GRAPHQL_EXPLORER_ENABLED` - Enable the in-app GraphiQL Explorer (default: `false`)
 
 **TypeScript Integration:**
 - Backend types generated to `apps/server/src/http/routers/graphql/generated/`

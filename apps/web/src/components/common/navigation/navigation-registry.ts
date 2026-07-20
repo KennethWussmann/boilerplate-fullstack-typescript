@@ -1,5 +1,5 @@
 import { Code, Home, Settings, Telescope } from 'lucide-react';
-import { shortcutRegistry } from '@/lib';
+import { graphqlExplorerEnabled, shortcutRegistry } from '@/lib';
 import type { NavigationConfig, NavigationGroup, NavigationItem } from './types';
 
 const items: Record<string, NavigationItem> = {
@@ -47,6 +47,7 @@ const items: Record<string, NavigationItem> = {
     description: 'Open then GraphiQL Playground',
     devOnly: true,
     apiEnabledOnly: true,
+    enabled: graphqlExplorerEnabled,
     trees: ['dashboard'],
   },
 };

@@ -14,6 +14,7 @@ export type NavigationItem = {
   shortcut?: Shortcut;
   devOnly?: boolean;
   apiEnabledOnly?: boolean;
+  enabled?: boolean;
   external?: boolean;
   trees: NavigationTree[];
 };

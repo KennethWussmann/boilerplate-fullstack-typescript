@@ -21,7 +21,7 @@ import {
 import { ErrorBoundaryProvider, LayoutSlotsProvider, PWAPrompt } from './components';
 import { CookieBanner } from './components/common/cookie-banner';
 import { Toaster } from './components/ui/sonner';
-import { isHashBasedRouting, landingPageEnabled } from './lib/constants';
+import { graphqlExplorerEnabled, isHashBasedRouting, landingPageEnabled } from './lib/constants';
 
 const routes: RouteObject[] = [
   ...(landingPageEnabled
@@ -70,11 +70,15 @@ const routes: RouteObject[] = [
         element: <DevToolsPage />,
         handle: { title: 'Developer' },
       },
-      {
-        path: '/dev-tools/graphql',
-        element: <GraphiQLPage />,
-        handle: { title: 'GraphiQL' },
-      },
+      ...(graphqlExplorerEnabled
+        ? [
+            {
+              path: '/dev-tools/graphql',
+              element: <GraphiQLPage />,
+              handle: { title: 'GraphiQL' },
+            },
+          ]
+        : []),
     ],
   },
 ];

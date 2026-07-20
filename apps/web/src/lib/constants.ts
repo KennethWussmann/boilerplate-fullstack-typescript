@@ -23,6 +23,11 @@ export const landingPageEnabled = z
   .stringbool()
   .default(true)
   .parse(import.meta.env.VITE_LANDING_PAGE_ENABLED);
+// Whether the GraphiQL Explorer (GraphQL Playground) is available. Off by default.
+export const graphqlExplorerEnabled = z
+  .stringbool()
+  .default(false)
+  .parse(import.meta.env.VITE_GRAPHQL_EXPLORER_ENABLED);
 export const githubUrl: string | null = `https://github.com/KennethWussmann/${productNameSlug}`;
 export const legalUrl: string | null = 'https://example.com/legal';
 export const privacyPolicyUrl: string | null = 'https://example.com/privacy';
@@ -45,6 +50,7 @@ export const config = {
   settingsMetaLocalStorageBaseKey,
   footerEnabled,
   landingPageEnabled,
+  graphqlExplorerEnabled,
   githubUrl,
   legalUrl,
   privacyPolicyUrl,

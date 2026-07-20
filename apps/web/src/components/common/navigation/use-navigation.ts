@@ -32,6 +32,7 @@ export const useNavigation = (tree: NavigationTree): UseNavigationResult => {
           .map((itemId) => getNavigationItem(itemId))
           .filter((item): item is NavigationItem => {
             if (!item) return false;
+            if (item.enabled === false) return false;
             if (!item.trees.includes(tree)) return false;
             if (item.devOnly && !isDev) return false;
             if (item.apiEnabledOnly && !isApiEnabled) return false;
