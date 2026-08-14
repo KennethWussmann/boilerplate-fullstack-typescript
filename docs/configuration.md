@@ -21,7 +21,7 @@ The server can be configured with JSON, YAML or Environment Variables.
 | `auth.headers.groups` | `AUTH_HEADER_GROUPS` | string | "Remote-Groups" | Yes | Header name for groups. Default: "Remote-Groups" |
 | `auth.headers.name` | `AUTH_HEADER_NAME` | string | "Remote-Name" | Yes | Header name for display name. Default: "Remote-Name" |
 | `auth.headers.user` | `AUTH_HEADER_USER` | string | "Remote-User" | Yes | Header name for username. Default: "Remote-User" |
-| `auth.protected_routes` | `AUTH_PROTECTED_ROUTES` | unknown | unknown | Yes | Route prefixes that require authentication. If empty, all routes require auth. Example: ["/api", "/graphql"]. Default: [] |
+| `auth.protected_routes` | `AUTH_PROTECTED_ROUTES` | string[] | [] | Yes | Route prefixes that require authentication. If empty, all routes require auth. Example: ["/api", "/graphql"]. Default: [] |
 | `database.connection_url` | `DATABASE_CONNECTION_URL` | string | "postgres://localhost:5432/server" | Yes | Required if database is enabled. Connection URL to database. Default: "postgres://localhost:5432/server" |
 | `database.enabled` | `DATABASE_ENABLED` | boolean \| string | true | No | Enable the HTTP API. Example: "yes" or "no". Default: "yes" |
 | `frontend.base_path` | `FRONTEND_BASE_PATH` | string | "/" | Yes | Serve the frontend on a different base path. Example: "/app". Default: "/" |
@@ -35,8 +35,8 @@ The server can be configured with JSON, YAML or Environment Variables.
 | `redis.host` | `REDIS_HOST` | string | "127.0.0.1" | Yes | Redis server host for caching. Default: 127.0.0.1 |
 | `redis.password` | `REDIS_PASSWORD` | string | - | Yes | Redis server password. Required if redis is enabled. |
 | `redis.port` | `REDIS_PORT` | number \| string | 6379 | Yes | Redis server port for caching. Default: 6379 |
-| `redis.queues` | `REDIS_QUEUES` | unknown | unknown | No | Register queues that this instance is running. Default: "[]" |
-| `redis.workers` | `REDIS_WORKERS` | unknown | unknown | No | Register workers that this instance is running. Default: "[]" |
+| `redis.queues` | `REDIS_QUEUES` | object[] | [] | No | Register queues that this instance is running. Default: "[]" |
+| `redis.workers` | `REDIS_WORKERS` | object[] | [] | No | Register workers that this instance is running. Default: "[]" |
 | `serverName` | `SERVER_NAME` | string | - | No | Arbitrary string that identifies this server. Useful for logs and metrics. Default: none |
 | `version` | `VERSION` | string | "develop" | Yes | - |
 

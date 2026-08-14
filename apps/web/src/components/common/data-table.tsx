@@ -1,9 +1,11 @@
 import {
   type ColumnDef,
+  type ColumnVisibilityState,
+  columnVisibilityFeature,
   flexRender,
-  getCoreRowModel,
-  useReactTable,
-  type VisibilityState,
+  type RowData,
+  tableFeatures,
+  useTable,
 } from '@tanstack/react-table';
 import { Filter, Loader2, type LucideIcon, Settings2 } from 'lucide-react';
 import { type ReactNode, useCallback, useRef } from 'react';
@@ -35,13 +37,25 @@ type ColumnOption = {
   label: string;
 };
 
-type DataTableViewProps<TData> = {
+const features = tableFeatures({ columnVisibilityFeature });
+
+export type DataTableFeatures = typeof features;
+
+export type DataTableColumnDef<TData extends RowData> = ColumnDef<
+  DataTableFeatures,
+  TData,
+  unknown
+>;
+
+type DataTableViewProps<TData extends RowData> = {
   title: string;
   description: string;
-  columns: ColumnDef<TData, unknown>[];
+  columns: DataTableColumnDef<TData>[];
   columnOptions?: ColumnOption[];
-  columnVisibility?: VisibilityState;
-  onColumnVisibilityChange?: (updater: (prev: VisibilityState) => VisibilityState) => void;
+  columnVisibility?: ColumnVisibilityState;
+  onColumnVisibilityChange?: (
+    updater: (prev: ColumnVisibilityState) => ColumnVisibilityState
+  ) => void;
 
   items: TData[];
   total: number;
@@ -66,8 +80,8 @@ const ColumnVisibilityDropdown = ({
   onChange,
 }: {
   options: ColumnOption[];
-  visibility: VisibilityState;
-  onChange: (updater: (prev: VisibilityState) => VisibilityState) => void;
+  visibility: ColumnVisibilityState;
+  onChange: (updater: (prev: ColumnVisibilityState) => ColumnVisibilityState) => void;
 }) => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
@@ -91,7 +105,7 @@ const ColumnVisibilityDropdown = ({
   </DropdownMenu>
 );
 
-export const DataTableView = <TData,>({
+export const DataTableView = <TData extends RowData>({
   title,
   description,
   columns,
@@ -112,10 +126,10 @@ export const DataTableView = <TData,>({
   headerActions,
   onRowClick,
 }: DataTableViewProps<TData>) => {
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data: items,
     columns,
-    getCoreRowModel: getCoreRowModel(),
     state: { columnVisibility },
   });
 
