@@ -1,6 +1,6 @@
 ---
 name: project-bootstrap
-description: Turn this freshly cloned fullstack TypeScript boilerplate into a named, described, ready-to-develop application - package metadata, PWA manifest, product constants, README, CLAUDE.md, dependency update and a green build. Use this skill when the user has just created a repository from the template and says things like "set this up for my project", "bootstrap this", "rename this to X", "make this into a habit tracker app", "I just cloned the boilerplate, what now", or otherwise wants the placeholder identity replaced with a real one. Do not use it for adding features to an already-bootstrapped project - it rewrites project-wide metadata and documentation.
+description: Turn this freshly cloned fullstack TypeScript boilerplate into a named, described, ready-to-develop application - package metadata, PWA manifest, product constants, README, AGENTS.md, dependency update and a green build. Use this skill when the user has just created a repository from the template and says things like "set this up for my project", "bootstrap this", "rename this to X", "make this into a habit tracker app", "I just cloned the boilerplate, what now", or otherwise wants the placeholder identity replaced with a real one. Do not use it for adding features to an already-bootstrapped project - it rewrites project-wide metadata and documentation.
 ---
 
 # Project Bootstrap
@@ -18,7 +18,7 @@ The demo pieces stay. Health check endpoints, the GraphQL health module, dev too
 
 ## Step 2: Read the current state
 
-Read `README.md` and `CLAUDE.md` before editing anything. They describe the template as it stands, and knowing what is generic boilerplate prose versus what is genuinely useful architecture documentation is the difference between a clean rewrite and deleting something the user needed.
+Read `README.md` and `AGENTS.md` before editing anything. They describe the template as it stands, and knowing what is generic boilerplate prose versus what is genuinely useful architecture documentation is the difference between a clean rewrite and deleting something the user needed.
 
 ## Step 3: Metadata
 
@@ -50,13 +50,27 @@ Replace it entirely. The template README explains how to use a template, which i
 8. **Project structure** — a small tree of `apps/` and `libs/`
 9. **License**
 
-Drop the template-specific sections and the deep architecture explanations; the latter live in `CLAUDE.md` and duplicating them guarantees they diverge. Keep the example endpoints — they are useful references.
+Drop the template-specific sections and the deep architecture explanations; the latter live in `AGENTS.md` and duplicating them guarantees they diverge. Keep the example endpoints — they are useful references.
 
-## Step 6: CLAUDE.md
+## Step 6: AGENTS.md
 
 Touch only the "Repository Overview" section: describe what this application is, keep the sentence about the monorepo structure, and fix the Docker examples. Everything else still describes the architecture accurately, and rewriting it loses hard-won detail.
 
-## Step 7: Leave it healthy
+## Step 7: Record the sync baseline
+
+Write `.boilerplate-sync.json` at the repository root:
+
+```json
+{
+  "repository": "https://github.com/KennethWussmann/boilerplate-fullstack-typescript",
+  "commit": "<sha of the boilerplate commit this project was created from>",
+  "syncedAt": "<YYYY-MM-DD>"
+}
+```
+
+A template-generated repository shares no git history with the boilerplate, so this file is the only record of where the project branched off. Without it, the `boilerplate-sync` skill later has to diff whole trees and cannot tell an upstream improvement apart from a deliberate divergence. Take the SHA from this repository's first commit or from the boilerplate's `main` at the time of cloning; if neither is knowable, use the current HEAD and say so.
+
+## Step 8: Leave it healthy
 
 ```bash
 pnpm update -r
@@ -68,10 +82,11 @@ pnpm build
 
 Fix what these surface rather than reporting it as a known issue. Handing over a project that does not build defeats the point.
 
-## Step 8: Report
+## Step 9: Report
 
 - Every file changed
 - What the application is now configured as
 - How to start developing: install, run backend, run frontend
 - That the example endpoints and modules remain as references
 - What the dependency update changed and anything that needed fixing
+- That `boilerplate-sync` can pull later template improvements in, and `boilerplate-backport` can push generic improvements back
