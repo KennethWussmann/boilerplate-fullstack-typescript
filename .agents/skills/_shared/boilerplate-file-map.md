@@ -42,7 +42,7 @@ What makes a repository *this* product. Copying identity downstream renames the 
 
 - Root `package.json`: `name`, `description`, `version`, `author`, `license`, `keywords`
 - `apps/server/package.json` and `apps/web/package.json`: `description`, `version`, `license`
-- `README.md`, `CLAUDE.md`, `AGENTS.md`, `LICENSE`
+- `README.md`, `AGENTS.md`, `LICENSE`
 - `apps/web/index.html` — `<title>`, `<meta name="description">`
 - `apps/web/vite.config.ts` — the PWA `manifest` block (`name`, `short_name`, `description`, icons)
 - `apps/web/src/lib/constants.ts` — `productName`, `productNameSlug`, `githubUrl`, `legalUrl`, `privacyPolicyUrl`, and the project's chosen feature-flag defaults
@@ -50,7 +50,7 @@ What makes a repository *this* product. Copying identity downstream renames the 
 - `Dockerfile` / workflow lines carrying `APP_NAME`, image or registry names
 - `apps/server/config.yaml` values, any `.env*`, any deployment manifest
 
-`README.md` and `CLAUDE.md` are identity as *files*, but their content still matters: a backport that adds a feature must be documented there in the boilerplate (see the backport skill), and a sync must not carry the boilerplate's prose into a project. So: never copy the file, sometimes edit it in place.
+`README.md` and `AGENTS.md` are identity as *files*, but their content still matters: a backport that adds a feature must be documented there in the boilerplate (see the backport skill), and a sync must not carry the boilerplate's prose into a project. So: never copy the file, sometimes edit it in place.
 
 ## 4. Product code — project-owned
 

@@ -170,7 +170,7 @@ If you plan to use Docker image publishing workflows, update `.github/workflows/
 - Update image naming conventions
 
 #### Remove or Update Documentation
-- Delete or update `CLAUDE.md` (this is specific to Claude Code editor)
+- Delete or update `AGENTS.md` (instructions for AI coding agents)
 - Update this README with your project-specific information
 - Add your own license file if you changed the license
 

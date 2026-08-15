@@ -1,6 +1,6 @@
 ---
 name: boilerplate-backport
-description: Push a generalized improvement from a project back into the fullstack TypeScript boilerplate it was generated from - strip the product-specific parts, land it in the template, and document it in README, CLAUDE.md and the relevant agent skill. Use this skill whenever the user wants something they built to become part of the template, with phrasings like "backport the auth middleware to the boilerplate", "this rate limiter should be in the template", "upstream this", "put my Sentry setup into the boilerplate", "every project I start needs this, move it up", or "what in this project is worth generalizing". It also applies when the user is standing in the boilerplate and points at a project as the source. Load it before copying anything, because the de-identification and documentation steps are the entire point - a raw copy leaks product code into every future project.
+description: Push a generalized improvement from a project back into the fullstack TypeScript boilerplate it was generated from - strip the product-specific parts, land it in the template, and document it in README, AGENTS.md and the relevant agent skill. Use this skill whenever the user wants something they built to become part of the template, with phrasings like "backport the auth middleware to the boilerplate", "this rate limiter should be in the template", "upstream this", "put my Sentry setup into the boilerplate", "every project I start needs this, move it up", or "what in this project is worth generalizing". It also applies when the user is standing in the boilerplate and points at a project as the source. Load it before copying anything, because the de-identification and documentation steps are the entire point - a raw copy leaks product code into every future project.
 ---
 
 # Boilerplate Backport
@@ -55,7 +55,7 @@ Do not backport these, even when asked directly. Explain why instead:
 The boilerplate's value is that a generated project *knows what it has*. A feature that lands in the code but not the documentation is a feature the next project discovers by accident, months later, after building its own version of it. So every backport that adds capability updates:
 
 - **`README.md`** — the feature list, and the tech stack table if a dependency arrived
-- **`CLAUDE.md`** — the architecture section for the app it touches, the environment variable table if it reads config, and "Development Patterns" if it introduces a way of doing things
+- **`AGENTS.md`** — the architecture section for the app it touches, the environment variable table if it reads config, and "Development Patterns" if it introduces a way of doing things
 - **The relevant agent skill** — `backend-development` or `frontend-development` (and their `references/`), so agents working in generated projects use the new thing instead of reinventing it
 - **`docs/guidelines/`** if it changes a convention, and `docs/configuration.md` if it adds config
 

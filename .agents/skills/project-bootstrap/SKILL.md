@@ -1,6 +1,6 @@
 ---
 name: project-bootstrap
-description: Turn this freshly cloned fullstack TypeScript boilerplate into a named, described, ready-to-develop application - package metadata, PWA manifest, product constants, README, CLAUDE.md, dependency update and a green build. Use this skill when the user has just created a repository from the template and says things like "set this up for my project", "bootstrap this", "rename this to X", "make this into a habit tracker app", "I just cloned the boilerplate, what now", or otherwise wants the placeholder identity replaced with a real one. Do not use it for adding features to an already-bootstrapped project - it rewrites project-wide metadata and documentation.
+description: Turn this freshly cloned fullstack TypeScript boilerplate into a named, described, ready-to-develop application - package metadata, PWA manifest, product constants, README, AGENTS.md, dependency update and a green build. Use this skill when the user has just created a repository from the template and says things like "set this up for my project", "bootstrap this", "rename this to X", "make this into a habit tracker app", "I just cloned the boilerplate, what now", or otherwise wants the placeholder identity replaced with a real one. Do not use it for adding features to an already-bootstrapped project - it rewrites project-wide metadata and documentation.
 ---
 
 # Project Bootstrap
@@ -18,7 +18,7 @@ The demo pieces stay. Health check endpoints, the GraphQL health module, dev too
 
 ## Step 2: Read the current state
 
-Read `README.md` and `CLAUDE.md` before editing anything. They describe the template as it stands, and knowing what is generic boilerplate prose versus what is genuinely useful architecture documentation is the difference between a clean rewrite and deleting something the user needed.
+Read `README.md` and `AGENTS.md` before editing anything. They describe the template as it stands, and knowing what is generic boilerplate prose versus what is genuinely useful architecture documentation is the difference between a clean rewrite and deleting something the user needed.
 
 ## Step 3: Metadata
 
@@ -50,9 +50,9 @@ Replace it entirely. The template README explains how to use a template, which i
 8. **Project structure** — a small tree of `apps/` and `libs/`
 9. **License**
 
-Drop the template-specific sections and the deep architecture explanations; the latter live in `CLAUDE.md` and duplicating them guarantees they diverge. Keep the example endpoints — they are useful references.
+Drop the template-specific sections and the deep architecture explanations; the latter live in `AGENTS.md` and duplicating them guarantees they diverge. Keep the example endpoints — they are useful references.
 
-## Step 6: CLAUDE.md
+## Step 6: AGENTS.md
 
 Touch only the "Repository Overview" section: describe what this application is, keep the sentence about the monorepo structure, and fix the Docker examples. Everything else still describes the architecture accurately, and rewriting it loses hard-won detail.
 
