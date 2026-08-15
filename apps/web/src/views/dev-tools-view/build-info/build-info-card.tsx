@@ -1,7 +1,6 @@
-import type { ColumnDef } from '@tanstack/react-table';
 import { Info } from 'lucide-react';
 import { useMemo } from 'react';
-import { DataTableView } from '@/components/common/data-table';
+import { type DataTableColumnDef, DataTableView } from '@/components/common/data-table';
 import { CopyTextButton } from '@/components/common/value/copy-text-button';
 import { config } from '@/lib/constants';
 
@@ -10,7 +9,7 @@ type ConfigEntry = {
   value: string;
 };
 
-const columns: ColumnDef<ConfigEntry, unknown>[] = [
+const columns: DataTableColumnDef<ConfigEntry>[] = [
   { accessorKey: 'name', header: 'Name' },
   {
     accessorKey: 'value',
