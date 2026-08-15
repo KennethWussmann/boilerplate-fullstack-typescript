@@ -91,18 +91,18 @@ gh repo create my-app --private --clone --template KennethWussmann/boilerplate-f
 cd my-app
 ```
 
-### 2a. Customize for Your Project using Claude Code (automated)
+### 2a. Customize for Your Project using an AI agent (automated)
 
-This repository has a Claude Code compatible custom command `/bootstrap`.
+This repository ships [Agent Skills](https://agentskills.io/) in `.agents/skills/`, which any compatible coding agent picks up automatically. The `project-bootstrap` skill guides you through the entire customization of your new project.
 
-It will guide you through the entire customization of your new project.
-
-1. Open Claude Code in your new repository
-2. Run `/bootstrap`
-3. Reply to Claude's questions
+1. Open your coding agent in your new repository
+2. Ask it to bootstrap the project
+3. Reply to its questions
 4. Wait... Done!
 
 You are now ready. Skip the next 2b. section.
+
+The other bundled skills cover day-to-day work: `backend-development` for entities, repositories, services and GraphQL modules, `frontend-development` for pages, views, components, layouts and forms, and `fullstack-feature` for anything spanning both apps.
 
 ### 2b. Customize for Your Project (manual)
 
