@@ -104,6 +104,8 @@ You are now ready. Skip the next 2b. section.
 
 The other bundled skills cover day-to-day work: `backend-development` for entities, repositories, services and GraphQL modules, `frontend-development` for pages, views, components, layouts and forms, and `fullstack-feature` for anything spanning both apps.
 
+Two more keep your project and this template in touch after bootstrapping. `boilerplate-sync` pulls later template improvements — CI, Dockerfile, tooling, framework code — into your project without touching your product code or renaming your app. `boilerplate-backport` goes the other way: it takes something generic you built, strips the product-specific parts out of it, and lands it here with the documentation to match.
+
 ### 2b. Customize for Your Project (manual)
 
 After creating your repository, update the following files:

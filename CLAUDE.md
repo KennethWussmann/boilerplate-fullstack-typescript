@@ -19,6 +19,10 @@ Task-specific workflows live in `.agents/skills/` as [Agent Skills](https://agen
 - `frontend-development` - pages, views, components, layouts, forms in `apps/web`
 - `fullstack-feature` - features spanning both apps, with the layer sequencing
 - `project-bootstrap` - turning this template into a named application
+- `boilerplate-sync` - pulling upstream boilerplate improvements into an initialized project
+- `boilerplate-backport` - pushing generalized improvements from a project back into the boilerplate
+
+Shared reference material for the last two lives in `.agents/skills/_shared/`.
 
 ## Repository Overview
 

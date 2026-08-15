@@ -56,7 +56,21 @@ Drop the template-specific sections and the deep architecture explanations; the 
 
 Touch only the "Repository Overview" section: describe what this application is, keep the sentence about the monorepo structure, and fix the Docker examples. Everything else still describes the architecture accurately, and rewriting it loses hard-won detail.
 
-## Step 7: Leave it healthy
+## Step 7: Record the sync baseline
+
+Write `.boilerplate-sync.json` at the repository root:
+
+```json
+{
+  "repository": "https://github.com/KennethWussmann/boilerplate-fullstack-typescript",
+  "commit": "<sha of the boilerplate commit this project was created from>",
+  "syncedAt": "<YYYY-MM-DD>"
+}
+```
+
+A template-generated repository shares no git history with the boilerplate, so this file is the only record of where the project branched off. Without it, the `boilerplate-sync` skill later has to diff whole trees and cannot tell an upstream improvement apart from a deliberate divergence. Take the SHA from this repository's first commit or from the boilerplate's `main` at the time of cloning; if neither is knowable, use the current HEAD and say so.
+
+## Step 8: Leave it healthy
 
 ```bash
 pnpm update -r
@@ -68,10 +82,11 @@ pnpm build
 
 Fix what these surface rather than reporting it as a known issue. Handing over a project that does not build defeats the point.
 
-## Step 8: Report
+## Step 9: Report
 
 - Every file changed
 - What the application is now configured as
 - How to start developing: install, run backend, run frontend
 - That the example endpoints and modules remain as references
 - What the dependency update changed and anything that needed fixing
+- That `boilerplate-sync` can pull later template improvements in, and `boilerplate-backport` can push generic improvements back
