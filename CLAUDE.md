@@ -11,6 +11,15 @@ These rules are so fundamentally important, violating a single one of them would
 3. Never use the `interface` in TypeScript if you could use `type`, always prefer `type` unless interface is used for inheritance.
 4. Never make anything backward compatible in TypeScript. Whenever a change by me as the user is requested, do not blindly add onto the existing code, possibly leaving behind dead code - or as you like to call it "backwards compatibility". Instead remove everything that belong to old implementation and is considered obsolete, not only because it's no longer called, but even if called remove when it no longer belongs to the business logic requirements. 
 
+## Agent Skills
+
+Task-specific workflows live in `.agents/skills/` as [Agent Skills](https://agentskills.io/). Read the matching `SKILL.md` before starting work in that area:
+
+- `backend-development` - entities, repositories, services, GraphQL modules in `apps/server`
+- `frontend-development` - pages, views, components, layouts, forms in `apps/web`
+- `fullstack-feature` - features spanning both apps, with the layer sequencing
+- `project-bootstrap` - turning this template into a named application
+
 ## Repository Overview
 
 This is a fullstack TypeScript monorepo boilerplate with clear separation between backend and frontend applications. It uses a modern build toolchain with Turborepo, pnpm workspaces, and includes Docker support for both ARM64 and AMD64 architectures.
