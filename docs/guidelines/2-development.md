@@ -706,7 +706,7 @@ Run `pnpm codegen` in `apps/web/` to regenerate types:
 ```bash
 cd apps/server
 pnpm dev          # Start dev server with watch mode (runs codegen first)
-pnpm build        # Build for production (runs codegen first)
+pnpm build        # Build for production (codegen, tsc, tsc-alias, copy .graphql files)
 pnpm build:watch  # Build in watch mode (runs codegen first)
 pnpm codegen      # Generate GraphQL types from schemas
 pnpm db:generate  # Generate database migration from schema changes

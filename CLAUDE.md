@@ -270,6 +270,7 @@ The Dockerfile sets these defaults:
 
 - Uses ESM modules (not CommonJS) - note `.js` extensions in imports
 - Server uses `tsx` for development (TypeScript execution)
-- Web uses absolute imports via `@/` alias
+- Both apps use absolute imports via the `@/` alias, mapping to the app's `src/`
+- `tsc` does not rewrite path aliases, so the server build runs `tsc-alias` after `tsc` to turn `@/` imports in `dist/` into relative paths - without it the compiled server fails to start with `ERR_MODULE_NOT_FOUND`
 - All timestamps and dates handled via `date-fns`
 - Package manager is locked to `pnpm@10.18.2` via `packageManager` field

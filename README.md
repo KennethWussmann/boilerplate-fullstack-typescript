@@ -70,7 +70,7 @@ An opinionated, production-ready boilerplate for building fullstack TypeScript a
 - Multi-architecture Docker builds
 
 ### Developer Experience
-- TypeScript path aliases (`@/` for imports)
+- TypeScript path aliases (`@/` for imports), resolved in the server build via `tsc-alias`
 - Watch modes for development
 - Fast builds with caching
 - Comprehensive npm scripts for common tasks
