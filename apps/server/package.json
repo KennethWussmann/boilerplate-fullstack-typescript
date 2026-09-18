@@ -42,14 +42,14 @@
     "drizzle-kit": "^0.31.10",
     "tsc-alias": "^1.9.5",
     "tsx": "^4.23.13",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "@bull-board/api": "^9.10.1",
     "@bull-board/express": "^9.10.1",
     "@envelop/graphql-modules": "^9.2.0",
     "@graphql-tools/load-files": "^7.0.1",
-    "bullmq": "^6.3.4",
+    "bullmq": "^6.3.6",
     "cors": "^2.8.6",
     "date-fns": "^4.4.0",
     "dotenv": "^17.4.2",
@@ -69,6 +69,6 @@
     "winston-transport": "^4.9.0",
     "ws": "^8.21.3",
     "yaml": "^2.9.1",
-    "zod": "^4.6.4"
+    "zod": "^4.6.5"
   }
 }
