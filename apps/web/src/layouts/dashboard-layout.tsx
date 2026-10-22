@@ -9,7 +9,7 @@ import {
   SlotTarget,
 } from '@/components';
 import { Logo } from '@/components/common/logo';
-import { useNavigation } from '@/components/common/navigation';
+import { type ResolvedNavigationGroup, useNavigation } from '@/components/common/navigation';
 import { Button, Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui';
 import { track } from '@/lib';
 import {
@@ -23,116 +23,124 @@ import {
 import { useGlobalShortcuts } from '@/lib/shortcuts';
 import { cn } from '@/lib/utils';
 
+const NavBarHeader = () => {
+  return (
+    <Link to="/dashboard" className="flex items-center gap-2 text-xl font-bold">
+      <Logo className="h-6 w-6" />
+      {productName}
+    </Link>
+  );
+};
+
+const NavigationLinks = ({
+  groups,
+  pathname,
+  onNavigate,
+}: {
+  groups: ResolvedNavigationGroup[];
+  pathname: string;
+  onNavigate?: () => void;
+}) => (
+  <>
+    {groups.map((group) => (
+      <div key={group.id} className="space-y-1">
+        {group.label && (
+          <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+            {group.label}
+          </div>
+        )}
+        {group.items.map((item) => {
+          const isActive = pathname === item.href;
+          const Icon = item.icon;
+          return (
+            <Button
+              key={item.id}
+              variant={isActive ? 'secondary' : 'ghost'}
+              className={cn('w-full justify-start', isActive && 'bg-secondary')}
+              asChild
+            >
+              <Link
+                to={item.href}
+                target={item.external ? '_blank' : undefined}
+                onClick={() => {
+                  track('dashboard_layout_nav_click', { props: { item: item.name } });
+                  onNavigate?.();
+                }}
+                className="flex flex-row justify-between w-full"
+                viewTransition
+              >
+                <div className="flex flex-row gap-4 items-center">
+                  {Icon && <Icon className="size-6" />}
+                  {item.name}
+                </div>
+                {item.shortcut && <ShortcutKeys shortcut={item.shortcut} className="ml-auto" />}
+              </Link>
+            </Button>
+          );
+        })}
+      </div>
+    ))}
+  </>
+);
+
+const isVersionHash = productVersion ? /^[0-9a-f]{7,40}$/i.test(productVersion) : false;
+
+const FooterLinks = () => (
+  <>
+    {productVersion && (
+      <div className="text-center text-[8pt] text-muted-foreground">
+        {githubUrl && isVersionHash ? (
+          <Link
+            to={`${githubUrl}/commit/${productVersion}`}
+            target="_blank"
+            className="hover:underline"
+          >
+            {productVersion}
+          </Link>
+        ) : (
+          productVersion
+        )}
+      </div>
+    )}
+    {(legalUrl || privacyPolicyUrl) && (
+      <div className="flex flex-row justify-center gap-2 text-[9pt] text-muted-foreground mb-2">
+        {legalUrl && (
+          <Link
+            to={legalUrl}
+            target="_blank"
+            className="hover:underline"
+            onClick={() => {
+              track('dashboard_layout_legal_click');
+            }}
+          >
+            Legal
+          </Link>
+        )}
+        {privacyPolicyUrl && (
+          <Link
+            to={privacyPolicyUrl}
+            target="_blank"
+            className="hover:underline"
+            onClick={() => {
+              track('dashboard_layout_privacy_click');
+            }}
+          >
+            Privacy Policy
+          </Link>
+        )}
+      </div>
+    )}
+    <Button variant="outline" className="w-full" asChild>
+      <Link to="/">Back to Home</Link>
+    </Button>
+  </>
+);
+
 export const DashboardLayout = () => {
   useGlobalShortcuts();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { groups, active } = useNavigation('dashboard');
-
-  const NavigationLinks = ({ onNavigate }: { onNavigate?: () => void }) => (
-    <>
-      {groups.map((group) => (
-        <div key={group.id} className="space-y-1">
-          {group.label && (
-            <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              {group.label}
-            </div>
-          )}
-          {group.items.map((item) => {
-            const isActive = location.pathname === item.href;
-            const Icon = item.icon;
-            return (
-              <Button
-                key={item.id}
-                variant={isActive ? 'secondary' : 'ghost'}
-                className={cn('w-full justify-start', isActive && 'bg-secondary')}
-                asChild
-              >
-                <Link
-                  to={item.href}
-                  target={item.external ? '_blank' : undefined}
-                  onClick={() => {
-                    track('dashboard_layout_nav_click', { props: { item: item.name } });
-                    onNavigate?.();
-                  }}
-                  className="flex flex-row justify-between w-full"
-                  viewTransition
-                >
-                  <div className="flex flex-row gap-4 items-center">
-                    {Icon && <Icon className="size-6" />}
-                    {item.name}
-                  </div>
-                  {item.shortcut && <ShortcutKeys shortcut={item.shortcut} className="ml-auto" />}
-                </Link>
-              </Button>
-            );
-          })}
-        </div>
-      ))}
-    </>
-  );
-
-  const isVersionHash = productVersion ? /^[0-9a-f]{7,40}$/i.test(productVersion) : false;
-
-  const FooterLinks = () => (
-    <>
-      {productVersion && (
-        <div className="text-center text-[8pt] text-muted-foreground">
-          {githubUrl && isVersionHash ? (
-            <Link
-              to={`${githubUrl}/commit/${productVersion}`}
-              target="_blank"
-              className="hover:underline"
-            >
-              {productVersion}
-            </Link>
-          ) : (
-            productVersion
-          )}
-        </div>
-      )}
-      {(legalUrl || privacyPolicyUrl) && (
-        <div className="flex flex-row justify-center gap-2 text-[9pt] text-muted-foreground mb-2">
-          {legalUrl && (
-            <Link
-              to={legalUrl}
-              target="_blank"
-              className="hover:underline"
-              onClick={() => {
-                track('dashboard_layout_legal_click');
-              }}
-            >
-              Legal
-            </Link>
-          )}
-          {privacyPolicyUrl && (
-            <Link
-              to={privacyPolicyUrl}
-              target="_blank"
-              className="hover:underline"
-              onClick={() => {
-                track('dashboard_layout_privacy_click');
-              }}
-            >
-              Privacy Policy
-            </Link>
-          )}
-        </div>
-      )}
-      <Button variant="outline" className="w-full" asChild>
-        <Link to="/">Back to Home</Link>
-      </Button>
-    </>
-  );
-
-  const NavBarHeader = () => {
-    return (
-      <Link to="/dashboard" className="flex items-center gap-2 text-xl font-bold">
-        <Logo className="h-6 w-6" />
-        {productName}
-      </Link>
-    );
-  };
 
   return (
     <ErrorBoundary>
@@ -144,7 +152,7 @@ export const DashboardLayout = () => {
               <NavBarHeader />
             </div>
             <nav className="flex-1 space-y-4 p-4">
-              <NavigationLinks />
+              <NavigationLinks groups={groups} pathname={location.pathname} />
             </nav>
             {footerEnabled && (
               <div className="border-t p-4 space-y-1">
@@ -185,7 +193,11 @@ export const DashboardLayout = () => {
               </SheetTitle>
             </SheetHeader>
             <nav className="flex-1 space-y-4 p-4">
-              <NavigationLinks onNavigate={() => setMobileMenuOpen(false)} />
+              <NavigationLinks
+                groups={groups}
+                pathname={location.pathname}
+                onNavigate={() => setMobileMenuOpen(false)}
+              />
             </nav>
             {footerEnabled && (
               <div className="border-t p-4 space-y-2">
